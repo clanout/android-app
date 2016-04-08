@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/AlertDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/invitation_response_title"/>
+
+    <TextView
+        android:id="@+id/tvMessage"
+        style="@style/AlertDialogMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTitle"
+        android:layout_marginTop="16dp"
+        android:text="@string/invitation_response_message"/>
+
+    <EditText
+        android:id="@+id/etInvitationResponse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvMessage"
+        android:layout_marginTop="16dp"/>
+
+    <ListView
+        android:id="@+id/lvInvitationResponse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etInvitationResponse"
+        android:layout_marginTop="16dp"/>
+
+</RelativeLayout>

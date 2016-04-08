@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlFriendContainer"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp">
+
+    <ImageView
+        android:id="@+id/ivProfilePic"
+        android:layout_width="48dp"
+        android:layout_height="48dp"/>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="36dp"
+        android:layout_toRightOf="@+id/ivProfilePic"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Aditya Prasad"
+        android:textSize="16sp"/>
+
+    <LinearLayout
+        android:layout_width="32dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center">
+
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            android:id="@+id/mivGoing"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:visibility="gone"
+            app:materialIcon="checkbox_marked_circle_outline"
+            app:materialIconColor="@color/rsvp_yes"
+            app:materialIconSize="20dp"/>
+
+        <CheckBox
+            android:id="@+id/cbInvite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+    </LinearLayout>
+
+</RelativeLayout>

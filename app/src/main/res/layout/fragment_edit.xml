@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/focus_thief"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/llCategoryIconContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/category_icon_five"
+            android:gravity="center"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/ivCategoryIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="So, can we have some weed at your place"
+            android:textColor="@color/text_title"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivType"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
+        <TextView
+            android:id="@+id/tvType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="SECRET"
+            android:textAllCaps="true"
+            android:textColor="@color/text_subtitle"
+            android:textSize="10sp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/divider"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/llTime"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_create_btn"
+            android:gravity="center">
+
+            <net.steamcrafted.materialiconlib.MaterialIconView
+                android:id="@+id/mivTime"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                app:materialIcon="clock"
+                app:materialIconColor="@color/accent"
+                app:materialIconSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="7:00 PM"
+                android:textAllCaps="true"
+                android:textColor="@color/accent"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llDay"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_create_btn"
+            android:gravity="center">
+
+            <net.steamcrafted.materialiconlib.MaterialIconView
+                android:id="@+id/mivDay"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                app:materialIcon="calendar"
+                app:materialIconColor="@color/accent"
+                app:materialIconSize="20dp"/>
+
+            <TextView
+                android:id="@+id/tvDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Today"
+                android:textAllCaps="true"
+                android:textColor="@color/accent"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llLocation"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_create_btn"
+        android:gravity="center">
+
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            android:id="@+id/mivLocation"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            app:materialIcon="map_marker"
+            app:materialIconColor="@color/accent"
+            app:materialIconSize="20dp"/>
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Location (Optional)"
+            android:textAllCaps="true"
+            android:textColor="@color/accent"/>
+
+    </LinearLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp">
+
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description (optional)"
+            android:maxLines="2"/>
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

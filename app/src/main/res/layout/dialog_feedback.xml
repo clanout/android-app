@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        style="@style/AlertDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/feedback_title"/>
+
+    <RadioGroup
+        android:id="@+id/rgFeedbackType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:checkedButton="@+id/rbBug">
+
+        <RadioButton
+            android:id="@+id/rb_share_feedback_bug"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/feedback_type_report"/>
+
+        <RadioButton
+            android:id="@+id/rbFeature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/feedback_type_feature"/>
+
+        <RadioButton
+            android:id="@+id/rbOthers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/feedback_type_other"/>
+    </RadioGroup>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilFeedbackMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/feedback_comment">
+
+        <EditText
+            android:id="@+id/etComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:maxLines="3"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

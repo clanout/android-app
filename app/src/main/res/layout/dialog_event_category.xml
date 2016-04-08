@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
+        android:columnCount="3"
+        android:rowCount="3">
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llCafe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/category_icon_five"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/ivCafe"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvCafe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Cafe"
+                android:textAllCaps="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llMovie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/category_icon_five"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/ivMovie"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvMovie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Movie"
+                android:textAllCaps="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llShopping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/category_icon_five"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/ivShopping"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvShopping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Shopping"
+                android:textAllCaps="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llSports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/category_icon_five"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/ivSports"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvSports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Sports"
+                android:textAllCaps="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llEatOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/category_icon_five"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/ivEatOut"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvEatOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Eat Out"
+                android:textAllCaps="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llIndoors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/category_icon_five"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/ivIndoors"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvIndoors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Indoors"
+                android:textAllCaps="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llDrinks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/category_icon_five"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/ivDrinks"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvDrinks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Drinks"
+                android:textAllCaps="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llOutdoors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/category_icon_five"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/ivOutdoors"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvOutdoors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Outdoors"
+                android:textAllCaps="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llGeneral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/category_icon_five"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/ivGeneral"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvGeneral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Other"
+                android:textAllCaps="true"/>
+        </LinearLayout>
+
+    </GridLayout>
+</LinearLayout>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llFinalizationInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_default"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp">
+
+            <net.steamcrafted.materialiconlib.MaterialIconView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="center"
+                app:materialIcon="information_outline"
+                app:materialIconColor="#999999"
+                app:materialIconSize="18dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="sans-serif-light"
+                android:text="This plan is finalized by the organizer"
+                android:textColor="@color/text_subtitle"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/llCategoryIconContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/category_icon_five"
+            android:gravity="center"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/ivCategoryIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="So, can we have some weed at your place"
+            android:textColor="@color/text_title"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivType"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
+        <TextView
+            android:id="@+id/tvType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="SECRET"
+            android:textAllCaps="true"
+            android:textColor="@color/text_subtitle"
+            android:textSize="10sp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/divider"/>
+
+    <LinearLayout
+        android:id="@+id/llDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            app:materialIcon="file_document"
+            app:materialIconColor="@color/primary"
+            app:materialIconSize="18dp"/>
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Use the chat here for feedback, and use clanout for everything else... more"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            app:materialIcon="clock"
+            app:materialIconColor="@color/primary"
+            app:materialIconSize="18dp"/>
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:text="03:00 AM, 18 Mar (Friday)"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            android:id="@+id/mivLocation"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            app:materialIcon="map_marker"
+            app:materialIconColor="@color/primary"
+            app:materialIconSize="18dp"/>
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLength="30"
+            android:maxLines="1"
+            android:text="Arbor Brewing Company"/>
+
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            android:id="@+id/mivNavigation"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:scaleType="center"
+            app:materialIcon="navigation"
+            app:materialIconColor="@color/accent"
+            app:materialIconSize="18dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Add Location and Description"
+        android:textAllCaps="true"
+        android:textColor="@color/accent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/divider"/>
+
+</LinearLayout>

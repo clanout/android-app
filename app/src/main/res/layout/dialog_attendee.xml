@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingBottom="8dp"
+              android:paddingTop="16dp"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="?android:attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/ivPic"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="76dp"
+            android:layout_toRightOf="@id/ivPic"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="John Doe"
+                android:textColor="@color/text_title"
+                android:textSize="16sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <net.steamcrafted.materialiconlib.MaterialIconView
+                    android:id="@+id/ivFriendIcon"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginRight="4dp"
+                    android:scaleType="center"
+                    app:materialIcon="star_circle"
+                    app:materialIconColor="@color/accent"
+                    app:materialIconSize="14dp"/>
+
+                <TextView
+                    android:id="@+id/tvFriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-condensed"
+                    android:maxLines="1"
+                    android:text="Friend"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_subtitle"
+                    android:textSize="10sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvInvite"
+            android:layout_width="68dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/accent_light"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_horizontal"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:text="INVITED YOU"
+            android:textColor="@color/white"
+            android:textSize="12sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="80dp"
+            android:background="@color/divider"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Much Fun. Wow. So exciting"
+        android:textColor="@color/text_subtitle"/>
+</LinearLayout>

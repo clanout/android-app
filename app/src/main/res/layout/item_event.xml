@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:id="@+id/llCategoryIconContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@color/category_icon_five"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/ivCategoryIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/llCategoryIconContainer">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="56dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Sex on the Beach"
+            android:textColor="@color/text_title"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tvFriendsGoing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:layout_marginRight="56dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-light"
+            android:maxLines="1"
+            android:text="Harsh, Aditya &amp; 4 friends joined"
+            android:textColor="@color/text_subtitle"/>
+
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            android:id="@+id/mivRsvp"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp"
+            android:scaleType="center"
+            app:materialIcon="checkbox_marked_circle_outline"
+            app:materialIconColor="@color/rsvp_yes"
+            app:materialIconSize="18dp"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvToday"
+        android:layout_width="44dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/accent_light"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center_horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp"
+        android:text="TODAY"
+        android:textColor="@color/white"
+        android:textSize="12sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="80dp"
+        android:background="@color/divider"/>
+
+</RelativeLayout>

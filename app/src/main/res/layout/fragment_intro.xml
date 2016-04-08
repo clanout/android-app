@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rlIntroContainer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/ivIntroIcon"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_above="@id/tvTitle"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/intro_1"/>
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="48dp"
+        android:layout_marginTop="48dp"
+        android:text="Discover and Join"
+        android:textColor="@color/text_default"
+        android:textSize="20sp"/>
+
+
+</RelativeLayout>

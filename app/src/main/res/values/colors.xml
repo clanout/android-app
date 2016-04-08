@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme -->
+    <color name="primary">#E53B4A</color>
+    <color name="primary_dark">#B22E3A</color>
+    <color name="primary_light">#BBE53B4A</color>
+
+    <color name="accent">#048AFF</color>
+    <color name="accent_light">#50ADFF</color>
+
+    <!-- Fonts -->
+    <color name="text_title">#444</color>
+    <color name="text_default">#666</color>
+    <color name="text_subtitle">#888</color>
+
+    <color name="text_title_inverse">#FFFFFF</color>
+    <color name="text_default_inverse">#FDFDFD</color>
+    <color name="text_subtitle_inverse">#EEEEEE</color>
+
+    <!-- Greyscale -->
+    <color name="white">#FFF</color>
+    <color name="light_grey">#EEEEEE</color>
+    <color name="grey">#D0D0D0</color>
+    <color name="dark_grey">#999999</color>
+    <color name="black">#000</color>
+
+    <!-- Miscellaneous -->
+    <color name="rsvp_yes">#4CAF50</color>
+    <color name="warning">#FFC107</color>
+    <color name="background_default">#FAFAFA</color>
+    <color name="background_bar">#E0E0E0</color>
+    <color name="divider">#E4E4E4</color>
+    <color name="cover_pic_overlay">#55cdcdcd</color>
+
+    <!-- App Intro Background -->
+    <color name="intro_1">#E64351</color>
+    <color name="intro_2">#729945</color>
+    <color name="intro_3">#C1272D</color>
+    <color name="intro_4">#3B5998</color>
+
+    <!-- Category Icons -->
+    <color name="category_icon_one">#3b94d9</color>
+    <color name="category_icon_two">#4a913c</color>
+    <color name="category_icon_three">#e95f28</color>
+    <color name="category_icon_four">#afe356</color>
+    <color name="category_icon_five">#744eaa</color>
+    <color name="category_icon_six">#346a85</color>
+    <color name="category_icon_seven">#be1931</color>
+    <color name="category_icon_eight">#ffac33</color>
+    <color name="category_icon_nine">#8899a6</color>
+
+</resources>

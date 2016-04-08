@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="64dp"
+    android:layout_marginTop="4dp"
+    android:background="@drawable/bg_chat_others"
+    android:minWidth="120dp"
+    android:orientation="vertical"
+    android:paddingBottom="4dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="4dp">
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:text="Gaurav Kunwar"
+        android:textColor="@color/accent"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tvChatMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello, World!"
+        android:textColor="@color/text_title"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvTimestamp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="right"
+        android:text="22:45, Feb 25"
+        android:textColor="@color/text_subtitle"
+        android:textSize="10sp"/>
+
+</LinearLayout>

@@ -1,0 +1,229 @@
+<resources>
+    <string name="app_name">ClanOut</string>
+
+    <string name="disabled_for_beta">Disabled for beta</string>
+
+
+    <!-- Facebook SDK -->
+    <string name="facebook_app_id">536677206504462</string>
+    <string name="places_app_id">AIzaSyDBX362r-1isovteBR3tGN3QQtDcQn-jyg</string>
+
+    <!-- Event Type -->
+    <string name="event_type_open">Open</string>
+    <string name="event_type_secret">Secret</string>
+    <string name="event_type_open_description">All your nearby friends can see this plan. If any of your friends joins this plan, their friends can also see it. You can still send personal invites.</string>
+    <string name="event_type_secret_description">Only the friends, you have invited, can see this plan. Once they join, they can also invite their friends.</string>
+
+    <!-- RSVP -->
+    <string name="rsvp_yes">YAY</string>
+    <string name="rsvp_no">NAY</string>
+
+    <!-- Screen Titles -->
+    <string name="title_home">@string/app_name</string>
+    <string name="title_create">Make a Plan</string>
+    <string name="title_edit">Edit Plan</string>
+    <string name="title_details">Plan</string>
+    <string name="title_account">Account</string>
+    <string name="title_friends">Manage Friends</string>
+    <string name="title_invite">Invite Friends</string>
+    <string name="title_notification">Notifications</string>
+    <string name="title_pending_invites">Welcome</string>
+    <string name="title_chat">Clan Chat</string>
+
+    <!-- Action Bar -->
+    <string name="action_account">Account</string>
+    <string name="action_home">Home</string>
+    <string name="action_create_event">Create</string>
+    <string name="action_edit_event">Edit</string>
+    <string name="action_finalize_event">Finalize</string>
+    <string name="action_unfinalize_event">Unfinalize</string>
+    <string name="action_notification">Notifications</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_delete_event">Delete</string>
+    <string name="action_save_event">Save</string>
+    <string name="action_chat_load">Load</string>
+
+    <!-- Error Messages -->
+    <string name="error_default">Looks like we messed up. While we fix this issue, go feed your dog.</string>
+    <string name="error_facebook_login">Facebook login failed. Please try again.</string>
+    <string name="error_no_title">Please enter a plan name</string>
+    <string name="error_invalid_start_time">Start time cannot be before the current time</string>
+    <string name="error_rsvp_update">This action could not be completed. Please try again.</string>
+    <string name="error_edit_finalized">You can no longer edit the plan. Creator has finalized the details.</string>
+    <string name="error_event_not_found">Unable to locate this plan</string>
+    <string name="error_invalid_phone">Please enter a valid phone number</string>
+    <string name="error_invite">Unable to show your friends</string>
+    <string name="error_facebook_friends">Unable to show your friends</string>
+    <string name="error_chat_not_sent"> Unable to send message. Resend.</string>
+    <string name="error_chat_not_fetched"> Unable to load conversations</string>
+    <string name="error_no_whatsapp">WhatsApp is not installed on this device</string>
+    <string name="error_notifications">Unable to load notifications</string>
+    <string name="error_friends_not_loaded">Could not load your friends.</string>
+
+    <!-- Common Strings -->
+    <string name="retry">Retry</string>
+    <string name="try_again">Try Again</string>
+    <string name="search_friends">Search</string>
+    <string name="no_facebook_friends">No results found</string>
+    <string name="ok">OK</string>
+    <string name="got_it">Got It</string>
+
+    <!-- Splash Screen -->
+    <string name="location_off_action">Turn on GPS</string>
+    <string name="location_off_message">We cannot proceed without your location. We need it to find your nearby friends and show you their plans.</string>
+    <string name="intro_title_1">Make plans with nearby friends</string>
+    <string name="intro_title_2">Keep your plan open or secret</string>
+    <string name="intro_title_3">Invite friends to your plan</string>
+    <string name="intro_title_4">Chat, finalize and clan out!</string>
+    <string name="user_agreement">By continuing, you agree to our <b>Terms of service</b> and <b>Privacy Policy</b></string>
+    <string name="launcher_message_first_part">Made with</string>
+    <string name="launcher_message_second_part">in India!</string>
+
+    <!-- Account Screen -->
+    <string name="account_menu_friends">Manage Friends</string>
+    <string name="account_menu_phone">Update Phone Number</string>
+    <string name="account_menu_whatsapp">WhatsApp Invite</string>
+    <string name="account_menu_feedback">Help Us Improve</string>
+    <string name="account_menu_help">Help/FAQ</string>
+
+    <!-- Manage Friends Screen -->
+    <string name="friends_block_info_message">Blocked friends cannot invite you or see what plans you have joined.</string>
+
+    <!-- Notifications -->
+    <string name="notifications_empty">Nothing to show here :)</string>
+
+    <!-- Pending Invites Screen-->
+    <!-- Fetch Pending Invites Dialog -->
+    <string name="fetch_pending_invites_message">Did you get an SMS invite from a friend? Enter your phone number to fetch any pending invitations.</string>
+
+    <!-- Chat Screen -->
+    <string name="chat_message_label">Write a Message</string>
+    <string name="listview_loading">Loading earlier messages…</string>
+
+
+    <!-- Home Screen -->
+    <string name="home_no_events">No active plans</string>
+    <string name="home_events_fetch_error">Unable to show plans. Swipe to refresh.</string>
+
+
+    <!-- Feed - Friends Going -->
+    <string name="label_feed_no_friends">Waiting for friends</string>
+    <string name="label_feed_one_friend">%s joined</string>
+    <string name="label_feed_one_friend_default">1 friend joined</string>
+    <string name="label_feed_two_friend" formatted="false">%s and %s joined</string>
+    <string name="label_feed_multiple_friend_default">%s friends joined</string>
+    <string name="label_feed_multiple_friend_one_other" formatted="false">%s and 1 friend joined</string>
+    <string name="label_feed_multiple_friend_multiple_other" formatted="false">%s and %s friends joined</string>
+
+    <!-- Create Screen -->
+    <string name="label_title">What\'s your Plan?</string>
+    <string name="title_day_selection">This Week</string>
+
+    <!-- Details Screen -->
+    <string name="label_btn_invite">Invite</string>
+    <string name="label_btn_chat">Chat</string>
+    <string name="event_details_no_description">No Description</string>
+    <string name="event_details_no_attendees">This plan is dismissed and no longer available. Refresh to remove it from your feed</string>
+    <string name="event_details_no_location">To be decided</string>
+
+
+    <!-- Status Labels -->
+    <string name="no_status">No Status</string>
+    <string name="status_default"></string>
+    <string name="label_status">Share your mood</string>
+    <string name="label_status_last_moment">Last moment status</string>
+
+    <!-- Reminder -->
+    <string name="reminder_notification_message">About to start. Update your last moment status!</string>
+
+    <!-- Permission Defaults -->
+    <string name="permission_request_again">Request Again</string>
+    <string name="permission_goto_settings">Go To Settings</string>
+
+    <!-- Location Permissions -->
+    <string name="permission_location_message">We cannot proceed without your location. We need it to find your nearby friends and show you their plans. </string>
+
+    <!-- Read Contacts Permissions -->
+    <string name="permission_contacts_message">You\'ll not be able to invite friends from your phonebook. Click here to allow read contacts permission.</string>
+
+    <!-- Play Services Error Dialog -->
+    <string name="play_services_error_dialog_title">Google Play Services Error</string>
+    <string name="play_services_error_dialog_message">Google Play Services is not available
+        on this device. Try updating Play Services and open the app again.</string>
+    <string name="play_services_error_dialog_negative_button">Close App</string>
+
+    <!-- Facebook Permissions Dialog -->
+    <string name="facebook_permission_dialog_title">Request for permission</string>
+    <string name="facebook_permission_dialog_message">Allow access to your basic profile information, email and friend list. This is required to connect you with your facebook friends on ClanOut.</string>
+    <string name="facebook_permission_dialog_positive_button">Allow</string>
+    <string name="facebook_permission_dialog_negative_button">Close App</string>
+
+    <!-- Add Phone Dialog -->
+    <string name="add_phone_title">Update Phone Number</string>
+    <string name="add_phone_message">Enter your number to enable invitations from friends who have your phone number.</string>
+    <string name="add_phone_positive_button">Update</string>
+
+    <!-- Feedback Dialog -->
+    <string name="feedback_title">Feedback</string>
+    <string name="feedback_positive_button">Submit</string>
+    <string name="feedback_remind_button">Not Now</string>
+    <string name="feedback_comment">Comment</string>
+    <string name="feedback_empty_comment">Please provide a comment</string>
+    <string name="feedback_type_report">Report a bug</string>
+    <string name="feedback_type_feature">Suggest a new feature</string>
+    <string name="feedback_type_other">Other</string>
+
+    <!-- Status Dialog -->
+    <string name="status_dialog_title">Status</string>
+    <string name="status_dialog_message">Share your mood for this plan.</string>
+    <string name="status_dialog_message_last_minute">Hey, where are you? Inform friends of your last minute status</string>
+    <string name="status_dialog_positive_button">OK</string>
+
+    <!-- Invitation Response Dialog -->
+    <string name="invitation_response_title">Not Going?</string>
+    <string name="invitation_response_message">Your friends invited you for this plan. Inform them of your absence by leaving a message.</string>
+    <string name="invitation_response_positive_button">OK</string>
+    <string name="invitation_response_sent">Your friends will be notified</string>
+
+    <!-- Invitation responses List -->
+    <string-array name="invitation_responses">
+        <item>Not in a mood.</item>
+        <item>Busy with other plans.</item>
+        <item>Thanks. Can\'t make it this time.</item>
+    </string-array>
+
+
+    <!-- Last Moment Status List -->
+    <string-array name="last_moment_status">
+        <item>On my way</item>
+        <item>Running late</item>
+        <item>Sorry, changed my mind</item>
+        <item>Yippie-kai yay!</item>
+    </string-array>
+
+
+    <!-- Event Unlock Dialog -->
+    <string name="event_unlock_title">Allow changes?</string>
+    <string name="event_unlock_message">Your friends will be able to edit details now.</string>
+    <string name="event_unlock_positive_button">Allow</string>
+    <string name="event_unlock_negative_button">Cancel</string>
+
+    <!-- Event Lock Dialog -->
+    <string name="event_lock_title">Finalize details?</string>
+    <string name="event_lock_message">Your friends can no longer edit details for this plan.</string>
+    <string name="event_lock_negative_button">Not Yet</string>
+    <string name="event_lock_positive_button">Finalize</string>
+
+    <!-- Event Delete Dialog -->
+    <string name="event_delete_title">Delete Plan</string>
+    <string name="event_delete_message">This will delete all information related to this plan. And it will be removed from everyone\'s feed.</string>
+    <string name="event_delete_positive_button">Delete</string>
+    <string name="event_delete_negative_button">Cancel</string>
+
+    <!-- Event Removed Dialog -->
+    <string name="event_removed_title">Plan Dismissed</string>
+    <string name="event_removed_message">The creator has dismissed this plan. Do you want to make a new plan?</string>
+    <string name="event_removed_positive_button">Make Plan</string>
+    <string name="event_removed_negative_button">Not Now</string>
+
+</resources>

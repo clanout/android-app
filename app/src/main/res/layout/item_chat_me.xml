@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_chat_me"
+        android:minWidth="120dp"
+        android:orientation="vertical"
+        android:paddingBottom="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp">
+
+        <TextView
+            android:id="@+id/tvChatMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello, World!"
+            android:textSize="16sp"
+            android:textColor="@color/text_title_inverse"/>
+
+        <TextView
+            android:id="@+id/tvTimestamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvChatMessage"
+            android:layout_marginTop="2dp"
+            android:gravity="right"
+            android:text="22:45, Feb 25"
+            android:textColor="@color/text_subtitle_inverse"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="10sp"/>
+    </LinearLayout>
+
+</RelativeLayout>

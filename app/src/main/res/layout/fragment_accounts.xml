@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Profile and Cover Pic -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
+        <ImageView
+            android:id="@+id/ivCoverPic"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@color/cover_pic_overlay"/>
+
+        <LinearLayout
+            android:id="@+id/llProfilePicContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/profile_pic_border"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="4dp">
+
+            <ImageView
+                android:id="@+id/ivProfilePic"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llProfilePicContainer"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="mdhjkshdk"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+
+    <!-- Account Menu -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Block Friends -->
+        <LinearLayout
+            android:id="@+id/llBlockFriends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp">
+
+            <net.steamcrafted.materialiconlib.MaterialIconView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:scaleType="center"
+                app:materialIcon="account_multiple"
+                app:materialIconColor="@color/primary"
+                app:materialIconSize="24dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="@string/account_menu_friends"
+                android:textColor="@color/text_title"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <!-- Update Mobile Number -->
+        <LinearLayout
+            android:id="@+id/llUpdateMobileNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp">
+
+            <net.steamcrafted.materialiconlib.MaterialIconView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:scaleType="center"
+                app:materialIcon="cellphone_android"
+                app:materialIconColor="@color/primary"
+                app:materialIconSize="24dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="@string/account_menu_phone"
+                android:textColor="@color/text_title"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <!-- WhatsApp Invite -->
+        <LinearLayout
+            android:id="@+id/llWhatsAppInvite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp">
+
+            <net.steamcrafted.materialiconlib.MaterialIconView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:scaleType="center"
+                app:materialIcon="whatsapp"
+                app:materialIconColor="@color/primary"
+                app:materialIconSize="24dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/account_menu_whatsapp"
+                android:textColor="@color/text_title"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <!-- Feedback -->
+        <LinearLayout
+            android:id="@+id/llFeedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp">
+
+            <net.steamcrafted.materialiconlib.MaterialIconView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:scaleType="center"
+                app:materialIcon="owl"
+                app:materialIconColor="@color/primary"
+                app:materialIconSize="24dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="@string/account_menu_feedback"
+                android:textColor="@color/text_title"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <!-- FAQ -->
+        <LinearLayout
+            android:id="@+id/llFaq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp">
+
+            <net.steamcrafted.materialiconlib.MaterialIconView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:scaleType="center"
+                app:materialIcon="help"
+                app:materialIconColor="@color/primary"
+                app:materialIconSize="24dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="@string/account_menu_help"
+                android:textColor="@color/text_title"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
