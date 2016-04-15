@@ -6,16 +6,13 @@ import com.clanout.app.api.event.request.EditEventApiRequest;
 import com.clanout.app.api.event.request.EventsApiRequest;
 import com.clanout.app.api.event.request.FetchEventApiRequest;
 import com.clanout.app.api.event.request.FetchPendingInvitesApiRequest;
-import com.clanout.app.api.event.request.FinaliseEventApiRequest;
 import com.clanout.app.api.event.request.GetCreateEventSuggestionsApiRequest;
-import com.clanout.app.api.event.request.InviteThroughSMSApiRequest;
 import com.clanout.app.api.event.request.InviteUsersApiRequest;
 import com.clanout.app.api.event.request.RsvpUpdateApiRequest;
 import com.clanout.app.api.event.request.SendChatNotificationApiRequest;
 import com.clanout.app.api.event.request.SendInvitaionResponseApiRequest;
 import com.clanout.app.api.event.request.UpdateStatusApiRequest;
 import com.clanout.app.api.event.response.CreateEventApiResponse;
-import com.clanout.app.api.event.response.EditEventApiResponse;
 import com.clanout.app.api.event.response.EventsApiResponse;
 import com.clanout.app.api.event.response.FetchEventApiResponse;
 import com.clanout.app.api.event.response.FetchPendingInvitesApiResponse;
@@ -41,7 +38,7 @@ public interface EventApi
     Observable<CreateEventApiResponse> createEvent(@Body CreateEventApiRequest request);
 
     @POST("/plan/edit")
-    Observable<EditEventApiResponse> editEvent(@Body EditEventApiRequest request);
+    Observable<Response> editEvent(@Body EditEventApiRequest request);
 
     @POST("/plan/delete")
     Observable<Response> deleteEvent(@Body DeleteEventApiRequest request);

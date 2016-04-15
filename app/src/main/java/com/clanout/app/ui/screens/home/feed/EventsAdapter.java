@@ -177,7 +177,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                 }
             }
 
-            // RSVP
+            // FRIEND_JOINED_EVENT
             if (event.getRsvp() == Event.RSVP.YES) {
                 mivRsvp.setVisibility(View.VISIBLE);
             }

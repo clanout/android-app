@@ -13,12 +13,14 @@ import com.clanout.app.config.AppConstants;
 import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.service.ChatService;
 import com.clanout.app.service.EventService;
+import com.clanout.app.service.FacebookService;
 import com.clanout.app.service.GcmService;
 import com.clanout.app.service.GoogleService;
 import com.clanout.app.service.LocationService;
 import com.clanout.app.service.NotificationService;
 import com.clanout.app.service.PhonebookService;
 import com.clanout.app.service.UserService;
+import com.clanout.app.service.WhatsappService;
 import com.facebook.FacebookSdk;
 import com.facebook.stetho.Stetho;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -114,6 +116,8 @@ public class ClanOut extends Application
         /* Gcm Service */
         GcmService gcmService = GcmService.getInstance();
 
+        FacebookService facebookService = FacebookService.getInstance();
+
         /* Location Service */
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         LocationService
@@ -125,7 +129,7 @@ public class ClanOut extends Application
         PhonebookService phonebookService = PhonebookService.getInstance();
 
         /* User Service */
-        UserService.init(locationService, phonebookService);
+        UserService.init(locationService, phonebookService, facebookService);
         UserService userService = UserService.getInstance();
 
         /* Notification Service */
@@ -141,8 +145,7 @@ public class ClanOut extends Application
             ChatService.init(userService, eventService);
         }
 
-        // TODO
         /* WhatsApp Service */
-//        WhatsappService_.init(userService);
+        WhatsappService.init(userService);
     }
 }

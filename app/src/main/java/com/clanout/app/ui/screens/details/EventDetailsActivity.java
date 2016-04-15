@@ -18,6 +18,7 @@ import com.clanout.app.ui.screens.chat.ChatActivity;
 import com.clanout.app.ui.screens.details.mvp.EventDetailsContainerPresenter;
 import com.clanout.app.ui.screens.details.mvp.EventDetailsContainerPresenterImpl;
 import com.clanout.app.ui.screens.details.mvp.EventDetailsContainerView;
+import com.clanout.app.ui.screens.edit.EditEventActivity;
 import com.clanout.app.ui.screens.home.HomeActivity;
 import com.clanout.app.ui.screens.invite.InviteActivity;
 
@@ -168,9 +169,8 @@ public class EventDetailsActivity extends BaseActivity implements
     @Override
     public void navigateToEditScreen(Event event)
     {
-        // TODO
-//        startActivity(EditEventActivity.callingIntent(this, event));
-//        finish();
+        startActivity(EditEventActivity.callingIntent(this, event));
+        finish();
     }
 
     @Override

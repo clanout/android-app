@@ -17,7 +17,9 @@ import com.clanout.app.config.GenericCacheKeys;
 import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.ui._core.BaseActivity;
 import com.clanout.app.ui.screens.chat.ChatActivity;
+import com.clanout.app.ui.screens.create.CreateActivity;
 import com.clanout.app.ui.screens.details.EventDetailsActivity;
+import com.clanout.app.ui.screens.friends.FriendsActivity;
 import com.clanout.app.ui.screens.home.HomeActivity;
 import com.google.gson.reflect.TypeToken;
 
@@ -94,9 +96,8 @@ public class NotificationActivity extends BaseActivity implements NotificationSc
     @Override
     public void navigateToHomeScreen()
     {
-        if (isTaskRoot()) {
-            startActivity(HomeActivity.callingIntent(this));
-        }
+
+        startActivity(HomeActivity.callingIntent(this));
         finish();
     }
 
@@ -118,25 +119,23 @@ public class NotificationActivity extends BaseActivity implements NotificationSc
         Set<String> newFriends = getNewFriends();
 
         if (newFriends == null) {
-            // TODO
-//            startActivity(FriendsActivity.callingIntent(this, new HashSet<String>()));
+
+            startActivity(FriendsActivity.callingIntent(this, new HashSet<String>()));
         }
         else if (newFriends.isEmpty()) {
-            // TODO
-//            startActivity(FriendsActivity.callingIntent(this, new HashSet<String>()));
+
+            startActivity(FriendsActivity.callingIntent(this, new HashSet<String>()));
         }
         else {
 
-            // TODO
-//            startActivity(FriendsActivity.callingIntent(this, newFriends));
+            startActivity(FriendsActivity.callingIntent(this, newFriends));
         }
     }
 
     @Override
     public void navigateToCreateScreen()
     {
-        // TODO
-//        startActivity(CreateActivity.callingIntent(this, null));
+        startActivity(CreateActivity.callingIntent(this, null));
     }
 
     private static Set<String> getNewFriends()

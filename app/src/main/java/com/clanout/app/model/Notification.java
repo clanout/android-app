@@ -20,6 +20,7 @@ public class Notification
     public static final int NEW_FRIEND_ADDED = 8;
     public static final int CHAT = 9;
     public static final int STATUS = 10;
+    public static final int PLAN_REMOVE_FROM_FEED = 11;
 
     private int id;
     private int type;

@@ -18,6 +18,7 @@ import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 
 import java.util.Collections;
 import java.util.List;
+
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -39,98 +40,100 @@ public class FriendBubbles
 
         UserService userService = UserService.getInstance();
         userService._fetchLocalFacebookFriendsCache()
-                   .subscribeOn(Schedulers.newThread())
-                   .observeOn(AndroidSchedulers.mainThread())
-                   .subscribe(new Subscriber<List<Friend>>()
-                   {
-                       @Override
-                       public void onCompleted()
-                       {
-                       }
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Friend>>()
+                {
+                    @Override
+                    public void onCompleted()
+                    {
+                    }
 
-                       @Override
-                       public void onError(Throwable e)
-                       {
+                    @Override
+                    public void onError(Throwable e)
+                    {
 
-                       }
+                    }
 
-                       @Override
-                       public void onNext(List<Friend> friends)
-                       {
-                           Collections.shuffle(friends);
+                    @Override
+                    public void onNext(List<Friend> friends)
+                    {
+                        if (friends.size() > 0) {
+                            Collections.shuffle(friends);
 
-                           int i = 0;
-                           for (Friend friend : friends)
-                           {
-                               if (i == 0)
-                               {
-                                   ivFriend1.setVisibility(View.VISIBLE);
+                            int i = 0;
+                            for (Friend friend : friends) {
+                                if (i == 0) {
+                                    ivFriend1.setVisibility(View.VISIBLE);
 
-                                   Picasso.with(context)
-                                          .load(UserService.getProfilePicUrl(friend.getId()))
-                                          .placeholder(MaterialDrawableBuilder
-                                                  .with(context)
-                                                  .setIcon(MaterialDrawableBuilder.IconValue.ACCOUNT_CIRCLE)
-                                                  .setColor(ContextCompat
-                                                          .getColor(context, R.color.light_grey))
-                                                  .setSizeDp(24)
-                                                  .build())
-                                          .transform(new CircleTransform())
-                                          .into(ivFriend1);
-                               }
-                               else if (i == 1)
-                               {
-                                   ivFriend2.setVisibility(View.VISIBLE);
+                                    Picasso.with(context)
+                                            .load(UserService.getProfilePicUrl(friend.getId()))
+                                            .placeholder(MaterialDrawableBuilder
+                                                    .with(context)
+                                                    .setIcon(MaterialDrawableBuilder.IconValue
+                                                            .ACCOUNT_CIRCLE)
+                                                    .setColor(ContextCompat
+                                                            .getColor(context, R.color
+                                                                    .light_grey))
+                                                    .setSizeDp(24)
+                                                    .build())
+                                            .transform(new CircleTransform())
+                                            .into(ivFriend1);
+                                }
+                                else if (i == 1) {
+                                    ivFriend2.setVisibility(View.VISIBLE);
 
-                                   Picasso.with(context)
-                                          .load(UserService.getProfilePicUrl(friend.getId()))
-                                          .placeholder(MaterialDrawableBuilder
-                                                  .with(context)
-                                                  .setIcon(MaterialDrawableBuilder.IconValue.ACCOUNT_CIRCLE)
-                                                  .setColor(ContextCompat
-                                                          .getColor(context, R.color.light_grey))
-                                                  .setSizeDp(24)
-                                                  .build())
-                                          .transform(new CircleTransform())
-                                          .into(ivFriend2);
-                               }
-                               else if (i == 2)
-                               {
-                                   ivFriend3.setVisibility(View.VISIBLE);
+                                    Picasso.with(context)
+                                            .load(UserService.getProfilePicUrl(friend.getId()))
+                                            .placeholder(MaterialDrawableBuilder
+                                                    .with(context)
+                                                    .setIcon(MaterialDrawableBuilder.IconValue
+                                                            .ACCOUNT_CIRCLE)
+                                                    .setColor(ContextCompat
+                                                            .getColor(context, R.color
+                                                                    .light_grey))
+                                                    .setSizeDp(24)
+                                                    .build())
+                                            .transform(new CircleTransform())
+                                            .into(ivFriend2);
+                                }
+                                else if (i == 2) {
+                                    ivFriend3.setVisibility(View.VISIBLE);
 
-                                   Picasso.with(context)
-                                          .load(UserService.getProfilePicUrl(friend.getId()))
-                                          .placeholder(MaterialDrawableBuilder
-                                                  .with(context)
-                                                  .setIcon(MaterialDrawableBuilder.IconValue.ACCOUNT_CIRCLE)
-                                                  .setColor(ContextCompat
-                                                          .getColor(context, R.color.light_grey))
-                                                  .setSizeDp(24)
-                                                  .build())
-                                          .transform(new CircleTransform())
-                                          .into(ivFriend3);
+                                    Picasso.with(context)
+                                            .load(UserService.getProfilePicUrl(friend.getId()))
+                                            .placeholder(MaterialDrawableBuilder
+                                                    .with(context)
+                                                    .setIcon(MaterialDrawableBuilder.IconValue
+                                                            .ACCOUNT_CIRCLE)
+                                                    .setColor(ContextCompat
+                                                            .getColor(context, R.color.light_grey))
+                                                    .setSizeDp(24)
+                                                    .build())
+                                            .transform(new CircleTransform())
+                                            .into(ivFriend3);
 
-                                   break;
-                               }
+                                    break;
+                                }
 
-                               i++;
-                           }
+                                i++;
+                            }
 
-                           if (i > 0)
-                           {
-                               String zone = LocationService.getInstance().getCurrentLocation()
-                                                             .getZone();
-                               tvTitle.setText(String.format(title, zone));
-                               friendBubblesContainer.setVisibility(View.VISIBLE);
+                            if (i > 0) {
+                                String locationName = LocationService.getInstance()
+                                        .getCurrentLocation()
+                                        .getName();
+                                tvTitle.setText(String.format(title, locationName));
+                                friendBubblesContainer.setVisibility(View.VISIBLE);
 
-                               if (friends.size() > 3)
-                               {
-                                   int other = friends.size() - 3;
-                                   tvOtherFriends.setText("+" + other + " other friends");
-                                   tvOtherFriends.setVisibility(View.VISIBLE);
-                               }
-                           }
-                       }
-                   });
+                                if (friends.size() > 3) {
+                                    int other = friends.size() - 3;
+                                    tvOtherFriends.setText("+" + other + " other friends");
+                                    tvOtherFriends.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+                    }
+                });
     }
 }

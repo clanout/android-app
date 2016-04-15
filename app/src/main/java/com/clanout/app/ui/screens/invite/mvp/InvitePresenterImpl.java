@@ -1,5 +1,6 @@
 package com.clanout.app.ui.screens.invite.mvp;
 
+import android.util.Log;
 import android.util.Pair;
 
 import com.clanout.app.common.analytics.AnalyticsHelper;
@@ -146,6 +147,8 @@ public class InvitePresenterImpl implements InvitePresenter
     @Override
     public void sendInvitations()
     {
+        Log.d("APP", "send invitaions");
+
         if (view != null)
         {
             view.navigateToDetailsScreen();
@@ -157,6 +160,10 @@ public class InvitePresenterImpl implements InvitePresenter
             AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,
                     GoogleAnalyticsConstants.ACTION_PEOPLE_INVITED, GoogleAnalyticsConstants
                             .LABEL_FB_FRIENDS, invitedFriends.size());
+
+            AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,
+                    GoogleAnalyticsConstants.ACTION_PEOPLE_INVITED, GoogleAnalyticsConstants
+                            .LABEL_PB_CONTACTS, invitedContacts.size());
             /* Analytics */
 
             eventService._inviteFriends(eventId, invitedFriends, invitedContacts);
@@ -190,7 +197,7 @@ public class InvitePresenterImpl implements InvitePresenter
                     {
                         List<FriendInviteWrapper> friends = inviteList.first;
                         List<PhonebookContactInviteWrapper> phonebookContacts = inviteList.second;
-                        view.displayInviteList(locationService.getCurrentLocation().getZone(),
+                        view.displayInviteList(locationService.getCurrentLocation().getName(),
                                 friends, phonebookContacts);
                         view.hideRefreshing();
 
@@ -233,7 +240,7 @@ public class InvitePresenterImpl implements InvitePresenter
                     {
                         List<FriendInviteWrapper> friends = inviteList.first;
                         List<PhonebookContactInviteWrapper> phonebookContacts = inviteList.second;
-                        view.displayInviteList(locationService.getCurrentLocation().getZone(),
+                        view.displayInviteList(locationService.getCurrentLocation().getName(),
                                 friends, phonebookContacts);
                     }
                 });

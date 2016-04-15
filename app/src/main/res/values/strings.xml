@@ -6,7 +6,7 @@
 
     <!-- Facebook SDK -->
     <string name="facebook_app_id">536677206504462</string>
-    <string name="places_app_id">AIzaSyDBX362r-1isovteBR3tGN3QQtDcQn-jyg</string>
+    <string name="places_app_id">AIzaSyCoBgOqvl0FoFiAboM2fzYPtIWxUN5D2Po</string>
 
     <!-- Event Type -->
     <string name="event_type_open">Open</string>
@@ -14,7 +14,7 @@
     <string name="event_type_open_description">All your nearby friends can see this plan. If any of your friends joins this plan, their friends can also see it. You can still send personal invites.</string>
     <string name="event_type_secret_description">Only the friends, you have invited, can see this plan. Once they join, they can also invite their friends.</string>
 
-    <!-- RSVP -->
+    <!-- FRIEND_JOINED_EVENT -->
     <string name="rsvp_yes">YAY</string>
     <string name="rsvp_no">NAY</string>
 
@@ -134,7 +134,7 @@
     <string name="label_status_last_moment">Last moment status</string>
 
     <!-- Reminder -->
-    <string name="reminder_notification_message">About to start. Update your last moment status!</string>
+    <string name="reminder_notification_message">Plan about to start. Update your last moment status!</string>
 
     <!-- Permission Defaults -->
     <string name="permission_request_again">Request Again</string>

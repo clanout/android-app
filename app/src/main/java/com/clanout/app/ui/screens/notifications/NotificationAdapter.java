@@ -185,7 +185,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     break;
 
                 case NotificationWrapper.NotificationItem.Type.INVITATION:
-                    tvMessage.setText(item.getMessage().substring(13, item.getMessage().length() - 1));
+                    tvMessage.setText(item.getMessage().substring(9, item.getMessage().length() - 1));
                     break;
 
                 case NotificationWrapper.NotificationItem.Type.EVENT_UPDATED:

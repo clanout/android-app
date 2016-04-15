@@ -51,6 +51,7 @@ public class GoogleAnalyticsConstants
     public static final String CATEGORY_PENDING_INVITES = "pending_invites";
     public static final String CATEGORY_MANAGE_FRIENDS = "manage_friends";
     public static final String CATEGORY_CHAT = "chat";
+    public static final String CATEGORY_FEEDBACK = "feedback";
 
 
 
@@ -112,6 +113,9 @@ public class GoogleAnalyticsConstants
     public static final String ACTION_PLAY_SERVICES_ERROR = "play_services_error";
     public static final String ACTION_LAUNCH_FROM_NOTIF = "laucnhed_from_notification";
     public static final String ACTION_APP_LAUNCH = "app_launch";
+    public static final String ACTION_BUG = "bug";
+    public static final String ACTION_NEW_FEATURE = "new_feature";
+    public static final String ACTION_OTHERS = "others";
 
 
 

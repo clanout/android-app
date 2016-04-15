@@ -66,7 +66,7 @@ public class NotificationFactory
     {
         Set<String> notGoingEvents = getNotGoingEvents();
 
-        if (args.get("event_id") == null) {
+        if (args.get("plan_id") == null) {
 
             return true;
         }
@@ -84,7 +84,7 @@ public class NotificationFactory
                 }
                 else {
 
-                    return !notGoingEvents.contains(args.get("event_id"));
+                    return !notGoingEvents.contains(args.get("plan_id"));
                 }
             }
         }
@@ -128,9 +128,49 @@ public class NotificationFactory
             case Notification.EVENT_INVITATION:
                 return buildEventInvitationNotification(args);
 
+            case Notification.PLAN_REMOVE_FROM_FEED:
+                return buildPlanRemoveFromFeed(args);
+
             default:
                 throw new IllegalArgumentException("Notification Type Invalid");
         }
+    }
+
+    private static Observable<Notification> buildPlanRemoveFromFeed(final Map<String, String> args)
+    {
+        return notificationCache.getAllForEvent(args.get("plan_id"))
+                .flatMap(new Func1<List<Notification>, Observable<Boolean>>()
+                {
+                    @Override
+                    public Observable<Boolean> call(final List<Notification> notifications)
+                    {
+                        List<Integer> notificationIds = getNotificationIdsList(notifications);
+
+                        return notificationCache.clear(notificationIds);
+                    }
+                })
+                .flatMap(new Func1<Boolean, Observable<Notification>>()
+                {
+                    @Override
+                    public Observable<Notification> call(Boolean isDeleteSuccessful)
+                    {
+                        String message = NotificationHelper.getMessage(Notification
+                                .PLAN_REMOVE_FROM_FEED, args);
+
+                        Notification notification = getNotificationObjectHavingEventInformation
+                                (Notification.PLAN_REMOVE_FROM_FEED, args, message);
+                        return Observable.just(notification);
+                    }
+                })
+                .onErrorReturn(new Func1<Throwable, Notification>()
+                {
+                    @Override
+                    public Notification call(Throwable throwable)
+                    {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.newThread());
     }
 
     private static Observable<Notification> buildEventInvitationNotification(final Map<String,
@@ -138,9 +178,9 @@ public class NotificationFactory
                                                                                      args)
     {
         Observable<List<Notification>> getAllInvitationsForEvent = notificationCache.getAll
-                (Notification.EVENT_INVITATION, args.get("event_id"));
+                (Notification.EVENT_INVITATION, args.get("plan_id"));
         Observable<List<Notification>> getCreateNotificationsForEvent = notificationCache.getAll
-                (Notification.EVENT_CREATED, args.get("event_id"));
+                (Notification.EVENT_CREATED, args.get("plan_id"));
 
         return Observable
                 .zip(getAllInvitationsForEvent,
@@ -216,7 +256,7 @@ public class NotificationFactory
     private static Observable<Notification> buildEventRemovedNotification(final Map<String,
             String> args)
     {
-        return notificationCache.getAllForEvent(args.get("event_id"))
+        return notificationCache.getAllForEvent(args.get("plan_id"))
                 .flatMap(new Func1<List<Notification>, Observable<Boolean>>()
                 {
                     @Override
@@ -253,7 +293,7 @@ public class NotificationFactory
 
     private static Observable<Notification> buildStatusNotification(final Map<String, String> args)
     {
-        return notificationCache.getAll(Notification.STATUS, args.get("event_id"))
+        return notificationCache.getAll(Notification.STATUS, args.get("plan_id"))
                 .flatMap(new Func1<List<Notification>, Observable<Boolean>>()
                 {
                     @Override
@@ -304,7 +344,7 @@ public class NotificationFactory
             String> args)
 
     {
-        return notificationCache.getAll(Notification.RSVP, args.get("event_id"))
+        return notificationCache.getAll(Notification.RSVP, args.get("plan_id"))
                 .flatMap(new Func1<List<Notification>, Observable<Boolean>>()
                 {
                     @Override
@@ -343,7 +383,7 @@ public class NotificationFactory
             String> args)
 
     {
-        return notificationCache.getAll(Notification.EVENT_UPDATED, args.get("event_id"))
+        return notificationCache.getAll(Notification.EVENT_UPDATED, args.get("plan_id"))
                 .flatMap(new Func1<List<Notification>, Observable<Boolean>>()
                 {
                     @Override
@@ -469,7 +509,7 @@ public class NotificationFactory
     private static Observable<Notification> buildChatNotification(final Map<String, String> args)
     {
         return notificationCache
-                .getAll(Notification.CHAT, args.get("event_id"))
+                .getAll(Notification.CHAT, args.get("plan_id"))
                 .flatMap(new Func1<List<Notification>, Observable<Boolean>>()
                 {
                     @Override
@@ -495,9 +535,9 @@ public class NotificationFactory
                         Notification notification = new Notification.Builder(Integer.parseInt
                                 (args.get("notification_id")))
                                 .type(Notification.CHAT)
-                                .title(args.get("event_name"))
-                                .eventId(args.get("event_id"))
-                                .eventName(args.get("event_name"))
+                                .title(args.get("plan_title"))
+                                .eventId(args.get("plan_id"))
+                                .eventName(args.get("plan_title"))
                                 .userId(args.get("user_id"))
                                 .userName("")
                                 .timestamp(DateTime.now())
@@ -527,9 +567,9 @@ public class NotificationFactory
     {
         return new Notification.Builder(Integer.parseInt(args.get("notification_id")))
                 .type(typeCode)
-                .title(args.get("event_name"))
-                .eventId(args.get("event_id"))
-                .eventName(args.get("event_name"))
+                .title(args.get("plan_title"))
+                .eventId(args.get("plan_id"))
+                .eventName(args.get("plan_title"))
                 .userId(args.get("user_id"))
                 .userName("user_name")
                 .timestamp(DateTime.now())
@@ -573,7 +613,7 @@ public class NotificationFactory
             message = String.format(NotificationMessages.EVENT_INVITATION,
                     args.get
                             ("user_name") + " & " + previousInviteeCount + " others",
-                    args.get("event_name"));
+                    args.get("plan_name"));
 
         }
 

@@ -97,7 +97,7 @@ public class InviteFragment extends BaseFragment implements
     boolean isAddPhoneVisible;
 
 //    TextWatcher search;
-    String locationZone;
+    String locationName;
     List<FriendInviteWrapper> friends;
     List<PhonebookContactInviteWrapper> contacts;
 
@@ -413,13 +413,13 @@ public class InviteFragment extends BaseFragment implements
     }
 
     @Override
-    public void displayInviteList(String locationZone, List<FriendInviteWrapper> friends, List<PhonebookContactInviteWrapper> phonebookContacts)
+    public void displayInviteList(String locationName, List<FriendInviteWrapper> friends, List<PhonebookContactInviteWrapper> phonebookContacts)
     {
-        this.locationZone = locationZone;
+        this.locationName = locationName;
         this.friends = friends;
         this.contacts = phonebookContacts;
 
-        refreshRecyclerView(locationZone, friends, phonebookContacts);
+        refreshRecyclerView(locationName, friends, phonebookContacts);
     }
 
     @Override
@@ -477,10 +477,10 @@ public class InviteFragment extends BaseFragment implements
                 .setAdapter(new InviteAdapter(getActivity(), this, null, new ArrayList<FriendInviteWrapper>(), new ArrayList<PhonebookContactInviteWrapper>()));
     }
 
-    private void refreshRecyclerView(String locationZone, List<FriendInviteWrapper> friends, List<PhonebookContactInviteWrapper> contacts)
+    private void refreshRecyclerView(String locationName, List<FriendInviteWrapper> friends, List<PhonebookContactInviteWrapper> contacts)
     {
         rvFriends
-                .setAdapter(new InviteAdapter(getActivity(), this, locationZone, friends, contacts));
+                .setAdapter(new InviteAdapter(getActivity(), this, locationName, friends, contacts));
 
         rvFriends.setVisibility(View.VISIBLE);
         loading.setVisibility(View.GONE);
@@ -538,12 +538,12 @@ public class InviteFragment extends BaseFragment implements
             }
             else
             {
-                refreshRecyclerView(locationZone, visibleFriends, visibleContacts);
+                refreshRecyclerView(locationName, visibleFriends, visibleContacts);
             }
         }
         else if (newText.length() == 0)
         {
-            refreshRecyclerView(locationZone, friends, contacts);
+            refreshRecyclerView(locationName, friends, contacts);
         }
         return false;
     }

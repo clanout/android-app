@@ -22,6 +22,8 @@ import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.EventCategory;
 import com.clanout.app.service.NotificationService;
 import com.clanout.app.ui._core.BaseActivity;
+import com.clanout.app.ui.screens.accounts.AccountActivity;
+import com.clanout.app.ui.screens.create.CreateActivity;
 import com.clanout.app.ui.screens.details.EventDetailsActivity;
 import com.clanout.app.ui.screens.home.create_suggestion.CreateSuggestionFragment;
 import com.clanout.app.ui.screens.home.feed.EventFeedFragment;
@@ -193,8 +195,7 @@ public class HomeActivity extends BaseActivity implements HomeScreen
     @Override
     public void navigateToCreateDetailsScreen(EventCategory category)
     {
-        // TODO
-//        startActivity(CreateActivity.callingIntent(this, category));
+        startActivity(CreateActivity.callingIntent(this, category));
     }
 
     @Override
@@ -206,8 +207,7 @@ public class HomeActivity extends BaseActivity implements HomeScreen
     /* Helper Methods */
     private void navigateToAccountsScreen()
     {
-        // TODO
-//        startActivity(AccountActivity.callingIntent(this));
+        startActivity(AccountActivity.callingIntent(this));
     }
 
     private void navigateToNotificationScreen()

@@ -84,6 +84,30 @@ public class EventDetailsContainerPresenterImpl implements EventDetailsContainer
     public void setActivePosition(int activePosition)
     {
         this.activePosition = activePosition;
+
+        eventService.markEventAsSeen(events.get(activePosition).getId())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Boolean>()
+                {
+                    @Override
+                    public void onCompleted()
+                    {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e)
+                    {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean)
+                    {
+
+                    }
+                });
     }
 
     private Observable<List<Event>> getEventsObservable()

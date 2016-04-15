@@ -43,6 +43,11 @@ public class Friend implements Model
         this.isNew = isNew;
     }
 
+    public void setIsBlocked(boolean isBlocked)
+    {
+        this.isBlocked = isBlocked;
+    }
+
     @Override
     public int hashCode()
     {

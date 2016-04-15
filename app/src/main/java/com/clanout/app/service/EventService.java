@@ -1,5 +1,6 @@
 package com.clanout.app.service;
 
+import android.util.Log;
 import android.util.Pair;
 
 import com.clanout.app.api.core.ApiManager;
@@ -7,20 +8,16 @@ import com.clanout.app.api.core.GsonProvider;
 import com.clanout.app.api.event.request.CreateEventApiRequest;
 import com.clanout.app.api.event.request.DeleteEventApiRequest;
 import com.clanout.app.api.event.request.EditEventApiRequest;
-import com.clanout.app.api.event.request.EventDetailsApiRequest;
 import com.clanout.app.api.event.request.EventsApiRequest;
 import com.clanout.app.api.event.request.FetchEventApiRequest;
 import com.clanout.app.api.event.request.FetchPendingInvitesApiRequest;
-import com.clanout.app.api.event.request.FinaliseEventApiRequest;
 import com.clanout.app.api.event.request.GetCreateEventSuggestionsApiRequest;
-import com.clanout.app.api.event.request.InviteThroughSMSApiRequest;
 import com.clanout.app.api.event.request.InviteUsersApiRequest;
 import com.clanout.app.api.event.request.RsvpUpdateApiRequest;
 import com.clanout.app.api.event.request.SendChatNotificationApiRequest;
 import com.clanout.app.api.event.request.SendInvitaionResponseApiRequest;
 import com.clanout.app.api.event.request.UpdateStatusApiRequest;
 import com.clanout.app.api.event.response.CreateEventApiResponse;
-import com.clanout.app.api.event.response.EditEventApiResponse;
 import com.clanout.app.api.event.response.EventsApiResponse;
 import com.clanout.app.api.event.response.FetchEventApiResponse;
 import com.clanout.app.api.event.response.FetchPendingInvitesApiResponse;
@@ -44,6 +41,8 @@ import com.google.gson.reflect.TypeToken;
 import org.joda.time.DateTime;
 
 import java.lang.reflect.Type;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -225,7 +224,8 @@ public class EventService
     /* Invite */
     public void _inviteFriends(String eventId, List<String> friendIds, List<String> mobileNumbers)
     {
-        InviteUsersApiRequest request = new InviteUsersApiRequest(eventId, friendIds, mobileNumbers);
+        InviteUsersApiRequest request = new InviteUsersApiRequest(eventId, friendIds,
+                mobileNumbers);
 
         ApiManager.getEventApi().inviteFriends(request)
                 .subscribeOn(Schedulers.newThread())
@@ -250,8 +250,6 @@ public class EventService
                     @Override
                     public void onNext(Response response)
                     {
-                        if (response.getStatus() == 200) {
-                        }
                     }
                 });
     }
@@ -259,77 +257,69 @@ public class EventService
 
     /* Edit */
 
-    // TODO
-//    public Observable<Integer> _editEvent(final String eventId, DateTime startTime, DateTime
-//            endTime, Location placeLocation, String description)
-//    {
-//        if (startTime == null && placeLocation.getZone() == null && description == null) {
-//            return Observable.just(0);
-//        }
-//
-//        final EditEventApiRequest request = new EditEventApiRequest(placeLocation
-//                .getLongitude(), description, endTime, eventId, placeLocation
-//                .getLatitude(), placeLocation.getName(), placeLocation
-//                .getZone(), startTime);
-//
-//        return ApiManager.getEventApi().editEvent(request)
-//                .map(new Func1<EditEventApiResponse, Event>()
-//                {
-//                    @Override
-//                    public Event call(EditEventApiResponse response)
-//                    {
-//                        return response.getEvent();
-//                    }
-//                })
-//                .doOnNext(new Action1<Event>()
-//                {
-//                    @Override
-//                    public void call(Event event)
-//                    {
-//                        if (event != null) {
-//                            eventCache.save(event);
-//                        }
-//                    }
-//                })
-//                .map(new Func1<Event, Integer>()
-//                {
-//                    @Override
-//                    public Integer call(Event event)
-//                    {
-//                        if (event != null) {
-//                            return 0;
-//                        }
-//                        else {
-//                            return -1;
-//                        }
-//                    }
-//                })
-//                .onErrorReturn(new Func1<Throwable, Integer>()
-//                {
-//                    @Override
-//                    public Integer call(Throwable throwable)
-//                    {
-//                        try {
-//                            RetrofitError error = (RetrofitError) throwable;
-//                            if (error.getResponse().getStatus() == 400) {
-//                                return -2;
-//                            }
-//                            else {
-//                                return -1;
-//                            }
-//                        }
-//                        catch (Exception e) {
-//                                   /* Analytics */
-//                            AnalyticsHelper
-//                                    .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_Q, false);
-//                                   /* Analytics */
-//
-//                            return -1;
-//                        }
-//                    }
-//                })
-//                .subscribeOn(Schedulers.newThread());
-//    }
+    public Observable<Boolean> _editEvent(final Event originalEvent, final DateTime startTime,
+                                          final DateTime
+                                                  endTime, Location placeLocation, final String
+                                                  description)
+    {
+        if (placeLocation == null) {
+            placeLocation = new Location();
+        }
+        final Location finalPlaceLocation = placeLocation;
+
+        final EditEventApiRequest request = new EditEventApiRequest(placeLocation.getLongitude(),
+                description, endTime, originalEvent.getId(), placeLocation.getLatitude(),
+                placeLocation.getName
+                        (), startTime);
+
+        return ApiManager.getEventApi().editEvent(request)
+                .map(new Func1<Response, Boolean>()
+                {
+                    @Override
+                    public Boolean call(Response response)
+                    {
+                        return true;
+                    }
+                })
+                .onErrorReturn(new Func1<Throwable, Boolean>()
+                {
+                    @Override
+                    public Boolean call(Throwable throwable)
+                    {
+                        /* Analytics */
+                        AnalyticsHelper
+                                .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_Q, false);
+                                   /* Analytics */
+                        return false;
+                    }
+                })
+                .doOnNext(new Action1<Boolean>()
+                {
+                    @Override
+                    public void call(Boolean isSuccess)
+                    {
+                        if (isSuccess) {
+
+                            if (startTime != null) {
+                                originalEvent.setStartTime(startTime);
+                                originalEvent.setEndTime(endTime);
+                            }
+
+                            if (finalPlaceLocation.getName() != null) {
+                                originalEvent.setLocation(finalPlaceLocation);
+                            }
+
+                            if (description != null) {
+                                originalEvent.setDescription(description);
+                            }
+
+                            eventCache.save(originalEvent);
+                        }
+
+                    }
+                })
+                .subscribeOn(Schedulers.newThread());
+    }
 
     public Observable<Boolean> _deleteEvent(final String eventId)
     {
@@ -536,6 +526,7 @@ public class EventService
                     @Override
                     public void call(Boolean isSuccess)
                     {
+                        Log.d("APP", "updateRsvp ----- " + isSuccess);
                         if (isSuccess) {
                             eventCache.delete(updatedEvent.getId());
                             eventCache.save(updatedEvent);
@@ -588,9 +579,16 @@ public class EventService
                                      String description, Location placeLocation, DateTime
                                              startTime, DateTime endTime)
     {
+
+        String zone = locationService.getCurrentLocation().getZone();
+
+        if (placeLocation == null) {
+            placeLocation = new Location();
+        }
+
         CreateEventApiRequest request = new CreateEventApiRequest(title, eventType,
                 eventCategory, description, placeLocation
-                .getName(), placeLocation.getZone(), placeLocation.getLatitude(), placeLocation
+                .getName(), zone, placeLocation.getLatitude(), placeLocation
                 .getLongitude(), startTime, endTime);
 
         return ApiManager.getEventApi()
@@ -722,5 +720,29 @@ public class EventService
                     .unsubscribeTopic(genericCache.get(GenericCacheKeys.GCM_TOKEN), event
                             .getId());
         }
+    }
+
+    public Observable<Boolean> markEventAsSeen(String eventId)
+    {
+        RsvpUpdateApiRequest rsvpUpdateApiRequest = new RsvpUpdateApiRequest(eventId, Event.RSVP
+                .SEEN);
+
+        return ApiManager.getEventApi().updateRsvp(rsvpUpdateApiRequest)
+               .map(new Func1<Response, Boolean>()
+               {
+                   @Override
+                   public Boolean call(Response response)
+                   {
+                       if(response.getStatus() == 200)
+                       {
+                           return true;
+                       }else{
+
+                           return false;
+                       }
+                   }
+               })
+                .subscribeOn(Schedulers.newThread());
+
     }
 }

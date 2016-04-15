@@ -1,5 +1,6 @@
 package com.clanout.app.service;
 
+import android.util.Log;
 import android.util.Pair;
 
 import com.clanout.app.api.core.ApiManager;
@@ -26,6 +27,8 @@ import com.clanout.app.model.util.FriendsComparator;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -45,9 +48,9 @@ public class UserService
 {
     private static UserService instance;
 
-    public static void init(LocationService locationService, PhonebookService phonebookService)
+    public static void init(LocationService locationService, PhonebookService phonebookService, FacebookService facebookService)
     {
-        instance = new UserService(locationService, phonebookService);
+        instance = new UserService(locationService, phonebookService, facebookService);
     }
 
     public static UserService getInstance()
@@ -68,13 +71,15 @@ public class UserService
     private GenericCache genericCache;
     private LocationService locationService;
     private PhonebookService phonebookService;
+    private FacebookService facebookService;
 
     private User activeUser;
 
-    private UserService(LocationService locationService, PhonebookService phonebookService)
+    private UserService(LocationService locationService, PhonebookService phonebookService, FacebookService facebookService)
     {
         this.locationService = locationService;
         this.phonebookService = phonebookService;
+        this.facebookService = facebookService;
 
         userCache = CacheManager.getUserCache();
         genericCache = CacheManager.getGenericCache();
@@ -320,11 +325,41 @@ public class UserService
                     @Override
                     public Observable<List<Friend>> call(List<String> allContacts)
                     {
+                        List<String> hashedMobileNumbers = new ArrayList<>();
+
+                        try {
+
+                            Log.d("APP", "inside try");
+
+                            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+
+                            for(String mobileNumber : allContacts)
+                            {
+                                Log.d("APP", "mobile number --- " + mobileNumber);
+
+                                messageDigest.update(mobileNumber.getBytes());
+                                byte messageDigestBytes[] = messageDigest.digest();
+
+                                StringBuffer hashedMobileNumber = new StringBuffer();
+                                for (int i=0; i<messageDigestBytes.length; i++)
+                                    hashedMobileNumber.append(Integer.toHexString(0xFF & messageDigestBytes[i]));
+
+                                hashedMobileNumbers.add(hashedMobileNumber.toString());
+
+                                Log.d("APP", hashedMobileNumber.toString());
+                            }
+
+                        }
+                        catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
+
+
                         GetRegisteredContactsApiRequest request = new
-                                GetRegisteredContactsApiRequest(allContacts, null);
+                                GetRegisteredContactsApiRequest(hashedMobileNumbers, null);
                         if (!fetchAll) {
                             String zone = locationService.getCurrentLocation().getZone();
-                            request = new GetRegisteredContactsApiRequest(allContacts, zone);
+                            request = new GetRegisteredContactsApiRequest(hashedMobileNumbers, zone);
                         }
 
                         return ApiManager.getUserApi()
@@ -441,32 +476,21 @@ public class UserService
     /* Feedback */
     public void shareFeedback(int type, String comment)
     {
+        switch (type) {
+            case 0:
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_FEEDBACK,
+                        GoogleAnalyticsConstants.ACTION_BUG, comment);
+                break;
+            case 1:
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_FEEDBACK,
+                        GoogleAnalyticsConstants.ACTION_NEW_FEATURE, comment);
+                break;
+            case 2:
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_FEEDBACK,
+                        GoogleAnalyticsConstants.ACTION_OTHERS, comment);
+                break;
+        }
 
-        // TODO
-//        ShareFeedbackApiRequest request = new ShareFeedbackApiRequest(comment, type);
-//
-//        ApiManager.getUserApi().shareFeedback(request)
-//                .subscribeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<Response>()
-//                {
-//                    @Override
-//                    public void onCompleted()
-//                    {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e)
-//                    {
-//                    }
-//
-//                    @Override
-//                    public void onNext(Response response)
-//                    {
-//
-//                    }
-//                });
     }
 
     /* New User */
@@ -489,5 +513,10 @@ public class UserService
     {
         return AppConstants.BASE_URL_SERVER + "images/profile-pic/" + id + "?width=" + Dimensions
                 .PROFILE_PIC_DEFAULT + "&height=" + Dimensions.PROFILE_PIC_DEFAULT;
+    }
+
+    public Observable<String> getCoverPicUrl()
+    {
+        return facebookService.getCoverPicUrl();
     }
 }

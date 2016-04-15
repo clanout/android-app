@@ -63,6 +63,8 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
         processIsLastMinute();
 
         subscriptions = new CompositeSubscription();
+
+        Log.d("APP", "event ---- " + GsonProvider.getGson().toJson(event));
     }
 
     @Override

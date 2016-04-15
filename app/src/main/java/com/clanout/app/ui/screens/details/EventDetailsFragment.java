@@ -53,20 +53,14 @@ public class EventDetailsFragment extends BaseFragment implements
         EventDetailsView,
         EventDetailsAdapter.EventDetailsListener
 {
-    private static final String ARG_EVENT = "arg_event";
-
     public static EventDetailsFragment newInstance(Event event)
     {
-        if (event == null)
-        {
+        if (event == null) {
             throw new IllegalStateException("event null");
         }
 
         EventDetailsFragment fragment = new EventDetailsFragment();
-
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_EVENT, event);
-        fragment.setArguments(args);
+        fragment.setEvent(event);
 
         return fragment;
     }
@@ -106,6 +100,8 @@ public class EventDetailsFragment extends BaseFragment implements
 
     EventDetailsAdapter adapter;
 
+    private Event event;
+
     /* Lifecycle Methods */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -118,7 +114,12 @@ public class EventDetailsFragment extends BaseFragment implements
         EventService eventService = EventService.getInstance();
         UserService userService = UserService.getInstance();
         NotificationService notificationService = NotificationService.getInstance();
-        Event event = (Event) getArguments().getSerializable(ARG_EVENT);
+
+        if(event == null)
+        {
+            throw new IllegalStateException("Event is null");
+        }
+
         presenter = new EventDetailsPresenterImpl(eventService, userService, notificationService,
                 CacheManager.getGenericCache(), event);
     }
@@ -216,11 +217,12 @@ public class EventDetailsFragment extends BaseFragment implements
             public boolean onMenuItemClick(MenuItem item)
             {
                 /* Analytics */
-                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_DETAILS, GoogleAnalyticsConstants.ACTION_GO_TO, GoogleAnalyticsConstants.LABEL_DELETE);
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_DETAILS,
+                        GoogleAnalyticsConstants.ACTION_GO_TO, GoogleAnalyticsConstants
+                                .LABEL_DELETE);
                 /* Analytics */
 
-                if (presenter != null)
-                {
+                if (presenter != null) {
                     displayDeleteDialog();
                 }
 
@@ -234,8 +236,9 @@ public class EventDetailsFragment extends BaseFragment implements
     public void onInviteClicked()
     {
         /* Analytics */
-        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,GoogleAnalyticsConstants.ACTION_OPEN,GoogleAnalyticsConstants.LABEL_FROM_DETAILS);
-        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_DETAILS,GoogleAnalyticsConstants.ACTION_GO_TO,GoogleAnalyticsConstants.LABEL_INVITE);
+        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,
+                GoogleAnalyticsConstants.ACTION_OPEN, GoogleAnalyticsConstants.LABEL_FROM_DETAILS);
+        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_DETAILS, GoogleAnalyticsConstants.ACTION_GO_TO, GoogleAnalyticsConstants.LABEL_INVITE);
         /* Analytics */
 
         if (presenter != null)
@@ -625,5 +628,10 @@ public class EventDetailsFragment extends BaseFragment implements
         /* Analytics */
         AnalyticsHelper.sendScreenNames(GoogleAnalyticsConstants.SCREEN_EDIT_DISMISS_DIALOG);
         /* Analytics */
+    }
+
+    public void setEvent(Event event)
+    {
+        this.event = event;
     }
 }

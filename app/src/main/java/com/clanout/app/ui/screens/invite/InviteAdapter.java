@@ -18,7 +18,6 @@ import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.Dimensions;
 import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.root.ClanOut;
-import com.clanout.app.service.FacebookService;
 import com.clanout.app.service.UserService;
 import com.clanout.app.ui.screens.invite.mvp.FriendInviteWrapper;
 import com.clanout.app.ui.screens.invite.mvp.PhonebookContactInviteWrapper;
@@ -41,20 +40,20 @@ public class InviteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private Context context;
     private InviteListener inviteListener;
-    private String locationZone;
+    private String locationName;
     private List<FriendInviteWrapper> friends;
     private List<PhonebookContactInviteWrapper> contacts;
     private int size;
 
     private Drawable personDrawable;
 
-    public InviteAdapter(Context context, InviteListener inviteListener, String locationZone,
+    public InviteAdapter(Context context, InviteListener inviteListener, String locationName,
                          List<FriendInviteWrapper> friends, List<PhonebookContactInviteWrapper>
                                  contacts)
     {
         this.context = context;
         this.inviteListener = inviteListener;
-        this.locationZone = locationZone;
+        this.locationName = locationName;
         this.friends = friends;
         this.contacts = contacts;
 
@@ -189,11 +188,11 @@ public class InviteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public void render()
         {
-            if (TextUtils.isEmpty(locationZone)) {
+            if (TextUtils.isEmpty(locationName)) {
                 tvTitle.setText("Friends");
             }
             else {
-                tvTitle.setText("Friends in " + locationZone);
+                tvTitle.setText("Friends in " + locationName);
             }
         }
     }

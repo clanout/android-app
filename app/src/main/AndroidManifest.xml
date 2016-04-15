@@ -31,6 +31,11 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 
+        <!-- Google Places -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/places_app_id"/>
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges=
@@ -92,6 +97,31 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
         </activity>
+
+        <activity
+            android:name=".app.ui.screens.create.CreateActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".app.ui.screens.edit.EditEventActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".app.ui.screens.accounts.AccountActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".app.ui.screens.friends.FriendsActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
 
         <!-- Services -->
         <service
