@@ -137,6 +137,7 @@ public class LauncherActivity extends BaseActivity implements
     CallbackManager facebookCallbackManager;
 
     GoogleService googleService;
+    NotificationService notificationService;
 
     boolean introScrolled;
 
@@ -186,6 +187,9 @@ public class LauncherActivity extends BaseActivity implements
         /* Event Service */
         EventService eventService = EventService.getInstance();
 
+        /* Notification Service */
+        notificationService = NotificationService.getInstance();
+
         /* Presenters */
         facebookLoginPresenter = new FacebookLoginPresenterImpl(authService, facebookService);
         bootstrapPresenter = new BootstrapPresenterImpl(locationService, authService, gcmService, userService, eventService);
@@ -195,6 +199,9 @@ public class LauncherActivity extends BaseActivity implements
     protected void onStart()
     {
         super.onStart();
+
+        notificationService.clearNotificationsFromBar();
+
         setupGooglePlayService();
     }
 

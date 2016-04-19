@@ -9,6 +9,7 @@ import com.clanout.app.cache._core.CacheManager;
 import com.clanout.app.cache.notification.NotificationCache;
 import com.clanout.app.config.GenericCacheKeys;
 import com.clanout.app.config.NotificationMessages;
+import com.clanout.app.model.ChatMessage;
 import com.clanout.app.model.Notification;
 import com.google.gson.reflect.TypeToken;
 
@@ -508,8 +509,11 @@ public class NotificationFactory
 
     private static Observable<Notification> buildChatNotification(final Map<String, String> args)
     {
+        String chatMessageJson = args.get("message");
+        final ChatMessage chatMessage = GsonProvider.getGson().fromJson(chatMessageJson, ChatMessage.class);
+
         return notificationCache
-                .getAll(Notification.CHAT, args.get("plan_id"))
+                .getAll(Notification.CHAT, chatMessage.getPlanId())
                 .flatMap(new Func1<List<Notification>, Observable<Boolean>>()
                 {
                     @Override
@@ -535,10 +539,10 @@ public class NotificationFactory
                         Notification notification = new Notification.Builder(Integer.parseInt
                                 (args.get("notification_id")))
                                 .type(Notification.CHAT)
-                                .title(args.get("plan_title"))
-                                .eventId(args.get("plan_id"))
-                                .eventName(args.get("plan_title"))
-                                .userId(args.get("user_id"))
+                                .title(chatMessage.getPlanTitle())
+                                .eventId(chatMessage.getPlanId())
+                                .eventName(chatMessage.getPlanTitle())
+                                .userId(chatMessage.getSenderId())
                                 .userName("")
                                 .timestamp(DateTime.now())
                                 .message(message)

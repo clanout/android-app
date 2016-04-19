@@ -28,8 +28,7 @@ public class InviteActivity extends BaseActivity implements InviteScreen
 
     public static Intent callingIntent(Context context, boolean isCreateFlow, String eventId)
     {
-        if (eventId == null)
-        {
+        if (eventId == null) {
             throw new IllegalArgumentException("event_id cannot be null");
         }
 
@@ -75,49 +74,49 @@ public class InviteActivity extends BaseActivity implements InviteScreen
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults)
     {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == PermissionHandler.Permissions.READ_CONTACTS)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED)
-            {
+        if (requestCode == PermissionHandler.Permissions.READ_CONTACTS) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
 
                 if (PermissionHandler
-                        .isRationalRequired(this, PermissionHandler.Permissions.READ_CONTACTS))
-                {
-                    if (readContactsPermissionListener != null)
-                    {
+                        .isRationalRequired(this, PermissionHandler.Permissions.READ_CONTACTS)) {
+                    if (readContactsPermissionListener != null) {
                         /* Analytics */
-                        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,GoogleAnalyticsConstants.ACTION_CONTACTS_PERMISSION_STATE,GoogleAnalyticsConstants.LABEL_DENIED);
+                        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,
+                                GoogleAnalyticsConstants.ACTION_CONTACTS_PERMISSION_STATE,
+                                GoogleAnalyticsConstants.LABEL_DENIED);
                         /* Analytics */
 
                         readContactsPermissionListener
                                 .onPermissionDenied(PermissionHandler.Permissions.READ_CONTACTS);
                     }
                 }
-                else
-                {
-                    if (readContactsPermissionListener != null)
-                    {
+                else {
+                    if (readContactsPermissionListener != null) {
                         /* Analytics */
-                        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,GoogleAnalyticsConstants.ACTION_CONTACTS_PERMISSION_STATE,GoogleAnalyticsConstants.LABEL_PERMANENTLY_DENIED);
+                        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,
+                                GoogleAnalyticsConstants.ACTION_CONTACTS_PERMISSION_STATE,
+                                GoogleAnalyticsConstants.LABEL_PERMANENTLY_DENIED);
                         /* Analytics */
 
                         readContactsPermissionListener
-                                .onPermissionPermanentlyDenied(PermissionHandler.Permissions.READ_CONTACTS);
+                                .onPermissionPermanentlyDenied(PermissionHandler.Permissions
+                                        .READ_CONTACTS);
                     }
                 }
             }
-            else
-            {
+            else {
                 /* Analytics */
-                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,GoogleAnalyticsConstants.ACTION_CONTACTS_PERMISSION_STATE,GoogleAnalyticsConstants.LABEL_GRANTED);
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,
+                        GoogleAnalyticsConstants.ACTION_CONTACTS_PERMISSION_STATE,
+                        GoogleAnalyticsConstants.LABEL_GRANTED);
                 /* Analytics */
 
-                if (readContactsPermissionListener != null)
-                {
+                if (readContactsPermissionListener != null) {
                     readContactsPermissionListener
                             .onPermissionGranted(PermissionHandler.Permissions.READ_CONTACTS);
                 }
@@ -129,16 +128,17 @@ public class InviteActivity extends BaseActivity implements InviteScreen
     public void onBackPressed()
 
     {
-        if(getIntent().getBooleanExtra(ARG_IS_CREATE_FLOW,false))
-        {
+        if (getIntent().getBooleanExtra(ARG_IS_CREATE_FLOW, false)) {
             /* Analytics */
-            AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE, GoogleAnalyticsConstants.ACTION_BACK, GoogleAnalyticsConstants.LABEL_CREATE_FLOW);
+            AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,
+                    GoogleAnalyticsConstants.ACTION_BACK, GoogleAnalyticsConstants
+                            .LABEL_CREATE_FLOW);
             /* Analytics */
         }
-        else
-        {
+        else {
             /* Analytics */
-            AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE, GoogleAnalyticsConstants.ACTION_BACK, GoogleAnalyticsConstants.LABEL_OTHERS);
+            AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,
+                    GoogleAnalyticsConstants.ACTION_BACK, GoogleAnalyticsConstants.LABEL_OTHERS);
             /* Analytics */
         }
         navigateToDetailsScreen();
@@ -147,10 +147,10 @@ public class InviteActivity extends BaseActivity implements InviteScreen
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if (item.getItemId() == android.R.id.home)
-        {
+        if (item.getItemId() == android.R.id.home) {
             /* Analytics */
-            AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,GoogleAnalyticsConstants.ACTION_UP,null);
+            AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,
+                    GoogleAnalyticsConstants.ACTION_UP, null);
             /* Analytics */
 
             navigateToDetailsScreen();
@@ -169,7 +169,8 @@ public class InviteActivity extends BaseActivity implements InviteScreen
     public void navigateToAppSettings()
     {
         /* Analytics */
-        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,GoogleAnalyticsConstants.ACTION_GO_TO,GoogleAnalyticsConstants.LABEL_APP_SETTINGS);
+        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_INVITE,
+                GoogleAnalyticsConstants.ACTION_GO_TO, GoogleAnalyticsConstants.LABEL_APP_SETTINGS);
         /* Analytics */
 
         gotoAppSettings();
@@ -178,15 +179,14 @@ public class InviteActivity extends BaseActivity implements InviteScreen
     @Override
     public void navigateToDetailsScreen()
     {
-        boolean isCreateFlow = getIntent().getBooleanExtra(ARG_IS_CREATE_FLOW, false);
-        final String eventId = getIntent().getStringExtra(ARG_EVENT_ID);
+//        boolean isCreateFlow = getIntent().getBooleanExtra(ARG_IS_CREATE_FLOW, false);
 
-        if (isCreateFlow)
-        {
-            Intent intent = EventDetailsActivity.callingIntent(this, eventId, false);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
+        String eventId = getIntent().getStringExtra(ARG_EVENT_ID);
+
+        Intent intent = EventDetailsActivity.callingIntent(this, eventId, false);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
         finish();
     }
 }

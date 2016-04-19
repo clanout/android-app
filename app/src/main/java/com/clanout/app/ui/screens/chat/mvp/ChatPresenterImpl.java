@@ -35,6 +35,7 @@ public class ChatPresenterImpl implements ChatPresenter
 
     private boolean isChatSent;
     private ChatMessage chatMessage;
+    private String eventTitle;
 
     public ChatPresenterImpl(ChatService chatService, UserService userService, EventService eventService, String eventId)
     {
@@ -77,6 +78,7 @@ public class ChatPresenterImpl implements ChatPresenter
                     {
                         if (view != null)
                         {
+                            ChatPresenterImpl.this.eventTitle = event.getTitle();
                             view.displayTitle(event.getTitle());
                         }
                     }
@@ -311,6 +313,8 @@ public class ChatPresenterImpl implements ChatPresenter
         chatMessage.setSenderId(userService.getSessionUserId());
         chatMessage.setSenderName(userService.getSessionUserName());
         chatMessage.setTimestamp(DateTime.now());
+        chatMessage.setPlanId(eventId);
+        chatMessage.setPlanTitle(eventTitle);
         return chatMessage;
     }
 }

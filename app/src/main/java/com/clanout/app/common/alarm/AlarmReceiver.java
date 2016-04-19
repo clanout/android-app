@@ -14,9 +14,11 @@ import com.clanout.R;
 import com.clanout.app.cache._core.CacheManager;
 import com.clanout.app.cache.event.EventCache;
 import com.clanout.app.cache.generic.GenericCache;
+import com.clanout.app.cache.notification.NotificationCache;
 import com.clanout.app.config.GenericCacheKeys;
 import com.clanout.app.config.MemoryCacheKeys;
 import com.clanout.app.model.Event;
+import com.clanout.app.model.Notification;
 import com.clanout.app.root.ClanOut;
 import com.clanout.app.ui._core.FlowEntry;
 import com.clanout.app.ui.screens.launch.LauncherActivity;
@@ -40,7 +42,6 @@ public class AlarmReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-
         if (!ifAppRunningInForeground()) {
             fetchEvents(context);
         }
@@ -112,7 +113,8 @@ public class AlarmReceiver extends BroadcastReceiver
     private void cleanFriendsCache()
     {
         GenericCache genericCache = CacheManager.getGenericCache();
-        DateTime friendCacheClearedTimeStamp = genericCache.get(GenericCacheKeys.FRIENDS_CACHE_CLEARED_TIMESTAMP, DateTime.class);
+        DateTime friendCacheClearedTimeStamp = genericCache.get(GenericCacheKeys
+                .FRIENDS_CACHE_CLEARED_TIMESTAMP, DateTime.class);
 
         if(friendCacheClearedTimeStamp == null) {
             CacheManager.clearFriendsCache();
@@ -131,6 +133,7 @@ public class AlarmReceiver extends BroadcastReceiver
     {
         List<Event> filteredEvents = new ArrayList<>();
         EventCache eventCache = CacheManager.getEventCache();
+        final NotificationCache notificationCache = CacheManager.getNotificationCache();
 
         for(Event event : events)
         {
@@ -140,6 +143,33 @@ public class AlarmReceiver extends BroadcastReceiver
             }else {
 
                 eventCache.delete(event.getId());
+                notificationCache.getAllForEvent(event.getId())
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(Schedulers.newThread())
+                        .subscribe(new Subscriber<List<Notification>>()
+                        {
+                            @Override
+                            public void onCompleted()
+                            {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e)
+                            {
+
+                            }
+
+                            @Override
+                            public void onNext(List<Notification> notifications)
+                            {
+                                if(notifications.size() > 0)
+                                {
+
+                                    notificationCache.clear(getNotificationIdsList(notifications));
+                                }
+                            }
+                        });
             }
         }
 
@@ -197,5 +227,15 @@ public class AlarmReceiver extends BroadcastReceiver
         catch (Exception e) {
             return false;
         }
+    }
+
+    private List<Integer> getNotificationIdsList(List<Notification> notifications)
+    {
+        List<Integer> notificationIds = new ArrayList<Integer>();
+        for (Notification notification : notifications) {
+            notificationIds.add(notification.getId());
+        }
+
+        return notificationIds;
     }
 }

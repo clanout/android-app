@@ -329,14 +329,10 @@ public class UserService
 
                         try {
 
-                            Log.d("APP", "inside try");
-
                             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
 
                             for(String mobileNumber : allContacts)
                             {
-                                Log.d("APP", "mobile number --- " + mobileNumber);
-
                                 messageDigest.update(mobileNumber.getBytes());
                                 byte messageDigestBytes[] = messageDigest.digest();
 
@@ -345,8 +341,6 @@ public class UserService
                                     hashedMobileNumber.append(Integer.toHexString(0xFF & messageDigestBytes[i]));
 
                                 hashedMobileNumbers.add(hashedMobileNumber.toString());
-
-                                Log.d("APP", hashedMobileNumber.toString());
                             }
 
                         }

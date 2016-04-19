@@ -24,8 +24,7 @@ public class ChatActivity extends BaseActivity implements ChatScreen
 
     public static Intent callingIntent(Context context, String eventId)
     {
-        if (eventId == null)
-        {
+        if (eventId == null) {
             throw new IllegalArgumentException("event_id cannot be null");
         }
 
@@ -74,8 +73,7 @@ public class ChatActivity extends BaseActivity implements ChatScreen
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if (item.getItemId() == android.R.id.home)
-        {
+        if (item.getItemId() == android.R.id.home) {
             close();
         }
         return super.onOptionsItemSelected(item);
@@ -85,11 +83,12 @@ public class ChatActivity extends BaseActivity implements ChatScreen
     @Override
     public void close()
     {
-        if (isTaskRoot())
-        {
-            String eventId = getIntent().getStringExtra(ARG_EVENT_ID);
-            startActivity(EventDetailsActivity.callingIntent(this, eventId, false));
-        }
+        String eventId = getIntent().getStringExtra(ARG_EVENT_ID);
+
+        Intent intent = EventDetailsActivity.callingIntent(this, eventId, false);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
         finish();
     }
 }

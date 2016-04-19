@@ -424,12 +424,10 @@ public class NotificationService
 
     private void handleNewChatMessageNotification(final Notification notification)
     {
-
-        if (!(notification.getArgs().get("user_id").equals(genericCache.get(GenericCacheKeys
+        if (!(notification.getUserId().equals(genericCache.get(GenericCacheKeys
                 .SESSION_USER, User.class).getId()))) {
 
-            final DateTime notificationTimestamp = DateTime.parse(notification.getArgs().get
-                    ("timestamp"));
+            final DateTime notificationTimestamp = notification.getTimestamp();
 
             eventCache.getChatSeenTimestamp(notification.getEventId())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -1042,8 +1040,7 @@ public class NotificationService
                         Uri defaultSoundUri = RingtoneManager
                                 .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                         NotificationCompat.Builder notificationBuilder = new NotificationCompat
-                                .Builder(ClanOut
-                                .getClanOutContext())
+                                .Builder(ClanOut.getClanOutContext())
                                 .setSmallIcon(R.drawable.notification_icon_small)
                                 .setColor(ContextCompat.getColor(ClanOut.getClanOutContext(), R
                                         .color.primary))
@@ -1053,14 +1050,13 @@ public class NotificationService
 
                         // Set Title and message for merged view
                         if (notifications.size() == 1) {
-                            notificationBuilder.setContentTitle(notification.getTitle());
+                            notificationBuilder.setContentTitle("ClanOut");
                             notificationBuilder.setContentText(notification.getMessage());
 
                         }
                         else if (notifications.size() > 1) {
 
-                            notificationBuilder.setContentTitle("Clanout");
-
+                            notificationBuilder.setContentTitle("ClanOut");
                             notificationBuilder.setContentText(buildCompressedMessage
                                     (notifications));
 
@@ -1138,7 +1134,15 @@ public class NotificationService
 
             int sumOfChatsAndUpdates = chatCount + updateCount;
             if (sumOfChatsAndUpdates != 0) {
-                message = message + " and " + sumOfChatsAndUpdates + " other notifications.";
+
+                if(sumOfChatsAndUpdates == 1){
+
+                    message = message + " and " + sumOfChatsAndUpdates + " other notification.";
+                }else{
+
+                    message = message + " and " + sumOfChatsAndUpdates + " other notifications.";
+                }
+
             }
             else {
 
@@ -1156,7 +1160,12 @@ public class NotificationService
 
 
             if (chatCount != 0) {
-                message = message + " and " + chatCount + " other notifications.";
+
+                if(chatCount == 1) {
+                    message = message + " and " + chatCount + " other notification.";
+                }else{
+                    message = message + " and " + chatCount + " other notifications.";
+                }
             }
             else {
                 message = message + ".";

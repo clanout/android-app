@@ -11,6 +11,8 @@ public class ChatMessage implements Model
     private String senderName;
     private String senderId;
     private DateTime timestamp;
+    private String planId;
+    private String planTitle;
 
     public String getId()
     {
@@ -65,6 +67,26 @@ public class ChatMessage implements Model
     public boolean isAdmin()
     {
         return senderId.equalsIgnoreCase(AppConstants.CHAT_ADMIN_ID);
+    }
+
+    public String getPlanId()
+    {
+        return planId;
+    }
+
+    public void setPlanId(String planId)
+    {
+        this.planId = planId;
+    }
+
+    public String getPlanTitle()
+    {
+        return planTitle;
+    }
+
+    public void setPlanTitle(String planTitle)
+    {
+        this.planTitle = planTitle;
     }
 
     @Override

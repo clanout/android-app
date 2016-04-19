@@ -24,9 +24,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -63,8 +66,6 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
         processIsLastMinute();
 
         subscriptions = new CompositeSubscription();
-
-        Log.d("APP", "event ---- " + GsonProvider.getGson().toJson(event));
     }
 
     @Override
@@ -206,6 +207,41 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
     @Override
     public void chat()
     {
+        notificationService.getNotifications(Notification.CHAT, event.getId())
+                .flatMap(new Func1<List<Notification>, Observable<Boolean>>()
+                {
+                    @Override
+                    public Observable<Boolean> call(List<Notification> notifications)
+                    {
+
+                        List<Integer> notificationIds = getNotificationIdsList(notifications);
+                        notificationService.deleteNotificationFromCache(notificationIds);
+                        return Observable.just(true);
+                    }
+                })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<Boolean>()
+                {
+                    @Override
+                    public void onCompleted()
+                    {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e)
+                    {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean)
+                    {
+
+                    }
+                });
+
         view.navigateToChat(event.getId());
     }
 
@@ -326,8 +362,6 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
 
     private void fetchEventDetailsFromNetwork()
     {
-        Log.d("APP", "inside fetch event details from network");
-
         Subscription subscription =
                 eventService
                         ._fetchEventNetwork(event.getId())
@@ -383,30 +417,17 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
 
     private void displayDetails(Event event)
     {
-        Log.d("APP", "displayDetails " + event.getId());
-
         this.event = event;
         List<Attendee> attendees = event.getAttendees();
 
-        Log.d("APP", "attendees size --- " + event.getId() + " ------- " + attendees.size());
-
         if (event.getRsvp() == Event.RSVP.YES) {
 
-            Log.d("APP", "going to this event" + event.getId());
             Attendee attendee = new Attendee();
             attendee.setId(userService.getSessionUserId());
             attendees.remove(attendee);
-            Log.d("APP", "attendee removed" + event.getId());
-        }else{
-
-            Log.d("APP", "not going to this event" + event.getId());
         }
-        Log.d("APP", "attendees size --- " + event.getId() + " ------- " +  attendees.size());
-
 
         List<AttendeeWrapper> attendeeWrappers = getAttendeeWrappers(attendees);
-
-        Log.d("APP", "attendees  wrappers size --- " + event.getId() + " ------- " +  attendeeWrappers.size());
 
         Collections.sort(attendeeWrappers, new EventAttendeeComparator());
         view.displayAttendees(attendeeWrappers);
@@ -478,6 +499,16 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
 
             return false;
         }
+    }
+
+    private List<Integer> getNotificationIdsList(List<Notification> notifications)
+    {
+        List<Integer> notificationIds = new ArrayList<Integer>();
+        for (Notification notification : notifications) {
+            notificationIds.add(notification.getId());
+        }
+
+        return notificationIds;
     }
 
 }

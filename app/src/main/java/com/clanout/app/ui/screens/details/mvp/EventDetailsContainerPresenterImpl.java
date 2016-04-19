@@ -1,5 +1,7 @@
 package com.clanout.app.ui.screens.details.mvp;
 
+import android.util.Log;
+
 import com.clanout.app.model.Event;
 import com.clanout.app.service.EventService;
 
@@ -55,14 +57,12 @@ public class EventDetailsContainerPresenterImpl implements EventDetailsContainer
                     @Override
                     public void onNext(List<Event> events)
                     {
-                        if (activePosition == -1)
-                        {
+                        if (activePosition == -1) {
                             Event activeEvent = new Event();
                             activeEvent.setId(eventId);
 
                             activePosition = events.indexOf(activeEvent);
-                            if (activePosition == -1)
-                            {
+                            if (activePosition == -1) {
                                 activePosition = 0;
                             }
                         }
@@ -81,33 +81,32 @@ public class EventDetailsContainerPresenterImpl implements EventDetailsContainer
     }
 
     @Override
-    public void setActivePosition(int activePosition)
+    public void setActivePosition(final int activePosition)
     {
         this.activePosition = activePosition;
 
-        eventService.markEventAsSeen(events.get(activePosition).getId())
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Boolean>()
-                {
-                    @Override
-                    public void onCompleted()
+        if (events.get(activePosition).getRsvp() == Event.RSVP.DEFAULT) {
+            eventService.markEventAsSeen(events.get(activePosition).getId())
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<Boolean>()
                     {
+                        @Override
+                        public void onCompleted()
+                        {
+                        }
 
-                    }
+                        @Override
+                        public void onError(Throwable e)
+                        {
+                        }
 
-                    @Override
-                    public void onError(Throwable e)
-                    {
-
-                    }
-
-                    @Override
-                    public void onNext(Boolean aBoolean)
-                    {
-
-                    }
-                });
+                        @Override
+                        public void onNext(Boolean aBoolean)
+                        {
+                        }
+                    });
+        }
     }
 
     private Observable<List<Event>> getEventsObservable()
@@ -119,15 +118,14 @@ public class EventDetailsContainerPresenterImpl implements EventDetailsContainer
                     @Override
                     public Observable<List<Event>> call(List<Event> events)
                     {
-                        if (events == null || events.isEmpty())
-                        {
+                        if (events == null || events.isEmpty()) {
                             return eventService._fetchEvents();
                         }
-                        else
-                        {
+                        else {
                             return Observable.just(events);
                         }
                     }
                 });
+
     }
 }

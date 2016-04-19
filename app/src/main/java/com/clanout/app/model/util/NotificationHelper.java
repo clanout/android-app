@@ -108,7 +108,7 @@ public class NotificationHelper
         String chatMessageJson = args.get("message");
         ChatMessage chatMessage = GsonProvider.getGson().fromJson(chatMessageJson, ChatMessage.class);
 
-        return String.format(NotificationMessages.NEW_CHAT_MESSAGE, args.get("plan_title"), chatMessage.getMessage());
+        return String.format(NotificationMessages.NEW_CHAT_MESSAGE, chatMessage.getPlanTitle(), chatMessage.getMessage());
     }
 
     private static String newFriendJoinedAppMessage(Map<String, String> args)
