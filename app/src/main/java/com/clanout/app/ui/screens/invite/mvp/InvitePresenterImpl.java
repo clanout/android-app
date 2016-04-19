@@ -197,8 +197,20 @@ public class InvitePresenterImpl implements InvitePresenter
                     {
                         List<FriendInviteWrapper> friends = inviteList.first;
                         List<PhonebookContactInviteWrapper> phonebookContacts = inviteList.second;
+
+                        List<FriendInviteWrapper> unblockedFriends = new ArrayList
+                                <FriendInviteWrapper>();
+
+                        for(FriendInviteWrapper friendInviteWrapper : friends)
+                        {
+                            if(!friendInviteWrapper.getFriend().isBlocked())
+                            {
+                                unblockedFriends.add(friendInviteWrapper);
+                            }
+                        }
+
                         view.displayInviteList(locationService.getCurrentLocation().getName(),
-                                friends, phonebookContacts);
+                                unblockedFriends, phonebookContacts);
                         view.hideRefreshing();
 
                         invitedFriends = new ArrayList<String>();
@@ -240,8 +252,20 @@ public class InvitePresenterImpl implements InvitePresenter
                     {
                         List<FriendInviteWrapper> friends = inviteList.first;
                         List<PhonebookContactInviteWrapper> phonebookContacts = inviteList.second;
+
+                        List<FriendInviteWrapper> unblockedFriends = new ArrayList
+                                <FriendInviteWrapper>();
+
+                        for(FriendInviteWrapper friendInviteWrapper : friends)
+                        {
+                            if(!friendInviteWrapper.getFriend().isBlocked())
+                            {
+                                unblockedFriends.add(friendInviteWrapper);
+                            }
+                        }
+
                         view.displayInviteList(locationService.getCurrentLocation().getName(),
-                                friends, phonebookContacts);
+                                unblockedFriends, phonebookContacts);
                     }
                 });
 
