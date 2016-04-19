@@ -205,7 +205,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         for (String id : friendIds) {
             int index = facebookFriends.indexOf(Friend.of(id));
             if (index != -1) {
-                friendNames.add(facebookFriends.get(index).getName());
+                friendNames.add(facebookFriends.get(index).getName().split("\\s+")[0]);
                 if (friendNames.size() == 2) {
                     break;
                 }
