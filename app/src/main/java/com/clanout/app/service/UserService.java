@@ -513,4 +513,31 @@ public class UserService
     {
         return facebookService.getCoverPicUrl();
     }
+
+    public void refreshFriendsCache()
+    {
+        _fetchLocalFacebookFriends()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<List<Friend>>()
+                {
+                    @Override
+                    public void onCompleted()
+                    {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e)
+                    {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Friend> friends)
+                    {
+
+                    }
+                });
+    }
 }

@@ -170,6 +170,7 @@ public class BootstrapPresenterImpl implements BootstrapPresenter
                     {
                         // Handle GCM registration and channel subscription
                         gcmService.register();
+                        userService.refreshFriendsCache();
                     }
                 })
                 .subscribeOn(Schedulers.newThread());
