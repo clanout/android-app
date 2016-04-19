@@ -1,10 +1,7 @@
 package com.clanout.app.ui.screens.home.feed.mvp;
 
-import android.util.Log;
 import android.util.Pair;
 
-import com.clanout.app.cache._core.CacheManager;
-import com.clanout.app.cache.user.UserCache;
 import com.clanout.app.model.Event;
 import com.clanout.app.model.Friend;
 import com.clanout.app.service.EventService;
@@ -17,7 +14,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;

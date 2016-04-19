@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import com.clanout.R;
 import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.GoogleAnalyticsConstants;
-import com.clanout.app.ui._core.BaseActivity;
+import com.clanout.app.ui.core.BaseActivity;
 
 import java.util.HashSet;
 import java.util.Set;

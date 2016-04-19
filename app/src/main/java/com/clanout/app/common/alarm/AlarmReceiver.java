@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.clanout.R;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.cache.event.EventCache;
 import com.clanout.app.cache.generic.GenericCache;
 import com.clanout.app.cache.notification.NotificationCache;
@@ -20,7 +20,7 @@ import com.clanout.app.config.MemoryCacheKeys;
 import com.clanout.app.model.Event;
 import com.clanout.app.model.Notification;
 import com.clanout.app.root.ClanOut;
-import com.clanout.app.ui._core.FlowEntry;
+import com.clanout.app.ui.core.FlowEntry;
 import com.clanout.app.ui.screens.launch.LauncherActivity;
 
 import org.joda.time.DateTime;

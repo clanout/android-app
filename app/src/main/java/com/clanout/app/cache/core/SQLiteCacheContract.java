@@ -1,4 +1,4 @@
-package com.clanout.app.cache._core;
+package com.clanout.app.cache.core;
 
 public abstract class SQLiteCacheContract
 {

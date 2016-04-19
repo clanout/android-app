@@ -10,7 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import com.clanout.app.api.core.ApiManager;
 import com.clanout.app.api.user.request.UpdateUserLocationApiRequest;
 import com.clanout.app.api.user.response.UpdateUserLocationApiResponse;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.cache.generic.GenericCache;
 import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.GoogleAnalyticsConstants;

@@ -24,7 +24,7 @@ import com.clanout.app.model.EventCategory;
 import com.clanout.app.model.Location;
 import com.clanout.app.model.util.DateTimeUtil;
 import com.clanout.app.service.EventService;
-import com.clanout.app.ui._core.BaseFragment;
+import com.clanout.app.ui.core.BaseFragment;
 import com.clanout.app.ui.screens.edit.mvp.EditEventPresenter;
 import com.clanout.app.ui.screens.edit.mvp.EditEventPresenterImpl;
 import com.clanout.app.ui.screens.edit.mvp.EditEventView;

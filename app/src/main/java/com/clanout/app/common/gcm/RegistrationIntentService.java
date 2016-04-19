@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.clanout.app.api.core.ApiManager;
 import com.clanout.app.api.notification.NotificationApi;
 import com.clanout.app.api.notification.request.GCmRegisterUserApiRequest;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.cache.event.EventCache;
 import com.clanout.app.cache.generic.GenericCache;
 import com.clanout.app.config.AppConstants;

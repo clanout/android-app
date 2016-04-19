@@ -14,8 +14,8 @@ import android.view.MenuItem;
 import com.clanout.R;
 import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.GoogleAnalyticsConstants;
-import com.clanout.app.ui._core.BaseActivity;
-import com.clanout.app.ui._core.PermissionHandler;
+import com.clanout.app.ui.core.BaseActivity;
+import com.clanout.app.ui.core.PermissionHandler;
 import com.clanout.app.ui.screens.details.EventDetailsActivity;
 
 import butterknife.Bind;

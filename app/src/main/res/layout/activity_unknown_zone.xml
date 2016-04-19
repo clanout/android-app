@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:gravity="center_vertical|center_horizontal">
+              android:gravity="center_vertical|center_horizontal"
+              android:orientation="vertical">
+
+    <net.steamcrafted.materialiconlib.MaterialIconView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        app:materialIcon="map_marker_off"
+        app:materialIconColor="@color/primary"
+        app:materialIconSize="72dp"/>
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ClanOut is currently not available in your location."
-        android:layout_margin="32dp"/>
+        android:layout_margin="32dp"
+        android:gravity="center"
+        android:text="ClanOut is currently not available in your location. We'll get back to you soon."
+        android:textSize="18sp"/>
 
 </LinearLayout>

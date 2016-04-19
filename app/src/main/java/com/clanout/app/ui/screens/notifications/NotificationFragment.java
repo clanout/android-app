@@ -22,7 +22,7 @@ import com.clanout.app.config.Dimensions;
 import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.NotificationWrapper;
 import com.clanout.app.service.NotificationService;
-import com.clanout.app.ui._core.BaseFragment;
+import com.clanout.app.ui.core.BaseFragment;
 import com.clanout.app.ui.dialog.DefaultDialog;
 import com.clanout.app.ui.screens.notifications.mvp.NotificationPresenter;
 import com.clanout.app.ui.screens.notifications.mvp.NotificationPresenterImpl;

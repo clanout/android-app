@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.clanout.R;
-import com.clanout.app.ui._core.BaseFragment;
+import com.clanout.app.ui.core.BaseFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

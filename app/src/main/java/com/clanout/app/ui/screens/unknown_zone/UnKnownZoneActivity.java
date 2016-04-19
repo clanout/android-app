@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import com.clanout.R;
 import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.GoogleAnalyticsConstants;
-import com.clanout.app.ui._core.BaseActivity;
+import com.clanout.app.ui.core.BaseActivity;
 
 /**
  * Created by harsh on 07/04/16.

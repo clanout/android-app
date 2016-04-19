@@ -1,5 +1,6 @@
 package com.clanout.app.ui.screens.launch.mvp.bootstrap;
 
+import com.clanout.app.common.analytics.BootstrapAnalyticsSender;
 import com.clanout.app.model.Location;
 import com.clanout.app.service.AuthService;
 import com.clanout.app.service.EventService;
@@ -171,6 +172,7 @@ public class BootstrapPresenterImpl implements BootstrapPresenter
                         // Handle GCM registration and channel subscription
                         gcmService.register();
                         userService.refreshFriendsCache();
+                        BootstrapAnalyticsSender.getInstance().send();
                     }
                 })
                 .subscribeOn(Schedulers.newThread());

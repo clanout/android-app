@@ -6,7 +6,7 @@ import android.location.LocationManager;
 import android.support.multidex.MultiDex;
 
 import com.clanout.BuildConfig;
-import com.clanout.app.cache._core.DatabaseManager;
+import com.clanout.app.cache.core.DatabaseManager;
 import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.communication.Communicator;
 import com.clanout.app.config.AppConstants;
@@ -22,7 +22,6 @@ import com.clanout.app.service.PhonebookService;
 import com.clanout.app.service.UserService;
 import com.clanout.app.service.WhatsappService;
 import com.facebook.FacebookSdk;
-import com.facebook.stetho.Stetho;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.squareup.otto.Bus;
@@ -74,9 +73,6 @@ public class ClanOut extends Application
 
         /* Facebook SDK */
         FacebookSdk.sdkInitialize(this);
-
-        /* Stetho (debugging) */
-        Stetho.initializeWithDefaults(this);
 
         /* Logging */
         initLogging();

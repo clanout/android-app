@@ -30,9 +30,9 @@ import com.clanout.app.service.GoogleService;
 import com.clanout.app.service.LocationService;
 import com.clanout.app.service.NotificationService;
 import com.clanout.app.service.UserService;
-import com.clanout.app.ui._core.BaseActivity;
-import com.clanout.app.ui._core.FlowEntry;
-import com.clanout.app.ui._core.PermissionHandler;
+import com.clanout.app.ui.core.BaseActivity;
+import com.clanout.app.ui.core.FlowEntry;
+import com.clanout.app.ui.core.PermissionHandler;
 import com.clanout.app.ui.dialog.DefaultDialog;
 import com.clanout.app.ui.screens.chat.ChatActivity;
 import com.clanout.app.ui.screens.details.EventDetailsActivity;
@@ -64,7 +64,6 @@ import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
 
 
 public class LauncherActivity extends BaseActivity implements

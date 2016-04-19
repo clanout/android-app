@@ -8,13 +8,12 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.clanout.R;
 import com.clanout.app.api.core.ApiManager;
 import com.clanout.app.api.event.request.FetchEventApiRequest;
 import com.clanout.app.api.event.response.FetchEventApiResponse;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.cache.event.EventCache;
 import com.clanout.app.cache.generic.GenericCache;
 import com.clanout.app.cache.notification.NotificationCache;
@@ -31,9 +30,8 @@ import com.clanout.app.model.NotificationWrapper;
 import com.clanout.app.model.User;
 import com.clanout.app.model.util.NotificationComparator;
 import com.clanout.app.root.ClanOut;
-import com.clanout.app.ui._core.FlowEntry;
+import com.clanout.app.ui.core.FlowEntry;
 import com.clanout.app.ui.screens.launch.LauncherActivity;
-import com.facebook.stetho.common.ArrayListAccumulator;
 import com.squareup.otto.Bus;
 
 import org.joda.time.DateTime;
@@ -290,8 +288,8 @@ public class NotificationService
                                 List<NotificationWrapper> notifications = new ArrayList<>
                                         (notificationSet);
 
-                                List<NotificationWrapper> filteredNotifications = new
-                                        ArrayListAccumulator<NotificationWrapper>();
+                                List<NotificationWrapper> filteredNotifications = new ArrayList
+                                        <NotificationWrapper>();
 
                                 for (NotificationWrapper notificationWrapper : notifications) {
                                     if (!isNotificationExpired(notificationWrapper, events)) {
@@ -1010,8 +1008,6 @@ public class NotificationService
                     @Override
                     public void onError(Throwable e)
                     {
-
-                        Log.d("APP", "onError build noti --- notificationCache.getAll()");
                     }
 
                     @Override

@@ -21,7 +21,7 @@ import com.clanout.app.model.ChatMessage;
 import com.clanout.app.service.ChatService;
 import com.clanout.app.service.EventService;
 import com.clanout.app.service.UserService;
-import com.clanout.app.ui._core.BaseFragment;
+import com.clanout.app.ui.core.BaseFragment;
 import com.clanout.app.ui.screens.chat.mvp.ChatPresenter;
 import com.clanout.app.ui.screens.chat.mvp.ChatPresenterImpl;
 import com.clanout.app.ui.screens.chat.mvp.ChatView;

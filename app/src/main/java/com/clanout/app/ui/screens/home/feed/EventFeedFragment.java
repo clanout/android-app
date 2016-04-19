@@ -12,15 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.clanout.R;
-import com.clanout.app.cache._core.CacheManager;
-import com.clanout.app.cache.user.UserCache;
 import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.Event;
 import com.clanout.app.model.Friend;
 import com.clanout.app.service.EventService;
 import com.clanout.app.service.UserService;
-import com.clanout.app.ui._core.BaseFragment;
+import com.clanout.app.ui.core.BaseFragment;
 import com.clanout.app.ui.screens.home.HomeScreen;
 import com.clanout.app.ui.screens.home.feed.mvp.EventFeedPresenter;
 import com.clanout.app.ui.screens.home.feed.mvp.EventFeedPresenterImpl;

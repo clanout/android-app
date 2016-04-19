@@ -19,7 +19,7 @@ import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.Event;
 import com.clanout.app.service.EventService;
 import com.clanout.app.service.UserService;
-import com.clanout.app.ui._core.BaseFragment;
+import com.clanout.app.ui.core.BaseFragment;
 import com.clanout.app.ui.screens.pending_invites.mvp.PendingInvitesPresenter;
 import com.clanout.app.ui.screens.pending_invites.mvp.PendingInvitesPresenterImpl;
 import com.clanout.app.ui.screens.pending_invites.mvp.PendingInvitesView;

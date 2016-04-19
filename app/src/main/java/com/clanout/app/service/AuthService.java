@@ -1,13 +1,11 @@
 package com.clanout.app.service;
 
-import com.clanout.app.api.auth.AuthApi;
 import com.clanout.app.api.auth.response.CreateSessionApiResponse;
 import com.clanout.app.api.auth.response.RefreshSessionApiResponse;
 import com.clanout.app.api.core.ApiManager;
-import com.clanout.app.api.user.UserApi;
 import com.clanout.app.api.user.request.GetUserDetailsApiRequest;
 import com.clanout.app.api.user.response.GetUserDetailsApiResponse;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.cache.generic.GenericCache;
 import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.GenericCacheKeys;

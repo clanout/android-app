@@ -1,4 +1,4 @@
-package com.clanout.app.ui._core;
+package com.clanout.app.ui.core;
 
 import android.app.NotificationManager;
 import android.content.Context;
@@ -17,7 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.clanout.R;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.config.MemoryCacheKeys;

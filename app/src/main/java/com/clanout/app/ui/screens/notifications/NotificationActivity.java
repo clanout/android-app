@@ -11,11 +11,11 @@ import android.view.MenuItem;
 
 import com.clanout.R;
 import com.clanout.app.api.core.GsonProvider;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.GenericCacheKeys;
 import com.clanout.app.config.GoogleAnalyticsConstants;
-import com.clanout.app.ui._core.BaseActivity;
+import com.clanout.app.ui.core.BaseActivity;
 import com.clanout.app.ui.screens.chat.ChatActivity;
 import com.clanout.app.ui.screens.create.CreateActivity;
 import com.clanout.app.ui.screens.details.EventDetailsActivity;

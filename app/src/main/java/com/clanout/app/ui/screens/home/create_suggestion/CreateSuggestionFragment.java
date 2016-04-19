@@ -20,7 +20,7 @@ import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.CreateEventSuggestion;
 import com.clanout.app.model.EventCategory;
 import com.clanout.app.service.EventService;
-import com.clanout.app.ui._core.BaseFragment;
+import com.clanout.app.ui.core.BaseFragment;
 import com.clanout.app.ui.screens.home.HomeScreen;
 import com.clanout.app.ui.screens.home.create_suggestion.mvp.CreateSuggestionPresenter;
 import com.clanout.app.ui.screens.home.create_suggestion.mvp.CreateSuggestionPresenterImpl;

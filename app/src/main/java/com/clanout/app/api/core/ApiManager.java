@@ -1,14 +1,12 @@
 package com.clanout.app.api.core;
 
-import android.util.Log;
-
 import com.clanout.app.api.auth.AuthApi;
 import com.clanout.app.api.event.EventApi;
 import com.clanout.app.api.fb.FacebookApi;
 import com.clanout.app.api.google_places.GooglePlacesApi;
 import com.clanout.app.api.notification.NotificationApi;
 import com.clanout.app.api.user.UserApi;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.cache.generic.GenericCache;
 import com.clanout.app.config.AppConstants;
 import com.clanout.app.config.GenericCacheKeys;
@@ -21,6 +19,7 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
+import timber.log.Timber;
 
 public class ApiManager
 {
@@ -145,7 +144,7 @@ public class ApiManager
         final String accessToken = genericCache.get(GenericCacheKeys.ACCESS_TOKEN);
 
         if(accessToken != null) {
-            Log.d("ACCESS_TOKEN", accessToken);
+            Timber.d(accessToken);
         }
 
         authApi = null;

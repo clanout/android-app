@@ -29,7 +29,7 @@ import com.clanout.app.model.Location;
 import com.clanout.app.model.util.DateTimeUtil;
 import com.clanout.app.service.EventService;
 import com.clanout.app.service.LocationService;
-import com.clanout.app.ui._core.BaseFragment;
+import com.clanout.app.ui.core.BaseFragment;
 import com.clanout.app.ui.dialog.EventCategorySelectionDialog;
 import com.clanout.app.ui.dialog.EventTypeInfoDialog;
 import com.clanout.app.ui.screens.create.mvp.CreateEventPresenter;

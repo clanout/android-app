@@ -1,5 +1,15 @@
 package com.clanout.app.common.analytics;
 
+import com.clanout.app.model.Event;
+import com.clanout.app.model.Friend;
+import com.clanout.app.service.EventService;
+import com.clanout.app.service.UserService;
+
+import java.util.List;
+
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by Zuko on 4/2/16.
  */
@@ -25,16 +35,60 @@ public class BootstrapAnalyticsSender
     {
         if(!isAnalyticsSent)
         {
-            // TODO: add events
-
             //User Zone:
-            //AnalyticsHelper.sendCustomDimension(1, userZone);
+            AnalyticsHelper.sendCustomDimension(1, UserService.getInstance().getSessionUser().getLocationZone());
 
             //local Friends Count:
-            //AnalyticsHelper.sendCustomDimension(2, localFriendCount);
+            UserService userService = UserService.getInstance();
+            userService._fetchLocalAppFriends()
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(Schedulers.newThread())
+                    .subscribe(new Subscriber<List<Friend>>()
+                    {
+                        @Override
+                        public void onCompleted()
+                        {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e)
+                        {
+
+                        }
+
+                        @Override
+                        public void onNext(List<Friend> friends)
+                        {
+                            AnalyticsHelper.sendCustomDimension(2, String.valueOf(friends.size()));
+                        }
+                    });
 
             //No. of plans in feed:
-            //AnalyticsHelper.sendCustomDimension(3, planCount);
+            EventService eventService = EventService.getInstance();
+            eventService._fetchEvents()
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(Schedulers.newThread())
+                    .subscribe(new Subscriber<List<Event>>()
+                    {
+                        @Override
+                        public void onCompleted()
+                        {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e)
+                        {
+
+                        }
+
+                        @Override
+                        public void onNext(List<Event> events)
+                        {
+                            AnalyticsHelper.sendCustomDimension(3, String.valueOf(events.size()));
+                        }
+                    });
 
             isAnalyticsSent = true;
         }

@@ -1,6 +1,9 @@
 <manifest
     package="com.clanout"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="1"
+    android:versionName="0.9"
+    android:installLocation="auto">
 
     <!-- Normal Permissions -->
     <uses-permission android:name="android.permission.INTERNET"/>

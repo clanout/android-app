@@ -1,4 +1,4 @@
-package com.clanout.app.cache._core;
+package com.clanout.app.cache.core;
 
 import com.clanout.app.cache.event.EventCache;
 import com.clanout.app.cache.event.SQLiteEventCache;

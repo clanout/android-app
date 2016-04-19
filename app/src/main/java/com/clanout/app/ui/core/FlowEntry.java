@@ -1,4 +1,4 @@
-package com.clanout.app.ui._core;
+package com.clanout.app.ui.core;
 
 import android.support.annotation.IntDef;
 

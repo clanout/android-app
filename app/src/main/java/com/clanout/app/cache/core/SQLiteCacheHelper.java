@@ -1,4 +1,4 @@
-package com.clanout.app.cache._core;
+package com.clanout.app.cache.core;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -5,7 +5,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.clanout.app.api.core.GsonProvider;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.cache.notification.NotificationCache;
 import com.clanout.app.config.GenericCacheKeys;
 import com.clanout.app.config.NotificationMessages;
@@ -45,8 +45,6 @@ public class NotificationFactory
                     .fromJson(data.getString("parameters"), TYPE);
 
             int typeCode = NotificationHelper.getType(type);
-
-            Log.d("NOTIFICATION", "typeCode" + typeCode);
 
             if (shouldBuildNotification(typeCode, args)) {
                 return buildNotification(typeCode, args);
@@ -520,8 +518,6 @@ public class NotificationFactory
                     public Observable<Boolean> call(List<Notification> notifications)
                     {
 
-                        Log.d("NOTIFICATION", "size ---- " + notifications.size());
-
                         List<Integer> notificationIds = getNotificationIdsList(notifications);
                         return notificationCache.clear(notificationIds);
                     }
@@ -531,8 +527,6 @@ public class NotificationFactory
                     @Override
                     public Observable<Notification> call(Boolean isDeleteSuccessful)
                     {
-
-                        Log.d("NOTIFICATION", "isDeleteSuccessful ---- " + isDeleteSuccessful);
 
                         String message = NotificationHelper.getMessage(Notification.CHAT, args);
 

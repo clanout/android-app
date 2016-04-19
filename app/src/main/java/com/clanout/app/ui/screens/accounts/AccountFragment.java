@@ -17,10 +17,9 @@ import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.Dimensions;
 import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.User;
-import com.clanout.app.service.FacebookService;
 import com.clanout.app.service.UserService;
 import com.clanout.app.service.WhatsappService;
-import com.clanout.app.ui._core.BaseFragment;
+import com.clanout.app.ui.core.BaseFragment;
 import com.clanout.app.ui.dialog.FeedbackDialog;
 import com.clanout.app.ui.dialog.UpdateMobileDialog;
 import com.clanout.app.ui.util.CircleTransform;
@@ -34,7 +33,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class AccountFragment extends BaseFragment

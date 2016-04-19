@@ -5,8 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 import com.clanout.app.api.core.GsonProvider;
-import com.clanout.app.cache._core.DatabaseManager;
-import com.clanout.app.cache._core.SQLiteCacheContract;
+import com.clanout.app.cache.core.DatabaseManager;
+import com.clanout.app.cache.core.SQLiteCacheContract;
 import com.clanout.app.model.Event;
 import com.google.gson.Gson;
 

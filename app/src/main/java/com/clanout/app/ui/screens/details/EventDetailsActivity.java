@@ -13,7 +13,7 @@ import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.Event;
 import com.clanout.app.service.EventService;
-import com.clanout.app.ui._core.BaseActivity;
+import com.clanout.app.ui.core.BaseActivity;
 import com.clanout.app.ui.screens.chat.ChatActivity;
 import com.clanout.app.ui.screens.details.mvp.EventDetailsContainerPresenter;
 import com.clanout.app.ui.screens.details.mvp.EventDetailsContainerPresenterImpl;

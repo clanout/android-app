@@ -15,7 +15,7 @@ import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.EventCategory;
 import com.clanout.app.model.Location;
 import com.clanout.app.service.LocationService;
-import com.clanout.app.ui._core.BaseActivity;
+import com.clanout.app.ui.core.BaseActivity;
 import com.clanout.app.ui.screens.details.EventDetailsActivity;
 import com.clanout.app.ui.screens.home.HomeActivity;
 import com.clanout.app.ui.screens.invite.InviteActivity;

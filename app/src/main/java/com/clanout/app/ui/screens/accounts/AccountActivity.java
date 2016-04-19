@@ -16,7 +16,7 @@ import com.clanout.R;
 import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.Dimensions;
 import com.clanout.app.config.GoogleAnalyticsConstants;
-import com.clanout.app.ui._core.BaseActivity;
+import com.clanout.app.ui.core.BaseActivity;
 import com.clanout.app.ui.screens.friends.FriendsActivity;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;

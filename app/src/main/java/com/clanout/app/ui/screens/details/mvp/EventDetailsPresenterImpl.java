@@ -1,7 +1,5 @@
 package com.clanout.app.ui.screens.details.mvp;
 
-import android.util.Log;
-
 import com.clanout.app.api.core.GsonProvider;
 import com.clanout.app.cache.generic.GenericCache;
 import com.clanout.app.config.GenericCacheKeys;
@@ -313,8 +311,6 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
                             {
                                 if (event != null) {
 
-                                    Log.d("APP", "onNext fetchEventsCache ---- " + event.getId());
-
                                     displayDetails(event);
                                 }
                             }
@@ -339,14 +335,12 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
                     @Override
                     public void onError(Throwable e)
                     {
-                        Log.d("CHAT", "Marker Error");
                     }
 
                     @Override
                     public void onNext(List<Notification> notifications)
                     {
                         if (notifications.size() > 0) {
-                            Log.d("CHAT", "Marker Shown");
                             view.displayChatMarker();
                         }
                         else {
@@ -381,8 +375,6 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
                             @Override
                             public void onNext(Event event)
                             {
-                                Log.d("APP", "inside onNext fetch event details from network");
-
                                 displayDetails(event);
                                 view.hideLoading();
 

@@ -1,7 +1,7 @@
 package com.clanout.app.model.util;
 
 import com.clanout.app.api.core.GsonProvider;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.cache.notification.NotificationCache;
 import com.clanout.app.config.NotificationConstants;
 import com.clanout.app.config.NotificationMessages;

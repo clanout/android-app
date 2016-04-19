@@ -1,6 +1,5 @@
 package com.clanout.app.service;
 
-import android.util.Log;
 import android.util.Pair;
 
 import com.clanout.app.api.core.ApiManager;
@@ -22,7 +21,7 @@ import com.clanout.app.api.event.response.EventsApiResponse;
 import com.clanout.app.api.event.response.FetchEventApiResponse;
 import com.clanout.app.api.event.response.FetchPendingInvitesApiResponse;
 import com.clanout.app.api.event.response.GetCreateEventSuggestionsApiResponse;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.cache.event.EventCache;
 import com.clanout.app.cache.generic.GenericCache;
 import com.clanout.app.common.analytics.AnalyticsHelper;
@@ -41,13 +40,10 @@ import com.google.gson.reflect.TypeToken;
 import org.joda.time.DateTime;
 
 import java.lang.reflect.Type;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import retrofit.RetrofitError;
 import retrofit.client.Response;
 import rx.Observable;
 import rx.Subscriber;
@@ -526,7 +522,6 @@ public class EventService
                     @Override
                     public void call(Boolean isSuccess)
                     {
-                        Log.d("APP", "updateRsvp ----- " + isSuccess);
                         if (isSuccess) {
                             eventCache.delete(updatedEvent.getId());
                             eventCache.save(updatedEvent);

@@ -1,19 +1,16 @@
 package com.clanout.app.service;
 
-import android.util.Log;
 import android.util.Pair;
 
 import com.clanout.app.api.core.ApiManager;
 import com.clanout.app.api.core.GsonProvider;
-import com.clanout.app.api.user.UserApi;
 import com.clanout.app.api.user.request.BlockFriendsApiRequest;
 import com.clanout.app.api.user.request.GetFacebookFriendsApiRequest;
 import com.clanout.app.api.user.request.GetRegisteredContactsApiRequest;
-import com.clanout.app.api.user.request.ShareFeedbackApiRequest;
 import com.clanout.app.api.user.request.UpdateMobileAPiRequest;
 import com.clanout.app.api.user.response.GetFacebookFriendsApiResponse;
 import com.clanout.app.api.user.response.GetRegisteredContactsApiResponse;
-import com.clanout.app.cache._core.CacheManager;
+import com.clanout.app.cache.core.CacheManager;
 import com.clanout.app.cache.generic.GenericCache;
 import com.clanout.app.cache.user.UserCache;
 import com.clanout.app.common.analytics.AnalyticsHelper;

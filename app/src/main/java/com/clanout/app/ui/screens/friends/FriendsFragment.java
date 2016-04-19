@@ -20,7 +20,7 @@ import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.Friend;
 import com.clanout.app.service.LocationService;
 import com.clanout.app.service.UserService;
-import com.clanout.app.ui._core.BaseFragment;
+import com.clanout.app.ui.core.BaseFragment;
 import com.clanout.app.ui.screens.friends.mvp.FriendsPresenter;
 import com.clanout.app.ui.screens.friends.mvp.FriendsPresenterImpl;
 import com.clanout.app.ui.screens.friends.mvp.FriendsView;
