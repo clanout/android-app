@@ -9,7 +9,7 @@ public final class AppConstants
 
     /* API Keys */
     public static final String GOOGLE_API_KEY = "AIzaSyCoBgOqvl0FoFiAboM2fzYPtIWxUN5D2Po";
-    public static final String GOOGLE_ANALYTICS_TRACKING_KEY = "UA-67721019-1";
+    public static final String GOOGLE_ANALYTICS_TRACKING_KEY = "UA-69780078-2";
 //    public static final String GCM_SENDER_ID = "1014674558116";
     public static final String GCM_SENDER_ID = "657261759195";
 
