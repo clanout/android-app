@@ -19,10 +19,13 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.muc.DiscussionHistory;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
+import org.jivesoftware.smackx.ping.PingFailedListener;
+import org.jivesoftware.smackx.ping.PingManager;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 import java.util.List;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
@@ -56,6 +59,7 @@ public class ChatService
 
     /* Xmpp connection */
     private AbstractXMPPConnection connection;
+    private PingManager pingManager;
     private boolean isHealthy;
 
     /* Clan chat */
@@ -102,6 +106,17 @@ public class ChatService
                                 {
                                     connection.login();
                                 }
+
+                                pingManager = PingManager.getInstanceFor(connection);
+                                pingManager.setPingInterval(10);
+                                pingManager.registerPingFailedListener(new PingFailedListener()
+                                {
+                                    @Override
+                                    public void pingFailed()
+                                    {
+                                        Timber.v("[Xmpp Ping Failed]");
+                                    }
+                                });
 
                                 Timber.v("[XmppConnection established]");
                                 isHealthy = true;
@@ -181,7 +196,8 @@ public class ChatService
                     public void call(Throwable throwable)
                     {
                         /* Analytics */
-                        AnalyticsHelper.sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_Z1, false);
+                        AnalyticsHelper
+                                .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_Z1, false);
 
                         throwable.printStackTrace();
                     }
