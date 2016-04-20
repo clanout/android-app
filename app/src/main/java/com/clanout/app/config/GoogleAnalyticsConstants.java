@@ -116,10 +116,8 @@ public class GoogleAnalyticsConstants
     public static final String ACTION_BUG = "bug";
     public static final String ACTION_NEW_FEATURE = "new_feature";
     public static final String ACTION_OTHERS = "others";
-
-
-
-
+    public static final String ACTION_TNC = "tnc";
+    public static final String ACTION_PRIVACY = "privacy";
 
     /* Event Labels */
     public static final String LABEL_SUCCESS = "success";

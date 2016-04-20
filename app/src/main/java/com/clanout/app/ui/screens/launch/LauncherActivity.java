@@ -654,6 +654,8 @@ public class LauncherActivity extends BaseActivity implements
             @Override
             public void onClick(View textView) {
 
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN, GoogleAnalyticsConstants.ACTION_TNC, null);
+
                 String url = "http://www.clanout.com/terms.html";
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
@@ -664,6 +666,8 @@ public class LauncherActivity extends BaseActivity implements
         ClickableSpan span2 = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
+
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN, GoogleAnalyticsConstants.ACTION_PRIVACY, null);
 
                 String url = "http://www.clanout.com/privacy.html";
                 Intent intent = new Intent(Intent.ACTION_VIEW);

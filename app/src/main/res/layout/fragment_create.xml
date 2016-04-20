@@ -21,7 +21,8 @@
             android:hint="@string/label_title"
             android:maxLength="30"
             android:maxLines="1"
-            android:inputType="textPersonName"/>
+            android:inputType="textPersonName"
+            android:imeOptions="actionDone"/>
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout

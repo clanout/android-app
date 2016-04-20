@@ -8,12 +8,14 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -137,6 +139,21 @@ public class CreateFragment extends BaseFragment implements
     {
         View view = inflater.inflate(R.layout.fragment_create, container, false);
         ButterKnife.bind(this, view);
+
+        etTitle.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+            {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    createEvent();
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
         return view;
     }
 

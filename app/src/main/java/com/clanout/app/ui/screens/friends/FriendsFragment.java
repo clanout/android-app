@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -60,6 +61,9 @@ public class FriendsFragment extends BaseFragment implements
 
     @Bind(R.id.loading)
     ProgressBar loading;
+
+    @Bind(R.id.llBlockScreenInfoContainer)
+    LinearLayout blockInfoContainer;
 
     List<Friend> localFriends;
     List<Friend> otherFriends;
@@ -148,6 +152,7 @@ public class FriendsFragment extends BaseFragment implements
         loading.setVisibility(View.VISIBLE);
         rvFriends.setVisibility(View.GONE);
         tvMessage.setVisibility(View.GONE);
+        blockInfoContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -164,6 +169,7 @@ public class FriendsFragment extends BaseFragment implements
         tvMessage.setVisibility(View.VISIBLE);
         loading.setVisibility(View.GONE);
         rvFriends.setVisibility(View.GONE);
+        blockInfoContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -178,6 +184,7 @@ public class FriendsFragment extends BaseFragment implements
         tvMessage.setVisibility(View.VISIBLE);
         loading.setVisibility(View.GONE);
         rvFriends.setVisibility(View.GONE);
+        blockInfoContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -205,6 +212,7 @@ public class FriendsFragment extends BaseFragment implements
         rvFriends.setVisibility(View.VISIBLE);
         tvMessage.setVisibility(View.GONE);
         loading.setVisibility(View.GONE);
+        blockInfoContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
