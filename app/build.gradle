@@ -131,6 +131,6 @@ dependencies {
     // Material Date-Time picker
     compile 'com.wdullaer:materialdatetimepicker:1.5.3'
 
-    // Custom Recycler View (for chat)
+    // Custom Recycler View (for chat) // No proguard
     compile 'com.jcodecraeer:xrecyclerview:1.2.6'
 }
