@@ -270,7 +270,7 @@ public class UserService
 
         if (newFriends != null) {
             for (Friend friend : allFriends) {
-                if (newFriends.contains(friend)) {
+                if (newFriends.contains(friend.getId())) {
                     friend.setIsNew(true);
                 }
                 else {
@@ -536,5 +536,10 @@ public class UserService
 
                     }
                 });
+    }
+
+    public void clearNewFriendsList()
+    {
+        CacheManager.getGenericCache().put(GenericCacheKeys.NEW_FRIENDS_LIST, new HashSet<>());
     }
 }

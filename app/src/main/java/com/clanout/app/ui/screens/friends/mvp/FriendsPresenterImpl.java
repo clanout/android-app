@@ -51,6 +51,8 @@ public class FriendsPresenterImpl implements FriendsPresenter
             userService.sendBlockRequests(blockUpdates, unblockUpdates);
         }
 
+        userService.clearNewFriendsList();
+
         subscriptions.clear();
         view = null;
     }
