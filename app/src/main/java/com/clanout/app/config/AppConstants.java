@@ -14,7 +14,7 @@ public final class AppConstants
     public static final String GCM_SENDER_ID = "657261759195";
 
     /* App Link */
-    public static final String APP_LINK = "www.clanout.com";
+    public static final String APP_LINK = "https://goo.gl/Jc33PQ";
 
     /* Chat */
     public static final String CHAT_SERVICE_NAME = "chat.clanout.com";
