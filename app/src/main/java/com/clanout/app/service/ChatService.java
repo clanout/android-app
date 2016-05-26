@@ -44,8 +44,7 @@ public class ChatService
 
     public static ChatService getInstance()
     {
-        if (instance == null)
-        {
+        if (instance == null) {
             throw new IllegalStateException("[ChatService Not Initialized]");
         }
 
@@ -82,28 +81,23 @@ public class ChatService
 
     public Observable<Boolean> connect()
     {
-        if (isHealthy)
-        {
+        if (isHealthy) {
             Timber.v("[XmppConnection already established]");
             return Observable.just(true);
         }
-        else
-        {
+        else {
             return Observable
                     .create(new Observable.OnSubscribe<Boolean>()
                     {
                         @Override
                         public void call(Subscriber<? super Boolean> subscriber)
                         {
-                            try
-                            {
-                                if (!connection.isConnected())
-                                {
+                            try {
+                                if (!connection.isConnected()) {
                                     connection.connect();
                                 }
 
-                                if (!connection.isAuthenticated())
-                                {
+                                if (!connection.isAuthenticated()) {
                                     connection.login();
                                 }
 
@@ -123,8 +117,7 @@ public class ChatService
                                 subscriber.onNext(true);
                                 subscriber.onCompleted();
                             }
-                            catch (Exception e)
-                            {
+                            catch (Exception e) {
 
                                 /* Analytics */
                                 AnalyticsHelper
@@ -170,18 +163,17 @@ public class ChatService
                         };
                         chat.addMessageListener(messageListener);
 
-                        try
-                        {
+                        try {
                             chat.join(getNickname(), null, history, connection
                                     .getPacketReplyTimeout());
                             activeChat = eventId;
                         }
-                        catch (Exception e)
-                        {
+                        catch (Exception e) {
 
                             /* Analytics */
                             AnalyticsHelper
-                                    .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_UNABLE_TO_JOIN_CHAT, false);
+                                    .sendCaughtExceptions(GoogleAnalyticsConstants
+                                            .METHOD_UNABLE_TO_JOIN_CHAT, false);
                             /* Analytics */
 
                             subscriber
@@ -221,22 +213,20 @@ public class ChatService
                 .subscribeOn(Schedulers.newThread());
     }
 
-    public Observable<ChatMessage> fetchHistory(final int historySize, final List<ChatMessage> availableMessages)
+    public Observable<ChatMessage> fetchHistory(final int historySize, final List<ChatMessage>
+            availableMessages)
     {
-        if (chat == null)
-        {
+        if (chat == null) {
             return Observable.error(new IllegalStateException("[Chat not joined]"));
         }
-        else
-        {
+        else {
             return Observable
                     .create(new Observable.OnSubscribe<Message>()
                     {
                         @Override
                         public void call(final Subscriber<? super Message> subscriber)
                         {
-                            try
-                            {
+                            try {
                                 chat.removeMessageListener(messageListener);
                                 messageListener = null;
                                 chat.leave();
@@ -257,11 +247,11 @@ public class ChatService
                                 chat.join(getNickname(), null, history, connection
                                         .getPacketReplyTimeout());
                             }
-                            catch (Exception e)
-                            {
+                            catch (Exception e) {
                                 /* Analytics */
                                 AnalyticsHelper
-                                        .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_A, false);
+                                        .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_A,
+                                                false);
                                 /* Analytics */
 
                                 subscriber.onError(e);
@@ -290,19 +280,16 @@ public class ChatService
 
     public Observable<Object> post(ChatMessage message)
     {
-        if (activeChat == null || chat == null)
-        {
+        if (activeChat == null || chat == null) {
             Timber.e("[No active chat]");
             return Observable.error(new Exception("No active chat"));
         }
 
-        try
-        {
+        try {
             chat.sendMessage(map(message));
             return Observable.empty();
         }
-        catch (SmackException.NotConnectedException e)
-        {
+        catch (SmackException.NotConnectedException e) {
 
             /* Analytics */
             AnalyticsHelper.sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_B, false);
@@ -313,21 +300,19 @@ public class ChatService
 
     public void leaveChat()
     {
-        if (chat != null)
-        {
-            try
-            {
+        if (chat != null) {
+            try {
                 chat.removeMessageListener(messageListener);
                 chat.leave();
                 messageListener = null;
                 activeChat = null;
             }
-            catch (SmackException.NotConnectedException e)
-            {
+            catch (SmackException.NotConnectedException e) {
 
                 /* Analytics */
                 AnalyticsHelper
-                        .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_LEAVE_CHAT_FAILED, false);
+                        .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_LEAVE_CHAT_FAILED,
+                                false);
                 /* Analytics */
 
                 Timber.e("[Leave Chat Failed] " + e.getMessage());
@@ -362,7 +347,8 @@ public class ChatService
 
                         /* Analytics */
                         AnalyticsHelper
-                                .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_CHAT_NOTIFICATION_FAILED, false);
+                                .sendCaughtExceptions(GoogleAnalyticsConstants
+                                        .METHOD_CHAT_NOTIFICATION_FAILED, false);
                         /* Analytics */
 
                         Timber.e("[Chat Notification Failed] " + e.getMessage());
@@ -420,7 +406,8 @@ public class ChatService
                     {
                             /* Analytics */
                         AnalyticsHelper
-                                .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_CHAT_CONNECT_FAILED, false);
+                                .sendCaughtExceptions(GoogleAnalyticsConstants
+                                        .METHOD_CHAT_CONNECT_FAILED, false);
                             /* Analytics */
                     }
 
@@ -433,30 +420,29 @@ public class ChatService
 
     private ChatMessage map(Message message)
     {
-        try
-        {
+        try {
             ChatMessage chatMessage = GsonProvider.getGson()
-                                                  .fromJson(message.getBody(), ChatMessage.class);
+                    .fromJson(message.getBody(), ChatMessage.class);
+
+            Timber.d("Chat message Recd. before null check" + message.getBody());
+            Timber.d("Chat message Recd. before null check" + chatMessage.toString());
 
             if (chatMessage.getSenderId() == null || chatMessage.getSenderId().isEmpty() ||
                     chatMessage.getSenderName() == null || chatMessage.getSenderName().isEmpty() ||
                     chatMessage.getMessage() == null || chatMessage.getMessage().isEmpty() ||
-                    chatMessage.getTimestamp() == null)
-            {
+                    chatMessage.getTimestamp() == null) {
                 return null;
             }
 
-            if (chatMessage.isAdmin())
-            {
+            if (chatMessage.isAdmin()) {
+                Timber.d("Admin Chat message Recd. " + message.getBody());
                 return processAdminMessage(chatMessage);
             }
-            else
-            {
+            else {
                 return chatMessage;
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
 
             /* Analytics */
             AnalyticsHelper.sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_C, false);
@@ -481,76 +467,62 @@ public class ChatService
 
     private ChatMessage processAdminMessage(ChatMessage chatMessage)
     {
-        try
-        {
+        try {
             String message = chatMessage.getMessage();
             String[] messageTokens = message.split(":");
 
             String typeToken = messageTokens[0];
-            if (typeToken.equalsIgnoreCase("start_time"))
-            {
+            if (typeToken.equalsIgnoreCase("start_time")) {
                 String user = messageTokens[1];
                 String startTime = messageTokens[2];
                 String localStartTime = DateTime.parse(startTime)
-                                                .toDateTime(DateTimeZone.getDefault())
-                                                .toString(DateTimeUtil.DATE_TIME_FORMATTER);
+                        .toDateTime(DateTimeZone.getDefault())
+                        .toString(DateTimeUtil.DATE_TIME_FORMATTER);
                 chatMessage.setMessage(user + " updated start time to " + localStartTime);
             }
-            else if (typeToken.equalsIgnoreCase("location"))
-            {
+            else if (typeToken.equalsIgnoreCase("location")) {
                 String user = messageTokens[1];
                 String location = messageTokens[2];
-                if (location.equalsIgnoreCase("0"))
-                {
+                if (location.equalsIgnoreCase("0")) {
                     chatMessage.setMessage(user + " set location as undecided");
                 }
-                else
-                {
+                else {
                     chatMessage.setMessage(user + " updated location to " + location);
                 }
             }
-            else if (typeToken.equalsIgnoreCase("invitation_response"))
-            {
+            else if (typeToken.equalsIgnoreCase("invitation_response")) {
                 String name = messageTokens[1];
                 String invitationResponse = messageTokens[2];
                 chatMessage.setMessage(name + " is not joining.\n'" + invitationResponse + "'");
             }
-            else if (typeToken.equalsIgnoreCase("rsvp"))
-            {
+            else if (typeToken.equalsIgnoreCase("rsvp")) {
                 String name = messageTokens[1];
                 String rsvp = messageTokens[2];
-                if (rsvp.equalsIgnoreCase("YES"))
-                {
+                if (rsvp.equalsIgnoreCase("YES")) {
                     chatMessage.setMessage(name + " joined");
                 }
-                else
-                {
+                else {
                     chatMessage.setMessage(name + " left");
                 }
             }
-            else if (typeToken.equalsIgnoreCase("description"))
-            {
+            else if (typeToken.equalsIgnoreCase("description")) {
                 String user = messageTokens[1];
                 String description = messageTokens[2];
-                if (description.equalsIgnoreCase("0"))
-                {
+                if (description.equalsIgnoreCase("0")) {
                     chatMessage.setMessage(user + " removed the plan description");
                 }
-                else
-                {
+                else {
                     chatMessage
                             .setMessage(user + " updated the description\n'" + description + "'");
                 }
             }
-            else
-            {
+            else {
                 return null;
             }
 
             return chatMessage;
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
 
             /* Analytics */
             AnalyticsHelper.sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_D, false);

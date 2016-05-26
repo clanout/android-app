@@ -90,59 +90,6 @@ public class LocationService
 
     public Observable<Location> fetchCurrentLocation()
     {
-
-//        return Observable
-//                .create(new Observable.OnSubscribe<Location>()
-//                {
-//                    @Override
-//                    public void call(final Subscriber<? super Location> subscriber)
-//                    {
-//                        LocationRequest locationRequest = new LocationRequest();
-//                        locationRequest
-//                                .setPriority(LocationRequest
-//                                        .PRIORITY_HIGH_ACCURACY);
-//
-//                        locationListener = new LocationListener()
-//                        {
-//                            @Override
-//                            public void onLocationChanged(android.location
-//                                                                  .Location
-//                                                                  location)
-//                            {
-//                                Timber.v("[FusedLocationApi] Received Updated" +
-//                                        " Location " + location.getLatitude());
-//
-//                                Location location1 = new Location();
-//                                location1.setLatitude(location.getLatitude());
-//                                location1.setLongitude(location.getLongitude());
-//
-//                                subscriber.onNext(location1);
-//                                subscriber.onCompleted();
-//                            }
-//                        };
-//
-//
-//                        LocationServices.FusedLocationApi
-//                                .requestLocationUpdates(googleService
-//                                                .getGoogleApiClient(),
-//                                        locationRequest, locationListener);
-//
-//                    }
-//                })
-//                .subscribeOn(AndroidSchedulers.mainThread())
-//                .doOnNext(new Action1<Location>()
-//                {
-//                    @Override
-//                    public void call(Location location)
-//                    {
-//                        if (location != null) {
-//                            Timber.v("Location : " + location.toString());
-//                        }
-//
-//                        LocationService.this.location = location;
-//                    }
-//                });
-
         if (location != null) {
             return Observable.just(location);
         }
@@ -159,14 +106,15 @@ public class LocationService
                                                 .getGoogleApiClient())
                                         .isLocationAvailable()) {
                                     Timber.v("[FusedLocationApi] Last Known Location Unavailable");
-                                            subscriber.onNext(null);
+                                    subscriber.onNext(null);
                                     subscriber.onCompleted();
                                 }
                                 else {
                                     Timber.v("[FusedLocationApi] Last Known Location Available");
 
 
-                                    android.location.Location location = LocationServices.FusedLocationApi
+                                    android.location.Location location = LocationServices
+                                            .FusedLocationApi
                                             .getLastLocation(googleService.getGoogleApiClient());
 
                                     subscriber.onNext(location);
@@ -321,7 +269,7 @@ public class LocationService
     {
         if (location == null) {
             /* Analytics */
-            AnalyticsHelper.sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_Z6, true);
+            AnalyticsHelper.sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_Z6, false);
             /* Analytics */
 
             return Observable.error(new IllegalStateException("Location Null"));

@@ -3,6 +3,7 @@ package com.clanout.app.ui.screens.launch.mvp.bootstrap;
 import com.clanout.app.common.analytics.BootstrapAnalyticsSender;
 import com.clanout.app.model.Location;
 import com.clanout.app.service.AuthService;
+import com.clanout.app.service.ChatService;
 import com.clanout.app.service.EventService;
 import com.clanout.app.service.GcmService;
 import com.clanout.app.service.LocationService;
@@ -169,8 +170,12 @@ public class BootstrapPresenterImpl implements BootstrapPresenter
                     @Override
                     public void call()
                     {
+                        // Init Chat Service
+                        ChatService.init(userService, eventService);
+
                         // Handle GCM registration and channel subscription
                         gcmService.register();
+
                         userService.refreshFriendsCache();
                         BootstrapAnalyticsSender.getInstance().send();
                     }

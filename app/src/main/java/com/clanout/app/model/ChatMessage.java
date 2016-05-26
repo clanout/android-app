@@ -1,5 +1,6 @@
 package com.clanout.app.model;
 
+import com.clanout.app.api.core.GsonProvider;
 import com.clanout.app.config.AppConstants;
 
 import org.joda.time.DateTime;
@@ -87,6 +88,12 @@ public class ChatMessage implements Model
     public void setPlanTitle(String planTitle)
     {
         this.planTitle = planTitle;
+    }
+
+    @Override
+    public String toString()
+    {
+        return GsonProvider.getGson().toJson(this);
     }
 
     @Override

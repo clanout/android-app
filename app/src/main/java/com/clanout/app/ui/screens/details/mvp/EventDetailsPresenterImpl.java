@@ -44,6 +44,7 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
 
     /* Data */
     private Event event;
+    private boolean isNetworkUpdated;
     private boolean isLastMinute;
 
     private boolean isRsvpUpdateInProgress;
@@ -285,38 +286,13 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
         view.init(userService.getSessionUser(), event, isLastMinute);
         processEventActions();
 
-        view.showLoading();
-        Subscription subscription =
-                eventService
-                        ._fetchEventCache(event.getId())
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<Event>()
-                        {
-                            @Override
-                            public void onCompleted()
-                            {
-                                fetchEventDetailsFromNetwork();
-                                fetchChatNotifications();
-                            }
+        displayDetails(event);
+        fetchChatNotifications();
 
-                            @Override
-                            public void onError(Throwable e)
-                            {
-                                e.printStackTrace();
-                            }
-
-                            @Override
-                            public void onNext(Event event)
-                            {
-                                if (event != null) {
-
-                                    displayDetails(event);
-                                }
-                            }
-                        });
-
-        subscriptions.add(subscription);
+        if (!isNetworkUpdated) {
+            view.showLoading();
+            fetchEventDetailsFromNetwork();
+        }
     }
 
     private void fetchChatNotifications()
@@ -365,6 +341,7 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
                             @Override
                             public void onCompleted()
                             {
+                                isNetworkUpdated = true;
                             }
 
                             @Override
@@ -375,6 +352,8 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
                             @Override
                             public void onNext(Event event)
                             {
+                                EventDetailsPresenterImpl.this.event = event;
+
                                 displayDetails(event);
                                 view.hideLoading();
 
@@ -429,9 +408,9 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
     {
         List<AttendeeWrapper> attendeeWrappers = new ArrayList<>();
 
-        for(Attendee attendee : attendees)
-        {
-            attendeeWrappers.add(new AttendeeWrapper(attendee, event.getInviter(), event.getFriends()));
+        for (Attendee attendee : attendees) {
+            attendeeWrappers.add(new AttendeeWrapper(attendee, event.getInviter(), event
+                    .getFriends()));
         }
 
         return attendeeWrappers;
@@ -484,10 +463,11 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
     {
         Set<String> notGoingEvents = getNotGoingEvents();
 
-        if(notGoingEvents != null) {
+        if (notGoingEvents != null) {
             boolean hasDeclinedInvitation = notGoingEvents.contains(event.getId());
             return hasDeclinedInvitation;
-        }else{
+        }
+        else {
 
             return false;
         }
