@@ -3,12 +3,15 @@ package com.clanout.app.ui.dialog;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.clanout.R;
 
@@ -28,7 +31,7 @@ public class InvitationResponseDialog
 
     public static void show(Activity activity, final Listener listener)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setCancelable(true);
 
         LayoutInflater layoutInflater = activity.getLayoutInflater();
@@ -77,5 +80,6 @@ public class InvitationResponseDialog
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+
     }
 }

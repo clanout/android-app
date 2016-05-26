@@ -47,51 +47,6 @@ public class AlarmReceiver extends BroadcastReceiver
         }
     }
 
-    private void fetchEvents(final Context context)
-    {
-        EventCache eventCache = CacheManager.getEventCache();
-
-        eventCache
-                .getEvents()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Event>>()
-                {
-                    @Override
-                    public void onCompleted()
-                    {
-                    }
-
-                    @Override
-                    public void onError(Throwable e)
-                    {
-                    }
-
-                    @Override
-                    public void onNext(List<Event> events)
-                    {
-
-                        List<Event> filteredEvents = filterEvents(events);
-
-                        DateTime currentTimestamp = DateTime.now();
-                        List<Event> eventsToStartShortly = new ArrayList<Event>();
-                        for (Event event : filteredEvents) {
-                            if ((event.getStartTime().isAfter(currentTimestamp)) && (Minutes
-                                    .minutesBetween(currentTimestamp, event.getStartTime())
-                                    .isLessThan(Minutes.minutes(60)))) {
-                                eventsToStartShortly.add(event);
-                            }
-                        }
-                        buildNotification(eventsToStartShortly, context);
-
-                        cleanFriendsCache();
-
-                        cleanSuggestions();
-
-                    }
-                });
-    }
-
     private void cleanSuggestions()
     {
         GenericCache genericCache = CacheManager.getGenericCache();
@@ -237,5 +192,50 @@ public class AlarmReceiver extends BroadcastReceiver
         }
 
         return notificationIds;
+    }
+
+    private void fetchEvents(final Context context)
+    {
+        EventCache eventCache = CacheManager.getEventCache();
+
+        eventCache
+                .getEvents()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Event>>()
+                {
+                    @Override
+                    public void onCompleted()
+                    {
+                    }
+
+                    @Override
+                    public void onError(Throwable e)
+                    {
+                    }
+
+                    @Override
+                    public void onNext(List<Event> events)
+                    {
+
+                        List<Event> filteredEvents = filterEvents(events);
+
+                        DateTime currentTimestamp = DateTime.now();
+                        List<Event> eventsToStartShortly = new ArrayList<Event>();
+                        for (Event event : filteredEvents) {
+                            if ((event.getStartTime().isAfter(currentTimestamp)) && (Minutes
+                                    .minutesBetween(currentTimestamp, event.getStartTime())
+                                    .isLessThan(Minutes.minutes(60)))) {
+                                eventsToStartShortly.add(event);
+                            }
+                        }
+                        buildNotification(eventsToStartShortly, context);
+
+                        cleanFriendsCache();
+
+                        cleanSuggestions();
+
+                    }
+                });
     }
 }

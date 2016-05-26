@@ -37,6 +37,7 @@ public class FriendBubbles
 
         friendBubblesContainer.setVisibility(View.GONE);
         tvOtherFriends.setVisibility(View.GONE);
+        tvTitle.setVisibility(View.GONE);
 
         UserService userService = UserService.getInstance();
         userService._fetchLocalFacebookFriendsCache()
@@ -125,6 +126,7 @@ public class FriendBubbles
                                         .getName();
                                 tvTitle.setText(String.format(title, locationName));
                                 friendBubblesContainer.setVisibility(View.VISIBLE);
+                                tvTitle.setVisibility(View.VISIBLE);
 
                                 if (friends.size() > 3) {
                                     int other = friends.size() - 3;
