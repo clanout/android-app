@@ -187,7 +187,7 @@ public class AuthService
                     {
                         /* Analytics */
                         AnalyticsHelper.sendCaughtExceptions(GoogleAnalyticsConstants
-                                .METHOD_UNABLE_TO_CREATE_SESSION, true);
+                                .METHOD_UNABLE_TO_CREATE_SESSION, false);
                         /* Analytics */
 
                         return false;
