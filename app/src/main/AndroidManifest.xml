@@ -18,7 +18,7 @@
     <uses-permission android:name="reaper.android.permission.C2D_MESSAGE"/>
 
     <!-- Dangerous Permission -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
 
