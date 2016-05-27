@@ -406,7 +406,7 @@ public class NotificationService
                         List<Integer> notificationIdList = new ArrayList<Integer>();
 
                         for (Notification notification1 : notifications) {
-                            notificationIdList.add(notification.getId());
+                            notificationIdList.add(notification1.getId());
                         }
 
                         notificationCache.clear(notificationIdList)
@@ -504,7 +504,62 @@ public class NotificationService
                         public void onNext(Event event)
                         {
                             if (!event.isExpired()) {
-                                handleChatNotification(notification, notificationTimestamp);
+
+                                notificationCache.getAll(Notification.CHAT, event.getId())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribeOn(Schedulers.newThread())
+                                        .subscribe(new Subscriber<List<Notification>>()
+                                        {
+                                            @Override
+                                            public void onCompleted()
+                                            {
+
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e)
+                                            {
+
+                                            }
+
+                                            @Override
+                                            public void onNext(List<Notification> notifications)
+                                            {
+                                                List<Integer> notificationIdList = new
+                                                        ArrayList<Integer>();
+
+                                                for (Notification notification1 : notifications) {
+                                                    notificationIdList.add(notification1.getId());
+                                                }
+
+                                                notificationCache.clear(notificationIdList)
+                                                        .observeOn(Schedulers.newThread())
+                                                        .subscribeOn(Schedulers.newThread())
+                                                        .subscribe(new Subscriber<Boolean>()
+                                                        {
+                                                            @Override
+                                                            public void onCompleted()
+                                                            {
+
+                                                            }
+
+                                                            @Override
+                                                            public void onError(Throwable e)
+                                                            {
+
+                                                            }
+
+                                                            @Override
+                                                            public void onNext(Boolean aBoolean)
+                                                            {
+                                                                handleChatNotification
+                                                                        (notification,
+                                                                                notificationTimestamp);
+                                                            }
+                                                        });
+
+                                            }
+                                        });
                             }
                         }
                     });
@@ -741,7 +796,7 @@ public class NotificationService
                         List<Integer> notificationIdList = new ArrayList<Integer>();
 
                         for (Notification notification1 : notifications) {
-                            notificationIdList.add(notification.getId());
+                            notificationIdList.add(notification1.getId());
                         }
 
                         notificationCache.clear(notificationIdList)
@@ -764,16 +819,19 @@ public class NotificationService
                                     @Override
                                     public void onNext(Boolean aBoolean)
                                     {
-                                        if (!(notification.getArgs().get("user_id").equals(genericCache.get(GenericCacheKeys
+                                        if (!(notification.getArgs().get("user_id").equals
+                                                (genericCache.get(GenericCacheKeys
                                                 .SESSION_USER, User.class).getId()))) {
-                                            notificationCache.put(notification).observeOn(Schedulers.newThread())
+                                            notificationCache.put(notification).observeOn
+                                                    (Schedulers.newThread())
                                                     .subscribe(new Subscriber<Object>()
                                                     {
                                                         @Override
                                                         public void onCompleted()
                                                         {
                                                             if (ifAppRunningInForeground()) {
-                                                                bus.post(new NewNotificationReceivedTrigger());
+                                                                bus.post(new
+                                                                        NewNotificationReceivedTrigger());
                                                             }
                                                             else {
                                                                 buildNotification(notification);
