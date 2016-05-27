@@ -32,7 +32,7 @@ public class PermissionHandler
         switch (permission)
         {
             case Permissions.LOCATION:
-                return Manifest.permission.ACCESS_COARSE_LOCATION;
+                return Manifest.permission.ACCESS_FINE_LOCATION;
 
             case Permissions.READ_CONTACTS:
                 return Manifest.permission.READ_CONTACTS;

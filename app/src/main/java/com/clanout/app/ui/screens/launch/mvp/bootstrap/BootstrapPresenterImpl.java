@@ -19,6 +19,7 @@ import rx.functions.Func1;
 import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+import timber.log.Timber;
 
 public class BootstrapPresenterImpl implements BootstrapPresenter
 {
@@ -52,6 +53,9 @@ public class BootstrapPresenterImpl implements BootstrapPresenter
 
         this.view.showLoading();
         if (locationService.isLocationPermissionGranted()) {
+
+            Timber.d("Location Permission Granted");
+
             if (locationService.isLocationServiceAvailable()) {
                 init();
             }
@@ -60,6 +64,9 @@ public class BootstrapPresenterImpl implements BootstrapPresenter
             }
         }
         else {
+
+            Timber.d("Location Permission not Granted");
+
             this.view.handleLocationPermissions();
         }
     }

@@ -64,6 +64,7 @@ import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 
 public class LauncherActivity extends BaseActivity implements
@@ -159,6 +160,8 @@ public class LauncherActivity extends BaseActivity implements
 
         /* Init View */
         displayBlankView();
+
+        Timber.d("After Blank View " + System.currentTimeMillis());
 
         facebookCallbackManager = CallbackManager.Factory.create();
 
@@ -356,6 +359,9 @@ public class LauncherActivity extends BaseActivity implements
     {
         if (PermissionHandler.isRationalRequired(this, PermissionHandler.Permissions.LOCATION))
         {
+
+            Timber.d("Location Permission Rationale Required");
+
             showBootstrapAction();
 
             tvActionMessage.setText(R.string.permission_location_message);
@@ -372,6 +378,7 @@ public class LauncherActivity extends BaseActivity implements
         }
         else
         {
+            Timber.d("Location Permission Rationale Not Required");
             // Location permission has not been granted yet. Request it directly.
             PermissionHandler.requestPermission(this, PermissionHandler.Permissions.LOCATION);
         }

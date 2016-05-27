@@ -4,6 +4,8 @@ package com.clanout.app.ui.screens.launch.mvp.fb_login;
 import com.clanout.app.service.AuthService;
 import com.clanout.app.service.FacebookService;
 
+import timber.log.Timber;
+
 public class FacebookLoginPresenterImpl implements FacebookLoginPresenter
 {
     private FacebookLoginView view;
@@ -23,11 +25,13 @@ public class FacebookLoginPresenterImpl implements FacebookLoginPresenter
 
         if (facebookService.isAccessTokenValid())
         {
+            Timber.d("Before Bootstrap View " + System.currentTimeMillis());
             this.view.proceedToSessionValidation();
         }
         else
         {
             authService.logout();
+            Timber.d("Before FB View " + System.currentTimeMillis());
             this.view.displayFacebookLoginButton();
         }
     }
