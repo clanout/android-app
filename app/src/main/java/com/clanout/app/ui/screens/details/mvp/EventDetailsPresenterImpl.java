@@ -351,6 +351,7 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
                                 if (((RetrofitError) e).getResponse().getStatus() == 404) {
                                     view.showPlanNotAvailableMessage();
                                     eventService.clearEventFromCache(event.getId());
+                                    notificationService.clearNotificationsForEvent(event.getId());
                                 }
                             }
 
@@ -361,6 +362,7 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
 
                                     view.showPlanExpiredMessage();
                                     eventService.clearEventFromCache(event.getId());
+                                    notificationService.clearNotificationsForEvent(event.getId());
                                 }
                                 else {
 

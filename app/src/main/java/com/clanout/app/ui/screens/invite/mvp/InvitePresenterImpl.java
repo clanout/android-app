@@ -11,6 +11,7 @@ import com.clanout.app.model.Friend;
 import com.clanout.app.model.PhonebookContact;
 import com.clanout.app.service.EventService;
 import com.clanout.app.service.LocationService;
+import com.clanout.app.service.NotificationService;
 import com.clanout.app.service.PhonebookService;
 import com.clanout.app.service.UserService;
 
@@ -42,14 +43,16 @@ public class InvitePresenterImpl implements InvitePresenter
     private List<String> invitedContacts;
 
     private CompositeSubscription subscriptions;
+    private NotificationService notificationService;
 
     public InvitePresenterImpl(UserService userService, EventService eventService,
-                               PhonebookService phonebookService, LocationService locationService, String eventId)
+                               PhonebookService phonebookService, LocationService locationService, NotificationService notificationService, String eventId)
     {
         this.userService = userService;
         this.eventService = eventService;
         this.phonebookService = phonebookService;
         this.locationService = locationService;
+        this.notificationService = notificationService;
         this.eventId = eventId;
 
         invitedFriends = new ArrayList<>();
@@ -103,6 +106,8 @@ public class InvitePresenterImpl implements InvitePresenter
                                 if (((RetrofitError) e).getResponse().getStatus() == 404) {
                                     view.showPlanNotAvailableMessage();
                                     eventService.clearEventFromCache(eventId);
+
+                                    notificationService.clearNotificationsForEvent(eventId);
                                 }
                             }
 
@@ -113,6 +118,8 @@ public class InvitePresenterImpl implements InvitePresenter
 
                                     view.showPlanExpiredMessage();
                                     eventService.clearEventFromCache(event.getId());
+
+                                    notificationService.clearNotificationsForEvent(eventId);
                                 }
                             }
                         });

@@ -4,6 +4,7 @@ import com.clanout.app.model.ChatMessage;
 import com.clanout.app.model.Event;
 import com.clanout.app.service.ChatService;
 import com.clanout.app.service.EventService;
+import com.clanout.app.service.NotificationService;
 import com.clanout.app.service.UserService;
 
 import org.joda.time.DateTime;
@@ -27,6 +28,7 @@ public class ChatPresenterImpl implements ChatPresenter
     private ChatService chatService;
     private UserService userService;
     private EventService eventService;
+    private NotificationService notificationService;
     private String eventId;
 
     private Subscription chatSubscription;
@@ -41,11 +43,12 @@ public class ChatPresenterImpl implements ChatPresenter
 
     private CompositeSubscription subscriptions;
 
-    public ChatPresenterImpl(ChatService chatService, UserService userService, EventService eventService, String eventId)
+    public ChatPresenterImpl(ChatService chatService, UserService userService, EventService eventService, NotificationService notificationService, String eventId)
     {
         this.chatService = chatService;
         this.userService = userService;
         this.eventService = eventService;
+        this.notificationService = notificationService;
         this.eventId = eventId;
 
         visibleChats = new ArrayList<>();
@@ -132,6 +135,8 @@ public class ChatPresenterImpl implements ChatPresenter
                                 if (((RetrofitError) e).getResponse().getStatus() == 404) {
                                     view.showPlanNotAvailableMessage();
                                     eventService.clearEventFromCache(eventId);
+
+                                    notificationService.clearNotificationsForEvent(eventId);
                                 }
                             }
 
@@ -142,13 +147,14 @@ public class ChatPresenterImpl implements ChatPresenter
 
                                     view.showPlanExpiredMessage();
                                     eventService.clearEventFromCache(event.getId());
+
+                                    notificationService.clearNotificationsForEvent(eventId);
                                 }
                             }
                         });
 
         subscriptions.add(subscription);
     }
-
 
     @Override
     public void retry()

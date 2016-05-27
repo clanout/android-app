@@ -1493,4 +1493,59 @@ public class NotificationService
 
         notificationManager.cancelAll();
     }
+
+    public void clearNotificationsForEvent(String eventId)
+    {
+        notificationCache.getAllForEvent(eventId)
+                .observeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<List<Notification>>()
+                {
+                    @Override
+                    public void onCompleted()
+                    {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e)
+                    {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Notification> notifications)
+                    {
+                        List<Integer> notificationIdList = new ArrayList<Integer>();
+
+                        for (Notification notification1 : notifications) {
+                            notificationIdList.add(notification1.getId());
+                        }
+
+                        notificationCache.clear(notificationIdList)
+                                .observeOn(Schedulers.newThread())
+                                .subscribeOn(Schedulers.newThread())
+                                .subscribe(new Subscriber<Boolean>()
+                                {
+                                    @Override
+                                    public void onCompleted()
+                                    {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e)
+                                    {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(Boolean aBoolean)
+                                    {
+
+                                    }
+                                });
+                    }
+                });
+    }
 }

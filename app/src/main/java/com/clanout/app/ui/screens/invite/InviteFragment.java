@@ -23,6 +23,7 @@ import com.clanout.app.config.Dimensions;
 import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.service.EventService;
 import com.clanout.app.service.LocationService;
+import com.clanout.app.service.NotificationService;
 import com.clanout.app.service.PhonebookService;
 import com.clanout.app.service.UserService;
 import com.clanout.app.ui.core.BaseFragment;
@@ -118,8 +119,9 @@ public class InviteFragment extends BaseFragment implements
         EventService eventService = EventService.getInstance();
         PhonebookService phonebookService = PhonebookService.getInstance();
         LocationService locationService = LocationService.getInstance();
+        NotificationService notificationService = NotificationService.getInstance();
         String eventId = getArguments().getString(ARG_EVENT_ID);
-        presenter = new InvitePresenterImpl(userService, eventService, phonebookService, locationService, eventId);
+        presenter = new InvitePresenterImpl(userService, eventService, phonebookService, locationService, notificationService, eventId);
     }
 
     @Nullable

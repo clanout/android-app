@@ -20,6 +20,7 @@ import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.ChatMessage;
 import com.clanout.app.service.ChatService;
 import com.clanout.app.service.EventService;
+import com.clanout.app.service.NotificationService;
 import com.clanout.app.service.UserService;
 import com.clanout.app.ui.core.BaseFragment;
 import com.clanout.app.ui.dialog.DefaultDialog;
@@ -99,8 +100,9 @@ public class ChatFragment extends BaseFragment implements ChatView
         ChatService chatService = ChatService.getInstance();
         UserService userService = UserService.getInstance();
         EventService eventService = EventService.getInstance();
+        NotificationService notificationService = NotificationService.getInstance();
         String eventId = getArguments().getString(ARG_EVENT_ID);
-        presenter = new ChatPresenterImpl(chatService, userService, eventService, eventId);
+        presenter = new ChatPresenterImpl(chatService, userService, eventService, notificationService, eventId);
     }
 
     @Nullable
