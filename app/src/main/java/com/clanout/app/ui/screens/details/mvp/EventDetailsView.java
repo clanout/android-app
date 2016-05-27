@@ -38,4 +38,8 @@ public interface EventDetailsView
     void displayChatMarker();
 
     void hideChatMarker();
+
+    void showPlanNotAvailableMessage();
+
+    void showPlanExpiredMessage();
 }

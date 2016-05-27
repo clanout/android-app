@@ -27,7 +27,9 @@ import com.clanout.app.service.PhonebookService;
 import com.clanout.app.service.UserService;
 import com.clanout.app.ui.core.BaseFragment;
 import com.clanout.app.ui.core.PermissionHandler;
+import com.clanout.app.ui.dialog.DefaultDialog;
 import com.clanout.app.ui.dialog.UpdateMobileDialog;
+import com.clanout.app.ui.screens.home.HomeActivity;
 import com.clanout.app.ui.screens.invite.mvp.FriendInviteWrapper;
 import com.clanout.app.ui.screens.invite.mvp.InvitePresenter;
 import com.clanout.app.ui.screens.invite.mvp.InvitePresenterImpl;
@@ -467,6 +469,57 @@ public class InviteFragment extends BaseFragment implements
                 .setSizeDp(Dimensions.ACTION_BAR_DP)
                 .build();
         refresh.setIcon(refreshIcon);
+    }
+
+    @Override
+    public void showPlanNotAvailableMessage()
+    {
+        DefaultDialog.show(getActivity(),
+                R.string.plan_not_available_title,
+                R.string.plan_not_available_message,
+                R.string.plan_not_available_positive_button,
+                DefaultDialog.BUTTON_DISABLED,
+                false,
+                new DefaultDialog.Listener()
+                {
+                    @Override
+                    public void onPositiveButtonClicked()
+                    {
+                        startActivity(HomeActivity.callingIntent(InviteFragment.this.getActivity()));
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked()
+                    {
+                    }
+                });
+
+
+    }
+
+    @Override
+    public void showPlanExpiredMessage()
+    {
+        DefaultDialog.show(getActivity(),
+                R.string.plan_expired_title,
+                R.string.plan_expired_message,
+                R.string.plan_expired_positive_button,
+                DefaultDialog.BUTTON_DISABLED,
+                false,
+                new DefaultDialog.Listener()
+                {
+                    @Override
+                    public void onPositiveButtonClicked()
+                    {
+                        startActivity(HomeActivity.callingIntent(InviteFragment.this.getActivity()));
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked()
+                    {
+                    }
+                });
+
     }
 
     /* Helper Methods */

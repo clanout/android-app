@@ -374,9 +374,66 @@ public class NotificationService
         }
     }
 
-    private void handlePlanRemoveFromFeedNotification(Notification notification)
+    private void handlePlanRemoveFromFeedNotification(final Notification notification)
     {
         eventCache.delete(notification.getEventId());
+
+        clearEventNotificationsFromCache(notification);
+    }
+
+    private void clearEventNotificationsFromCache(final Notification notification)
+    {
+        notificationCache.getAllForEvent(notification.getEventId())
+                .observeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<List<Notification>>()
+                {
+                    @Override
+                    public void onCompleted()
+                    {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e)
+                    {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Notification> notifications)
+                    {
+                        List<Integer> notificationIdList = new ArrayList<Integer>();
+
+                        for (Notification notification1 : notifications) {
+                            notificationIdList.add(notification.getId());
+                        }
+
+                        notificationCache.clear(notificationIdList)
+                                .observeOn(Schedulers.newThread())
+                                .subscribeOn(Schedulers.newThread())
+                                .subscribe(new Subscriber<Boolean>()
+                                {
+                                    @Override
+                                    public void onCompleted()
+                                    {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e)
+                                    {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(Boolean aBoolean)
+                                    {
+
+                                    }
+                                });
+                    }
+                });
     }
 
     private void handleNewStatusUpdateNotification(final Notification notification)
@@ -427,9 +484,9 @@ public class NotificationService
 
             final DateTime notificationTimestamp = notification.getTimestamp();
 
-            eventCache.getChatSeenTimestamp(notification.getEventId())
+            fetchEvent(notification.getEventId())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<DateTime>()
+                    .subscribe(new Subscriber<Event>()
                     {
                         @Override
                         public void onCompleted()
@@ -440,81 +497,111 @@ public class NotificationService
                         @Override
                         public void onError(Throwable e)
                         {
+
                         }
 
                         @Override
-                        public void onNext(DateTime lastSeenTimestamp)
+                        public void onNext(Event event)
                         {
-                            if (lastSeenTimestamp == null) {
-                                notificationCache.put(notification).observeOn(Schedulers
-                                        .newThread())
-                                        .subscribe(new Subscriber<Object>()
-                                        {
-                                            @Override
-                                            public void onCompleted()
-                                            {
-
-                                                if (ifAppRunningInForeground()) {
-                                                    bus.post(new NewNotificationReceivedTrigger());
-
-                                                }
-                                                else {
-                                                    buildNotification(notification);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onError(Throwable e)
-                                            {
-
-                                            }
-
-                                            @Override
-                                            public void onNext(Object o)
-                                            {
-
-                                            }
-                                        });
-                            }
-                            else if (notificationTimestamp.isAfter(lastSeenTimestamp)) {
-
-                                notificationCache.put(notification).observeOn(Schedulers
-                                        .newThread())
-                                        .subscribe(new Subscriber<Object>()
-                                        {
-                                            @Override
-                                            public void onCompleted()
-                                            {
-
-                                                if (ifAppRunningInForeground()) {
-
-                                                    bus.post(new NewNotificationReceivedTrigger());
-
-                                                }
-                                                else {
-                                                    buildNotification(notification);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onError(Throwable e)
-                                            {
-
-                                            }
-
-                                            @Override
-                                            public void onNext(Object o)
-                                            {
-
-                                            }
-                                        });
-
-                            }
-                            else {
+                            if (!event.isExpired()) {
+                                handleChatNotification(notification, notificationTimestamp);
                             }
                         }
                     });
         }
+    }
+
+    private void handleChatNotification(final Notification notification, final DateTime
+            notificationTimestamp)
+    {
+        eventCache.getChatSeenTimestamp(notification.getEventId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<DateTime>()
+                {
+                    @Override
+                    public void onCompleted()
+                    {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e)
+                    {
+                    }
+
+                    @Override
+                    public void onNext(DateTime lastSeenTimestamp)
+                    {
+                        if (lastSeenTimestamp == null) {
+
+                            notificationCache.put(notification).observeOn(Schedulers
+                                    .newThread())
+                                    .subscribe(new Subscriber<Object>()
+                                    {
+                                        @Override
+                                        public void onCompleted()
+                                        {
+
+                                            if (ifAppRunningInForeground()) {
+                                                bus.post(new NewNotificationReceivedTrigger());
+
+                                            }
+                                            else {
+                                                buildNotification(notification);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e)
+                                        {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(Object o)
+                                        {
+
+                                        }
+                                    });
+                        }
+                        else if (notificationTimestamp.isAfter(lastSeenTimestamp)) {
+
+                            notificationCache.put(notification).observeOn(Schedulers
+                                    .newThread())
+                                    .subscribe(new Subscriber<Object>()
+                                    {
+                                        @Override
+                                        public void onCompleted()
+                                        {
+
+                                            if (ifAppRunningInForeground()) {
+
+                                                bus.post(new NewNotificationReceivedTrigger());
+
+                                            }
+                                            else {
+                                                buildNotification(notification);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e)
+                                        {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(Object o)
+                                        {
+
+                                        }
+                                    });
+
+                        }
+                        else {
+                        }
+                    }
+                });
     }
 
     private void handleNewFriendJoinedAppNotification(final Notification notification)
@@ -571,12 +658,176 @@ public class NotificationService
                     @Override
                     public void onCompleted()
                     {
-                        if (!(notification.getArgs().get("user_id")
-                                .equals(genericCache
-                                        .get(GenericCacheKeys.SESSION_USER, User
-                                                .class)
-                                        .getId()))) {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e)
+                    {
+                    }
+
+                    @Override
+                    public void onNext(Event event)
+                    {
+                        if (!event.isExpired()) {
+
+                            eventCache.save(event);
+
+                            if (!(notification.getArgs().get("user_id")
+                                    .equals(genericCache
+                                            .get(GenericCacheKeys.SESSION_USER, User
+                                                    .class)
+                                            .getId()))) {
+
+                                notificationCache.put(notification)
+                                        .observeOn(Schedulers
+                                                .newThread())
+                                        .subscribe(new Subscriber<Object>()
+                                        {
+                                            @Override
+                                            public void onCompleted()
+                                            {
+                                                if (ifAppRunningInForeground()) {
+                                                    bus.post(new
+                                                            NewNotificationReceivedTrigger());
+
+                                                }
+                                                else {
+                                                    buildNotification(notification);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onError
+                                                    (Throwable e)
+                                            {
+                                            }
+
+                                            @Override
+                                            public void onNext(Object o)
+                                            {
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void showEventRemovedNotification(final Notification notification)
+    {
+        eventCache.delete(notification.getEventId());
+
+        notificationCache.getAllForEvent(notification.getEventId())
+                .observeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<List<Notification>>()
+                {
+                    @Override
+                    public void onCompleted()
+                    {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e)
+                    {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Notification> notifications)
+                    {
+                        List<Integer> notificationIdList = new ArrayList<Integer>();
+
+                        for (Notification notification1 : notifications) {
+                            notificationIdList.add(notification.getId());
+                        }
+
+                        notificationCache.clear(notificationIdList)
+                                .observeOn(Schedulers.newThread())
+                                .subscribeOn(Schedulers.newThread())
+                                .subscribe(new Subscriber<Boolean>()
+                                {
+                                    @Override
+                                    public void onCompleted()
+                                    {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e)
+                                    {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(Boolean aBoolean)
+                                    {
+                                        if (!(notification.getArgs().get("user_id").equals(genericCache.get(GenericCacheKeys
+                                                .SESSION_USER, User.class).getId()))) {
+                                            notificationCache.put(notification).observeOn(Schedulers.newThread())
+                                                    .subscribe(new Subscriber<Object>()
+                                                    {
+                                                        @Override
+                                                        public void onCompleted()
+                                                        {
+                                                            if (ifAppRunningInForeground()) {
+                                                                bus.post(new NewNotificationReceivedTrigger());
+                                                            }
+                                                            else {
+                                                                buildNotification(notification);
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onError(Throwable e)
+                                                        {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onNext(Object o)
+                                                        {
+
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                });
+                    }
+                });
+    }
+
+    private void showRSVPChangedNotification(final Notification notification)
+    {
+        fetchEvent(notification.getEventId())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<Event>()
+                {
+                    @Override
+                    public void onCompleted()
+                    {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e)
+                    {
+
+                    }
+
+                    @Override
+                    public void onNext(Event event)
+                    {
+                        if (!event.isExpired()) {
+                            eventCache.save(event);
+
+                            notification
+                                    .setMessage("New friends joined " +
+                                            notification
+                                                    .getArgs().get
+                                                    ("plan_title"));
                             notificationCache.put(notification)
                                     .observeOn(Schedulers
                                             .newThread())
@@ -596,125 +847,18 @@ public class NotificationService
                                         }
 
                                         @Override
-                                        public void onError
-                                                (Throwable e)
+                                        public void onError(Throwable e)
                                         {
+
                                         }
 
                                         @Override
                                         public void onNext(Object o)
                                         {
+
                                         }
                                     });
                         }
-                    }
-
-                    @Override
-                    public void onError(Throwable e)
-                    {
-                    }
-
-                    @Override
-                    public void onNext(Event event)
-                    {
-                        eventCache.save(event);
-                    }
-                });
-    }
-
-    private void showEventRemovedNotification(final Notification notification)
-    {
-        eventCache.delete(notification.getEventId());
-
-        if (!(notification.getArgs().get("user_id").equals(genericCache.get(GenericCacheKeys
-                .SESSION_USER, User.class).getId()))) {
-            notificationCache.put(notification).observeOn(Schedulers.newThread())
-                    .subscribe(new Subscriber<Object>()
-                    {
-                        @Override
-                        public void onCompleted()
-                        {
-                            if (ifAppRunningInForeground()) {
-                                bus.post(new NewNotificationReceivedTrigger());
-
-                            }
-                            else {
-                                buildNotification(notification);
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable e)
-                        {
-
-                        }
-
-                        @Override
-                        public void onNext(Object o)
-                        {
-
-                        }
-                    });
-        }
-    }
-
-    private void showRSVPChangedNotification(final Notification notification)
-    {
-
-        fetchEvent(notification.getEventId())
-                .observeOn(Schedulers.newThread())
-                .subscribe(new Subscriber<Event>()
-                {
-                    @Override
-                    public void onCompleted()
-                    {
-                        notification
-                                .setMessage("New friends joined " +
-                                        notification
-                                                .getArgs().get
-                                                ("plan_title"));
-                        notificationCache.put(notification)
-                                .observeOn(Schedulers
-                                        .newThread())
-                                .subscribe(new Subscriber<Object>()
-                                {
-                                    @Override
-                                    public void onCompleted()
-                                    {
-                                        if (ifAppRunningInForeground()) {
-                                            bus.post(new
-                                                    NewNotificationReceivedTrigger());
-
-                                        }
-                                        else {
-                                            buildNotification(notification);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e)
-                                    {
-
-                                    }
-
-                                    @Override
-                                    public void onNext(Object o)
-                                    {
-
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onError(Throwable e)
-                    {
-
-                    }
-
-                    @Override
-                    public void onNext(Event event)
-                    {
-                        eventCache.save(event);
                     }
                 });
 
@@ -729,34 +873,7 @@ public class NotificationService
                     @Override
                     public void onCompleted()
                     {
-                        notificationCache.put(notification)
-                                .observeOn(Schedulers.newThread())
-                                .subscribe(new Subscriber<Object>()
-                                {
-                                    @Override
-                                    public void onCompleted()
-                                    {
-                                        if (ifAppRunningInForeground()) {
-                                            bus.post(new NewNotificationReceivedTrigger());
 
-                                        }
-                                        else {
-                                            buildNotification(notification);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e)
-                                    {
-
-                                    }
-
-                                    @Override
-                                    public void onNext(Object o)
-                                    {
-
-                                    }
-                                });
                     }
 
                     @Override
@@ -768,14 +885,44 @@ public class NotificationService
                     @Override
                     public void onNext(Event event)
                     {
-                        eventCache.save(event);
+                        if (!event.isExpired()) {
+                            eventCache.save(event);
+
+                            notificationCache.put(notification)
+                                    .observeOn(Schedulers.newThread())
+                                    .subscribe(new Subscriber<Object>()
+                                    {
+                                        @Override
+                                        public void onCompleted()
+                                        {
+                                            if (ifAppRunningInForeground()) {
+                                                bus.post(new NewNotificationReceivedTrigger());
+
+                                            }
+                                            else {
+                                                buildNotification(notification);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e)
+                                        {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(Object o)
+                                        {
+
+                                        }
+                                    });
+                        }
                     }
                 });
     }
 
     private void showCreateEventNotification(final Notification notification)
     {
-
         fetchEvent(notification.getEventId())
                 .observeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<Event>()
@@ -783,31 +930,6 @@ public class NotificationService
                     @Override
                     public void onCompleted()
                     {
-                        notificationCache.put(notification)
-                                .observeOn(Schedulers.newThread())
-                                .subscribe(new Subscriber<Object>()
-                                {
-                                    @Override
-                                    public void onCompleted()
-                                    {
-                                        if (ifAppRunningInForeground()) {
-                                            bus.post(new NewNotificationReceivedTrigger());
-                                        }
-                                        else {
-                                            buildNotification(notification);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e)
-                                    {
-                                    }
-
-                                    @Override
-                                    public void onNext(Object o)
-                                    {
-                                    }
-                                });
                     }
 
                     @Override
@@ -818,7 +940,35 @@ public class NotificationService
                     @Override
                     public void onNext(Event event)
                     {
-                        eventCache.save(event);
+                        if (!event.isExpired()) {
+                            eventCache.save(event);
+
+                            notificationCache.put(notification)
+                                    .observeOn(Schedulers.newThread())
+                                    .subscribe(new Subscriber<Object>()
+                                    {
+                                        @Override
+                                        public void onCompleted()
+                                        {
+                                            if (ifAppRunningInForeground()) {
+                                                bus.post(new NewNotificationReceivedTrigger());
+                                            }
+                                            else {
+                                                buildNotification(notification);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e)
+                                        {
+                                        }
+
+                                        @Override
+                                        public void onNext(Object o)
+                                        {
+                                        }
+                                    });
+                        }
                     }
                 });
     }
@@ -1131,10 +1281,11 @@ public class NotificationService
             int sumOfChatsAndUpdates = chatCount + updateCount;
             if (sumOfChatsAndUpdates != 0) {
 
-                if(sumOfChatsAndUpdates == 1){
+                if (sumOfChatsAndUpdates == 1) {
 
                     message = message + " and " + sumOfChatsAndUpdates + " other notification.";
-                }else{
+                }
+                else {
 
                     message = message + " and " + sumOfChatsAndUpdates + " other notifications.";
                 }
@@ -1157,9 +1308,10 @@ public class NotificationService
 
             if (chatCount != 0) {
 
-                if(chatCount == 1) {
+                if (chatCount == 1) {
                     message = message + " and " + chatCount + " other notification.";
-                }else{
+                }
+                else {
                     message = message + " and " + chatCount + " other notifications.";
                 }
             }

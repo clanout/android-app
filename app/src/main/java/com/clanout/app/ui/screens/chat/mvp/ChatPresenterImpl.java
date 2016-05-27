@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import retrofit.RetrofitError;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class ChatPresenterImpl implements ChatPresenter
 {
@@ -37,6 +39,8 @@ public class ChatPresenterImpl implements ChatPresenter
     private ChatMessage chatMessage;
     private String eventTitle;
 
+    private CompositeSubscription subscriptions;
+
     public ChatPresenterImpl(ChatService chatService, UserService userService, EventService eventService, String eventId)
     {
         this.chatService = chatService;
@@ -48,6 +52,8 @@ public class ChatPresenterImpl implements ChatPresenter
         historyCount = 0;
         isLoadHistoryInProgress = false;
         isChatSent = false;
+
+        subscriptions = new CompositeSubscription();
     }
 
     @Override
@@ -83,6 +89,8 @@ public class ChatPresenterImpl implements ChatPresenter
                         }
                     }
                 });
+
+        fetchEventDetailsFromNetwork();
     }
 
     @Override
@@ -104,6 +112,43 @@ public class ChatPresenterImpl implements ChatPresenter
 
         chatService.updateLastSeen(eventId);
     }
+
+    private void fetchEventDetailsFromNetwork()
+    {
+        Subscription subscription =
+                eventService
+                        ._fetchEventNetwork(eventId)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<Event>()
+                        {
+                            @Override
+                            public void onCompleted()
+                            {
+                            }
+
+                            @Override
+                            public void onError(Throwable e)
+                            {
+                                if (((RetrofitError) e).getResponse().getStatus() == 404) {
+                                    view.showPlanNotAvailableMessage();
+                                    eventService.clearEventFromCache(eventId);
+                                }
+                            }
+
+                            @Override
+                            public void onNext(Event event)
+                            {
+                                if (event.isExpired()) {
+
+                                    view.showPlanExpiredMessage();
+                                    eventService.clearEventFromCache(event.getId());
+                                }
+                            }
+                        });
+
+        subscriptions.add(subscription);
+    }
+
 
     @Override
     public void retry()

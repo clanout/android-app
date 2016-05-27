@@ -226,4 +226,12 @@
     <string name="event_removed_positive_button">Make Plan</string>
     <string name="event_removed_negative_button">Not Now</string>
 
+    <!-- Event Expired/Deleted -->
+    <string name="plan_not_available_title">Plan Deleted</string>
+    <string name="plan_not_available_message">This plan has been deleted and is not available anymore.</string>
+    <string name="plan_not_available_positive_button">Go to Home</string>
+    <string name="plan_expired_title">Plan Expired</string>
+    <string name="plan_expired_message">This is an old plan and is not available anymore.</string>
+    <string name="plan_expired_positive_button">Go to Home</string>
+
 </resources>

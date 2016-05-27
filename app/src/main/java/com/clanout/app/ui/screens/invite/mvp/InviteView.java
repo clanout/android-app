@@ -28,4 +28,8 @@ public interface InviteView
     void showRefreshing();
 
     void hideRefreshing();
+
+    void showPlanNotAvailableMessage();
+
+    void showPlanExpiredMessage();
 }

@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import retrofit.RetrofitError;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -347,18 +348,30 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
                             @Override
                             public void onError(Throwable e)
                             {
+                                if (((RetrofitError) e).getResponse().getStatus() == 404) {
+                                    view.showPlanNotAvailableMessage();
+                                    eventService.clearEventFromCache(event.getId());
+                                }
                             }
 
                             @Override
                             public void onNext(Event event)
                             {
-                                EventDetailsPresenterImpl.this.event = event;
+                                if (event.isExpired()) {
 
-                                displayDetails(event);
-                                view.hideLoading();
+                                    view.showPlanExpiredMessage();
+                                    eventService.clearEventFromCache(event.getId());
+                                }
+                                else {
 
-                                processEditState();
-                                processDeleteVisibility();
+                                    EventDetailsPresenterImpl.this.event = event;
+
+                                    displayDetails(event);
+                                    view.hideLoading();
+
+                                    processEditState();
+                                    processDeleteVisibility();
+                                }
                             }
                         });
 

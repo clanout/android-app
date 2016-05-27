@@ -15,4 +15,8 @@ public interface ChatView
     void onHistoryLoaded();
 
     void displayNoMoreHistory();
+
+    void showPlanNotAvailableMessage();
+
+    void showPlanExpiredMessage();
 }

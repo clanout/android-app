@@ -22,9 +22,12 @@ import com.clanout.app.service.ChatService;
 import com.clanout.app.service.EventService;
 import com.clanout.app.service.UserService;
 import com.clanout.app.ui.core.BaseFragment;
+import com.clanout.app.ui.dialog.DefaultDialog;
 import com.clanout.app.ui.screens.chat.mvp.ChatPresenter;
 import com.clanout.app.ui.screens.chat.mvp.ChatPresenterImpl;
 import com.clanout.app.ui.screens.chat.mvp.ChatView;
+import com.clanout.app.ui.screens.details.EventDetailsFragment;
+import com.clanout.app.ui.screens.home.HomeActivity;
 import com.clanout.app.ui.util.SnackbarFactory;
 import com.clanout.app.ui.util.VisibilityAnimationUtil;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
@@ -214,6 +217,55 @@ public class ChatFragment extends BaseFragment implements ChatView
         llChat.setVisibility(View.VISIBLE);
         llError.setVisibility(View.GONE);
         rvChat.noMoreLoading();
+    }
+
+    @Override
+    public void showPlanNotAvailableMessage()
+    {
+        DefaultDialog.show(getActivity(),
+                R.string.plan_not_available_title,
+                R.string.plan_not_available_message,
+                R.string.plan_not_available_positive_button,
+                DefaultDialog.BUTTON_DISABLED,
+                false,
+                new DefaultDialog.Listener()
+                {
+                    @Override
+                    public void onPositiveButtonClicked()
+                    {
+                        startActivity(HomeActivity.callingIntent(ChatFragment.this.getActivity()));
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked()
+                    {
+                    }
+                });
+    }
+
+    @Override
+    public void showPlanExpiredMessage()
+    {
+        DefaultDialog.show(getActivity(),
+                R.string.plan_expired_title,
+                R.string.plan_expired_message,
+                R.string.plan_expired_positive_button,
+                DefaultDialog.BUTTON_DISABLED,
+                false,
+                new DefaultDialog.Listener()
+                {
+                    @Override
+                    public void onPositiveButtonClicked()
+                    {
+                        startActivity(HomeActivity.callingIntent(ChatFragment.this.getActivity()));
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked()
+                    {
+                    }
+                });
+
     }
 
     /* Helper Methods */

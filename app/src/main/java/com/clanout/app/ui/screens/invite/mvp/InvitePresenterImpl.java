@@ -16,6 +16,8 @@ import com.clanout.app.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.RetrofitError;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -61,6 +63,8 @@ public class InvitePresenterImpl implements InvitePresenter
     {
         this.view = view;
 
+        fetchEventDetailsFromNetwork(eventId);
+
         isReadContactsPermissionGranted = phonebookService.isReadContactsPermissionGranted();
         if (!isReadContactsPermissionGranted)
         {
@@ -77,6 +81,43 @@ public class InvitePresenterImpl implements InvitePresenter
         }
 
         init();
+    }
+
+    private void fetchEventDetailsFromNetwork(final String eventId)
+    {
+        Subscription subscription =
+                eventService
+                        ._fetchEventNetwork(eventId)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<Event>()
+                        {
+                            @Override
+                            public void onCompleted()
+                            {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e)
+                            {
+                                if (((RetrofitError) e).getResponse().getStatus() == 404) {
+                                    view.showPlanNotAvailableMessage();
+                                    eventService.clearEventFromCache(eventId);
+                                }
+                            }
+
+                            @Override
+                            public void onNext(Event event)
+                            {
+                                if (event.isExpired()) {
+
+                                    view.showPlanExpiredMessage();
+                                    eventService.clearEventFromCache(event.getId());
+                                }
+                            }
+                        });
+
+        subscriptions.add(subscription);
     }
 
     @Override

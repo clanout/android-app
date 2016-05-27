@@ -740,4 +740,9 @@ public class EventService
                 .subscribeOn(Schedulers.newThread());
 
     }
+
+    public void clearEventFromCache(String eventId)
+    {
+        eventCache.delete(eventId);
+    }
 }

@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.clanout.R;
 import com.clanout.app.cache.core.CacheManager;
@@ -38,6 +39,7 @@ import com.clanout.app.ui.dialog.StatusDialog;
 import com.clanout.app.ui.screens.details.mvp.EventDetailsPresenter;
 import com.clanout.app.ui.screens.details.mvp.EventDetailsPresenterImpl;
 import com.clanout.app.ui.screens.details.mvp.EventDetailsView;
+import com.clanout.app.ui.screens.home.HomeActivity;
 import com.clanout.app.ui.util.SnackbarFactory;
 import com.clanout.app.ui.util.SoftKeyboardHandler;
 import com.clanout.app.ui.util.VisibilityAnimationUtil;
@@ -545,6 +547,57 @@ public class EventDetailsFragment extends BaseFragment implements
     public void hideChatMarker()
     {
         chatMarker.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showPlanNotAvailableMessage()
+    {
+        DefaultDialog.show(getActivity(),
+                R.string.plan_not_available_title,
+                R.string.plan_not_available_message,
+                R.string.plan_not_available_positive_button,
+                DefaultDialog.BUTTON_DISABLED,
+                false,
+                new DefaultDialog.Listener()
+                {
+                    @Override
+                    public void onPositiveButtonClicked()
+                    {
+                        startActivity(HomeActivity.callingIntent(EventDetailsFragment.this.getActivity()));
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked()
+                    {
+                    }
+                });
+
+
+    }
+
+    @Override
+    public void showPlanExpiredMessage()
+    {
+        DefaultDialog.show(getActivity(),
+                R.string.plan_expired_title,
+                R.string.plan_expired_message,
+                R.string.plan_expired_positive_button,
+                DefaultDialog.BUTTON_DISABLED,
+                false,
+                new DefaultDialog.Listener()
+                {
+                    @Override
+                    public void onPositiveButtonClicked()
+                    {
+                        startActivity(HomeActivity.callingIntent(EventDetailsFragment.this.getActivity()));
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked()
+                    {
+                    }
+                });
+
     }
 
     /* Helper Methods */
