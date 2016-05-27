@@ -84,8 +84,7 @@ public class AuthService
                     public void call(Boolean isSessionCreated)
                     {
                         if (isSessionCreated) {
-                            ClanOut.getAnalyticsTracker().setClientId(userService
-                                    .getSessionUserId());
+                            ClanOut.getAnalyticsTracker().set("&uid", userService.getSessionUserId());
                         }
                     }
                 })
