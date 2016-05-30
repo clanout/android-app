@@ -253,6 +253,7 @@ public class LocationService
                                 Timber.v("Location : " + location.toString());
                             }
 
+                            AnalyticsHelper.sendEvents("LOCATION", "LOCATION_SET", null);
                             LocationService.this.location = location;
                         }
                     })
