@@ -172,19 +172,21 @@ public class EventDetailsPresenterImpl implements EventDetailsPresenter
     @Override
     public void setStatus(String status)
     {
-        if (status == null) {
-            status = "";
-        }
-
-        if (!status.equals(event.getStatus())) {
-            event.setStatus(status);
-            view.resetEvent(event);
-
-            if (isLastMinute && !status.isEmpty()) {
-                eventService.updateStatus(event, true);
+        if (event != null) {
+            if (status == null) {
+                status = "";
             }
-            else {
-                eventService.updateStatus(event, false);
+
+            if (!status.equals(event.getStatus())) {
+                event.setStatus(status);
+                view.resetEvent(event);
+
+                if (isLastMinute && !status.isEmpty()) {
+                    eventService.updateStatus(event, true);
+                }
+                else {
+                    eventService.updateStatus(event, false);
+                }
             }
         }
     }

@@ -59,6 +59,7 @@
     <string name="error_no_whatsapp">WhatsApp is not installed on this device</string>
     <string name="error_notifications">Unable to load notifications</string>
     <string name="error_friends_not_loaded">Could not load your friends.</string>
+    <string name="error_no_internet">Internet connection unavailable. Please connect.</string>
 
     <!-- Common Strings -->
     <string name="retry">Retry</string>

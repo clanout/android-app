@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -153,8 +155,7 @@ public class LauncherActivity extends BaseActivity implements
         setContentView(R.layout.activity_launcher);
         ButterKnife.bind(this);
 
-        if (llFb == null)
-        {
+        if (llFb == null) {
             throw new IllegalStateException();
         }
 
@@ -172,7 +173,8 @@ public class LauncherActivity extends BaseActivity implements
         FacebookService facebookService = FacebookService.getInstance();
 
         /* Location Service */
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getSystemService(Context
+                .LOCATION_SERVICE);
         LocationService.init(getApplicationContext(), locationManager, googleService);
         LocationService locationService = LocationService.getInstance();
 
@@ -194,7 +196,8 @@ public class LauncherActivity extends BaseActivity implements
 
         /* Presenters */
         facebookLoginPresenter = new FacebookLoginPresenterImpl(authService, facebookService);
-        bootstrapPresenter = new BootstrapPresenterImpl(locationService, authService, gcmService, userService, eventService);
+        bootstrapPresenter = new BootstrapPresenterImpl(locationService, authService, gcmService,
+                userService, eventService);
     }
 
     @Override
@@ -204,7 +207,7 @@ public class LauncherActivity extends BaseActivity implements
 
         notificationService.clearNotificationsFromBar();
 
-        setupGooglePlayService();
+        checkInternet();
     }
 
     @Override
@@ -223,36 +226,38 @@ public class LauncherActivity extends BaseActivity implements
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults)
     {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == PermissionHandler.Permissions.LOCATION)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED)
-            {
+        if (requestCode == PermissionHandler.Permissions.LOCATION) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 if (PermissionHandler
-                        .isRationalRequired(this, PermissionHandler.Permissions.LOCATION))
-                {
+                        .isRationalRequired(this, PermissionHandler.Permissions.LOCATION)) {
                     /* Analytics */
-                    AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,GoogleAnalyticsConstants.ACTION_LOCATION_PERMISSION,GoogleAnalyticsConstants.LABEL_DENIED);
+                    AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                            GoogleAnalyticsConstants.ACTION_LOCATION_PERMISSION,
+                            GoogleAnalyticsConstants.LABEL_DENIED);
                     /* Analytics */
 
                     onPermissionDenied(PermissionHandler.Permissions.LOCATION);
                 }
-                else
-                {
+                else {
                     /* Analytics */
-                    AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,GoogleAnalyticsConstants.ACTION_LOCATION_PERMISSION,GoogleAnalyticsConstants.LABEL_PERMANENTLY_DENIED);
+                    AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                            GoogleAnalyticsConstants.ACTION_LOCATION_PERMISSION,
+                            GoogleAnalyticsConstants.LABEL_PERMANENTLY_DENIED);
                     /* Analytics */
 
                     onPermissionPermanentlyDenied(PermissionHandler.Permissions.LOCATION);
                 }
             }
-            else
-            {
+            else {
                 /* Analytics */
-                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,GoogleAnalyticsConstants.ACTION_LOCATION_PERMISSION,GoogleAnalyticsConstants.LABEL_GRANTED);
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                        GoogleAnalyticsConstants.ACTION_LOCATION_PERMISSION,
+                        GoogleAnalyticsConstants.LABEL_GRANTED);
                 /* Analytics */
 
                 onPermissionGranted(PermissionHandler.Permissions.LOCATION);
@@ -298,11 +303,14 @@ public class LauncherActivity extends BaseActivity implements
 
         tvActionMessage.setText(R.string.permission_location_message);
         tvAction.setText(R.string.permission_goto_settings);
-        tvAction.setOnClickListener(new View.OnClickListener() {
+        tvAction.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 /* Analytics */
-                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,GoogleAnalyticsConstants.ACTION_GO_TO_SETTINGS,null);
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                        GoogleAnalyticsConstants.ACTION_GO_TO_SETTINGS, null);
                 /* Analytics */
 
 
@@ -357,8 +365,7 @@ public class LauncherActivity extends BaseActivity implements
     @Override
     public void handleLocationPermissions()
     {
-        if (PermissionHandler.isRationalRequired(this, PermissionHandler.Permissions.LOCATION))
-        {
+        if (PermissionHandler.isRationalRequired(this, PermissionHandler.Permissions.LOCATION)) {
 
             Timber.d("Location Permission Rationale Required");
 
@@ -372,12 +379,12 @@ public class LauncherActivity extends BaseActivity implements
                 public void onClick(View v)
                 {
                     PermissionHandler
-                            .requestPermission(LauncherActivity.this, PermissionHandler.Permissions.LOCATION);
+                            .requestPermission(LauncherActivity.this, PermissionHandler
+                                    .Permissions.LOCATION);
                 }
             });
         }
-        else
-        {
+        else {
             Timber.d("Location Permission Rationale Not Required");
             // Location permission has not been granted yet. Request it directly.
             PermissionHandler.requestPermission(this, PermissionHandler.Permissions.LOCATION);
@@ -391,10 +398,13 @@ public class LauncherActivity extends BaseActivity implements
 
         tvActionMessage.setText(R.string.location_off_message);
         tvAction.setText(R.string.location_off_action);
-        tvAction.setOnClickListener(new View.OnClickListener() {
+        tvAction.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            public void onClick(View v)
+            {
+                startActivity(new Intent(android.provider.Settings
+                        .ACTION_LOCATION_SOURCE_SETTINGS));
             }
         });
     }
@@ -406,9 +416,11 @@ public class LauncherActivity extends BaseActivity implements
 
         tvActionMessage.setText(R.string.error_default);
         tvAction.setText(R.string.try_again);
-        tvAction.setOnClickListener(new View.OnClickListener() {
+        tvAction.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 bootstrapPresenter.attachView(LauncherActivity.this);
             }
         });
@@ -438,8 +450,7 @@ public class LauncherActivity extends BaseActivity implements
     @Override
     public void onSuccess(LoginResult loginResult)
     {
-        if (facebookLoginPresenter != null)
-        {
+        if (facebookLoginPresenter != null) {
             facebookLoginPresenter.onFacebookLoginSuccess();
         }
 
@@ -453,34 +464,35 @@ public class LauncherActivity extends BaseActivity implements
     @Override
     public void onCancel()
     {
-        if (facebookLoginPresenter != null)
-        {
+        if (facebookLoginPresenter != null) {
             facebookLoginPresenter.onFacebookLoginCancel();
         }
 
         /* Analytics */
-        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN, GoogleAnalyticsConstants.ACTION_LOGIN_ATTEMPT, GoogleAnalyticsConstants.LABEL_CANCEL);
+        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                GoogleAnalyticsConstants.ACTION_LOGIN_ATTEMPT, GoogleAnalyticsConstants
+                        .LABEL_CANCEL);
         /* Analytics */
     }
 
     @Override
     public void onError(FacebookException error)
     {
-        if (facebookLoginPresenter != null)
-        {
+        if (facebookLoginPresenter != null) {
             facebookLoginPresenter.onFacebookLoginError();
         }
 
         /* Analytics */
-        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,GoogleAnalyticsConstants.ACTION_LOGIN_ATTEMPT, GoogleAnalyticsConstants.LABEL_ERROR);
+        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                GoogleAnalyticsConstants.ACTION_LOGIN_ATTEMPT, GoogleAnalyticsConstants
+                        .LABEL_ERROR);
         /* Analytics */
     }
 
     /* Google Play Services */
     private void setupGooglePlayService()
     {
-        if (!googleService.isGoogleApiClientSet())
-        {
+        if (!googleService.isGoogleApiClientSet()) {
             GoogleApiClient googleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -490,12 +502,10 @@ public class LauncherActivity extends BaseActivity implements
             googleService.setGoogleApiClient(googleApiClient);
         }
 
-        if (!googleService.isConnected())
-        {
+        if (!googleService.isConnected()) {
             googleService.connect();
         }
-        else
-        {
+        else {
             facebookLoginPresenter.attachView(this);
         }
     }
@@ -555,48 +565,47 @@ public class LauncherActivity extends BaseActivity implements
         });
 
         Observable.interval(4, TimeUnit.SECONDS)
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(new Subscriber<Long>()
-                             {
-                                 @Override
-                                 public void onCompleted()
-                                 {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Long>()
+                           {
+                               @Override
+                               public void onCompleted()
+                               {
 
-                                 }
+                               }
 
-                                 @Override
-                                 public void onError(Throwable e)
-                                 {
+                               @Override
+                               public void onError(Throwable e)
+                               {
 
-                                 }
+                               }
 
-                                 @Override
-                                 public void onNext(Long aLong)
-                                 {
-                                     if (!introScrolled) {
-                                         int position = vpIntro.getCurrentItem();
-                                         if (position == 3) {
-                                             position = 0;
-                                         }
-                                         else {
-                                             position++;
-                                         }
+                               @Override
+                               public void onNext(Long aLong)
+                               {
+                                   if (!introScrolled) {
+                                       int position = vpIntro.getCurrentItem();
+                                       if (position == 3) {
+                                           position = 0;
+                                       }
+                                       else {
+                                           position++;
+                                       }
 
-                                         setIntroMarker(position);
-                                         vpIntro.setCurrentItem(position);
-                                     }
-                                     else {
-                                         introScrolled = false;
-                                     }
-                                 }
-                             }
-                  );
+                                       setIntroMarker(position);
+                                       vpIntro.setCurrentItem(position);
+                                   }
+                                   else {
+                                       introScrolled = false;
+                                   }
+                               }
+                           }
+                );
     }
 
     private void setIntroMarker(int position)
     {
-        switch (position)
-        {
+        switch (position) {
             case 0:
                 ivIntro1.setImageResource(R.drawable.intro_dot_selected);
                 ivIntro2.setImageResource(R.drawable.intro_dot);
@@ -657,11 +666,14 @@ public class LauncherActivity extends BaseActivity implements
     {
         SpannableString ss = new SpannableString(getResources().getString(R.string.user_agreement));
 
-        ClickableSpan span1 = new ClickableSpan() {
+        ClickableSpan span1 = new ClickableSpan()
+        {
             @Override
-            public void onClick(View textView) {
+            public void onClick(View textView)
+            {
 
-                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN, GoogleAnalyticsConstants.ACTION_TNC, null);
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                        GoogleAnalyticsConstants.ACTION_TNC, null);
 
                 String url = "http://www.clanout.com/terms.html";
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -670,11 +682,14 @@ public class LauncherActivity extends BaseActivity implements
             }
         };
 
-        ClickableSpan span2 = new ClickableSpan() {
+        ClickableSpan span2 = new ClickableSpan()
+        {
             @Override
-            public void onClick(View textView) {
+            public void onClick(View textView)
+            {
 
-                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN, GoogleAnalyticsConstants.ACTION_PRIVACY, null);
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                        GoogleAnalyticsConstants.ACTION_PRIVACY, null);
 
                 String url = "http://www.clanout.com/privacy.html";
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -696,10 +711,31 @@ public class LauncherActivity extends BaseActivity implements
         llAction.setVisibility(View.VISIBLE);
     }
 
+    private void displayNoInternetError()
+    {
+        displayBootstrapView();
+
+        tvAction.setVisibility(View.VISIBLE);
+        tvActionMessage.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.GONE);
+
+        tvActionMessage.setText(R.string.error_no_internet);
+        tvAction.setText(R.string.try_again);
+        tvAction.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                checkInternet();
+            }
+        });
+    }
+
     private void displayPlayServicesErrorDialog()
     {
         /* Analytics */
-        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,GoogleAnalyticsConstants.ACTION_PLAY_SERVICES_ERROR,null);
+        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                GoogleAnalyticsConstants.ACTION_PLAY_SERVICES_ERROR, null);
         /* Analytics */
 
         DefaultDialog.show(this,
@@ -723,7 +759,8 @@ public class LauncherActivity extends BaseActivity implements
                 });
 
         /* Analytics */
-        AnalyticsHelper.sendScreenNames(GoogleAnalyticsConstants.SCREEN_GOOGLE_SERVICES_PERMISSION_DIALOG);
+        AnalyticsHelper.sendScreenNames(GoogleAnalyticsConstants
+                .SCREEN_GOOGLE_SERVICES_PERMISSION_DIALOG);
         /* Analytics */
     }
 
@@ -739,22 +776,30 @@ public class LauncherActivity extends BaseActivity implements
                 R.string.facebook_permission_dialog_positive_button,
                 R.string.facebook_permission_dialog_negative_button,
                 false,
-                new DefaultDialog.Listener() {
+                new DefaultDialog.Listener()
+                {
                     @Override
-                    public void onPositiveButtonClicked() {
+                    public void onPositiveButtonClicked()
+                    {
                         /* Analytics */
-                        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,GoogleAnalyticsConstants.ACTION_FACEBOOK_PERMISSIONS,GoogleAnalyticsConstants.LABEL_GRANTED);
+                        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                                GoogleAnalyticsConstants.ACTION_FACEBOOK_PERMISSIONS,
+                                GoogleAnalyticsConstants.LABEL_GRANTED);
                         /* Analytics */
 
                         LoginManager
                                 .getInstance()
-                                .logInWithReadPermissions(LauncherActivity.this, FacebookService.PERMISSIONS);
+                                .logInWithReadPermissions(LauncherActivity.this, FacebookService
+                                        .PERMISSIONS);
                     }
 
                     @Override
-                    public void onNegativeButtonClicked() {
+                    public void onNegativeButtonClicked()
+                    {
                         /* Analytics */
-                        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,GoogleAnalyticsConstants.ACTION_FACEBOOK_PERMISSIONS,GoogleAnalyticsConstants.LABEL_DENIED);
+                        AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                                GoogleAnalyticsConstants.ACTION_FACEBOOK_PERMISSIONS,
+                                GoogleAnalyticsConstants.LABEL_DENIED);
                         /* Analytics */
 
                         closeApp();
@@ -769,8 +814,7 @@ public class LauncherActivity extends BaseActivity implements
         @FlowEntry int flowEntry = sourceIntent.getIntExtra(ARG_FLOW_ENTRY, FlowEntry.HOME);
         String eventId = sourceIntent.getStringExtra(ARG_EVENT_ID);
 
-        switch (flowEntry)
-        {
+        switch (flowEntry) {
             case FlowEntry.HOME:
 
                 startActivity(HomeActivity.callingIntent(this));
@@ -778,7 +822,9 @@ public class LauncherActivity extends BaseActivity implements
 
             case FlowEntry.DETAILS:
                 /* Analytics */
-                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_DETAILS,GoogleAnalyticsConstants.ACTION_OPEN,GoogleAnalyticsConstants.LABEL_FROM_PUSH_NOTIFICATION);
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_DETAILS,
+                        GoogleAnalyticsConstants.ACTION_OPEN, GoogleAnalyticsConstants
+                                .LABEL_FROM_PUSH_NOTIFICATION);
                 AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
                         GoogleAnalyticsConstants.ACTION_LAUNCH_FROM_NOTIF,
                         GoogleAnalyticsConstants.LABEL_TO_DETAILS);
@@ -791,7 +837,9 @@ public class LauncherActivity extends BaseActivity implements
 
             case FlowEntry.CHAT:
                 /* Analytics */
-                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_CHAT,GoogleAnalyticsConstants.ACTION_OPEN,GoogleAnalyticsConstants.LABEL_FROM_PUSH_NOTIFICATION);
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_CHAT,
+                        GoogleAnalyticsConstants.ACTION_OPEN, GoogleAnalyticsConstants
+                                .LABEL_FROM_PUSH_NOTIFICATION);
                 AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
                         GoogleAnalyticsConstants.ACTION_LAUNCH_FROM_NOTIF,
                         GoogleAnalyticsConstants.LABEL_TO_CHAT);
@@ -804,8 +852,12 @@ public class LauncherActivity extends BaseActivity implements
 
             case FlowEntry.NOTIFICATIONS:
                 /* Analytics */
-                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_NOTIFICATION,GoogleAnalyticsConstants.ACTION_OPEN,GoogleAnalyticsConstants.LABEL_FROM_PUSH_NOTIFICATION);
-                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,GoogleAnalyticsConstants.ACTION_LAUNCH_FROM_NOTIF,GoogleAnalyticsConstants.LABEL_TO_NOTIFICATION);
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_NOTIFICATION,
+                        GoogleAnalyticsConstants.ACTION_OPEN, GoogleAnalyticsConstants
+                                .LABEL_FROM_PUSH_NOTIFICATION);
+                AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
+                        GoogleAnalyticsConstants.ACTION_LAUNCH_FROM_NOTIF,
+                        GoogleAnalyticsConstants.LABEL_TO_NOTIFICATION);
                 /* Analytics */
 
                 startActivity(NotificationActivity.callingIntent(this));
@@ -813,5 +865,20 @@ public class LauncherActivity extends BaseActivity implements
         }
 
         finish();
+    }
+
+    private void checkInternet()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnected()) {
+            setupGooglePlayService();
+        }
+        else {
+
+            displayNoInternetError();
+        }
     }
 }

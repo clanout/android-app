@@ -132,11 +132,16 @@ public class ChatPresenterImpl implements ChatPresenter
                             @Override
                             public void onError(Throwable e)
                             {
-                                if (((RetrofitError) e).getResponse().getStatus() == 404) {
-                                    view.showPlanNotAvailableMessage();
-                                    eventService.clearEventFromCache(eventId);
+                                try {
+                                    if (((RetrofitError) e).getResponse().getStatus() == 404) {
+                                        view.showPlanNotAvailableMessage();
+                                        eventService.clearEventFromCache(eventId);
 
-                                    notificationService.clearNotificationsForEvent(eventId);
+                                        notificationService.clearNotificationsForEvent(eventId);
+                                    }
+                                }catch (Exception exception)
+                                {
+
                                 }
                             }
 
