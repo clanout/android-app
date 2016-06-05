@@ -235,6 +235,7 @@ public class LauncherActivity extends BaseActivity implements
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 if (PermissionHandler
                         .isRationalRequired(this, PermissionHandler.Permissions.LOCATION)) {
+
                     /* Analytics */
                     AnalyticsHelper.sendEvents(GoogleAnalyticsConstants.CATEGORY_LOGIN,
                             GoogleAnalyticsConstants.ACTION_LOCATION_PERMISSION,
