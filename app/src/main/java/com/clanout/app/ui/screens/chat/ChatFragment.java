@@ -27,7 +27,6 @@ import com.clanout.app.ui.dialog.DefaultDialog;
 import com.clanout.app.ui.screens.chat.mvp.ChatPresenter;
 import com.clanout.app.ui.screens.chat.mvp.ChatPresenterImpl;
 import com.clanout.app.ui.screens.chat.mvp.ChatView;
-import com.clanout.app.ui.screens.details.EventDetailsFragment;
 import com.clanout.app.ui.screens.home.HomeActivity;
 import com.clanout.app.ui.util.SnackbarFactory;
 import com.clanout.app.ui.util.VisibilityAnimationUtil;

@@ -18,7 +18,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -132,14 +131,17 @@ public class ChatPresenterImpl implements ChatPresenter
                             @Override
                             public void onError(Throwable e)
                             {
-                                try {
-                                    if (((RetrofitError) e).getResponse().getStatus() == 404) {
+                                try
+                                {
+                                    if (((RetrofitError) e).getResponse().getStatus() == 404)
+                                    {
                                         view.showPlanNotAvailableMessage();
                                         eventService.clearEventFromCache(eventId);
 
                                         notificationService.clearNotificationsForEvent(eventId);
                                     }
-                                }catch (Exception exception)
+                                }
+                                catch (Exception exception)
                                 {
 
                                 }
@@ -148,7 +150,8 @@ public class ChatPresenterImpl implements ChatPresenter
                             @Override
                             public void onNext(Event event)
                             {
-                                if (event.isExpired()) {
+                                if (event.isExpired())
+                                {
 
                                     view.showPlanExpiredMessage();
                                     eventService.clearEventFromCache(event.getId());
@@ -178,37 +181,41 @@ public class ChatPresenterImpl implements ChatPresenter
             visibleChats.add(chatMessage);
         }
 
-        chatService
-                .post(chatMessage)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Object>()
-                {
-                    @Override
-                    public void onCompleted()
-                    {
-                        isChatSent = true;
-                    }
+        chatService.post(chatMessage);
 
-                    @Override
-                    public void onError(Throwable e)
-                    {
-                        if (view != null)
-                        {
-                            view.displaySendMessageFailureError();
-                        }
-                    }
-
-                    @Override
-                    public void onNext(Object o)
-                    {
-                    }
-                });
+//        chatService
+//                .post(chatMessage)
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<Object>()
+//                {
+//                    @Override
+//                    public void onCompleted()
+//                    {
+//                        isChatSent = true;
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e)
+//                    {
+//                        if (view != null)
+//                        {
+//                            view.displaySendMessageFailureError();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onNext(Object o)
+//                    {
+//                    }
+//                });
     }
 
     @Override
     public void loadMore()
     {
+//        view.displayNoMoreHistory();
+
         isLoadHistoryInProgress = true;
         historyCount++;
 
@@ -218,7 +225,7 @@ public class ChatPresenterImpl implements ChatPresenter
             chatSubscription = null;
         }
 
-        Observable.timer(1, TimeUnit.SECONDS)
+        Observable.timer(2, TimeUnit.SECONDS)
                   .first()
                   .subscribeOn(Schedulers.newThread())
                   .observeOn(AndroidSchedulers.mainThread())
@@ -303,57 +310,58 @@ public class ChatPresenterImpl implements ChatPresenter
         }
 
         chatSubscription =
-                chatService
-                        .connect()
-                        .flatMap(new Func1<Boolean, Observable<ChatMessage>>()
-                        {
-                            @Override
-                            public Observable<ChatMessage> call(Boolean isConnected)
-                            {
-                                if (isConnected)
-                                {
-                                    return chatService.joinChat(eventId);
-                                }
-                                else
-                                {
-                                    throw new IllegalStateException();
-                                }
-                            }
-                        })
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<ChatMessage>()
-                        {
-                            @Override
-                            public void onCompleted()
-                            {
+//                chatService
+//                        .connect()
+//                        .flatMap(new Func1<Boolean, Observable<ChatMessage>>()
+//                        {
+//                            @Override
+//                            public Observable<ChatMessage> call(Boolean isConnected)
+//                            {
+//                                if (isConnected)
+//                                {
+//                                    return chatService.joinChat(eventId);
+//                                }
+//                                else
+//                                {
+//                                    throw new IllegalStateException();
+//                                }
+//                            }
+//                        })
+                chatService.joinChat(eventId)
+                           .subscribeOn(Schedulers.newThread())
+                           .observeOn(AndroidSchedulers.mainThread())
+                           .subscribe(new Subscriber<ChatMessage>()
+                           {
+                               @Override
+                               public void onCompleted()
+                               {
 
-                            }
+                               }
 
-                            @Override
-                            public void onError(Throwable e)
-                            {
-                                e.printStackTrace();
-                                if (view != null)
-                                {
-                                    view.displayError();
-                                }
-                            }
+                               @Override
+                               public void onError(Throwable e)
+                               {
+                                   e.printStackTrace();
+                                   if (view != null)
+                                   {
+                                       view.displayError();
+                                   }
+                               }
 
-                            @Override
-                            public void onNext(ChatMessage chatMessage)
-                            {
-                                if (!visibleChats.contains(chatMessage))
-                                {
-                                    if (view != null)
-                                    {
-                                        visibleChats.add(chatMessage);
-                                        view.displayMessage(chatMessage);
-                                        chatService.updateLastSeen(eventId);
-                                    }
-                                }
-                            }
-                        });
+                               @Override
+                               public void onNext(ChatMessage chatMessage)
+                               {
+                                   if (!visibleChats.contains(chatMessage))
+                                   {
+                                       if (view != null)
+                                       {
+                                           visibleChats.add(chatMessage);
+                                           view.displayMessage(chatMessage);
+                                           chatService.updateLastSeen(eventId);
+                                       }
+                                   }
+                               }
+                           });
     }
 
     public String generateMessageId()

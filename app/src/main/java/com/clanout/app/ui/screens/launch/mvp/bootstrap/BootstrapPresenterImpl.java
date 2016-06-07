@@ -52,18 +52,22 @@ public class BootstrapPresenterImpl implements BootstrapPresenter
         this.view = view;
 
         this.view.showLoading();
-        if (locationService.isLocationPermissionGranted()) {
+        if (locationService.isLocationPermissionGranted())
+        {
 
             Timber.d("Location Permission Granted");
 
-            if (locationService.isLocationServiceAvailable()) {
+            if (locationService.isLocationServiceAvailable())
+            {
                 init();
             }
-            else {
+            else
+            {
                 this.view.displayLocationServiceUnavailableMessage();
             }
         }
-        else {
+        else
+        {
 
             Timber.d("Location Permission not Granted");
 
@@ -100,16 +104,20 @@ public class BootstrapPresenterImpl implements BootstrapPresenter
                             @Override
                             public void onNext(Boolean isNewUser)
                             {
-                                if (!locationService.isAppAvailableInZone()) {
+                                if (!locationService.isAppAvailableInZone())
+                                {
 
                                     view.displayAppNotAvailableScreen();
                                 }
-                                else {
+                                else
+                                {
 
-                                    if (isNewUser) {
+                                    if (isNewUser)
+                                    {
                                         view.navigateToPendingInvitesScreen();
                                     }
-                                    else {
+                                    else
+                                    {
                                         view.proceed();
                                     }
                                 }
@@ -128,10 +136,12 @@ public class BootstrapPresenterImpl implements BootstrapPresenter
                     @Override
                     public Location call(Boolean isSessionInitialized, Location location)
                     {
-                        if (isSessionInitialized && location != null) {
+                        if (isSessionInitialized && location != null)
+                        {
                             return location;
                         }
-                        else {
+                        else
+                        {
                             throw new IllegalStateException("[Bootstrap Error] " +
                                     "session/fetch_location failed");
                         }
@@ -150,10 +160,12 @@ public class BootstrapPresenterImpl implements BootstrapPresenter
                     @Override
                     public Observable<Boolean> call(Boolean isLocationPushed)
                     {
-                        if (isLocationPushed) {
+                        if (isLocationPushed)
+                        {
                             return eventService._fetchCreateSuggestions();
                         }
-                        else {
+                        else
+                        {
                             throw new IllegalStateException("[Bootstrap Error] location push " +
                                     "failed");
                         }
@@ -164,10 +176,12 @@ public class BootstrapPresenterImpl implements BootstrapPresenter
                     @Override
                     public Boolean call(Boolean isCreateSuggestionsFetched)
                     {
-                        if (isCreateSuggestionsFetched) {
+                        if (isCreateSuggestionsFetched)
+                        {
                             return userService.isNewUser();
                         }
-                        else {
+                        else
+                        {
                             throw new IllegalStateException();
                         }
                     }

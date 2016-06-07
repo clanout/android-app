@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "657261759195",
+    "firebase_url": "https://clanout-1275.firebaseio.com",
+    "project_id": "clanout-1275",
+    "storage_bucket": "clanout-1275.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657261759195:android:60d2c08967d2974b",
+        "android_client_info": {
+          "package_name": "com.clanout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657261759195-7re4davgghv1inkte0o8f3l7hukvo771.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.clanout",
+            "certificate_hash": "C7076EF59C61891D16C57E4C016CA9417B486511"
+          }
+        },
+        {
+          "client_id": "657261759195-2smri8mf88mj3dbh5gaf3eooq9cuu55b.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "657261759195-5i8jtrlqk0kadih5vi1vs07nv3jpjbue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtE6F6PAQznxLKolUXJehW1BaswXU_ioA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

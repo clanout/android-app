@@ -1,28 +1,18 @@
 package com.clanout.app.service;
 
-import android.support.annotation.IntDef;
-
 import com.clanout.app.api.core.GsonProvider;
 import com.clanout.app.common.analytics.AnalyticsHelper;
-import com.clanout.app.config.AppConstants;
 import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.ChatMessage;
 import com.clanout.app.model.Event;
 import com.clanout.app.model.util.DateTimeUtil;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
-import org.jivesoftware.smack.AbstractConnectionClosedListener;
-import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.MessageListener;
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
-import org.jivesoftware.smackx.muc.DiscussionHistory;
-import org.jivesoftware.smackx.muc.MultiUserChat;
-import org.jivesoftware.smackx.muc.MultiUserChatManager;
-import org.jivesoftware.smackx.ping.PingFailedListener;
-import org.jivesoftware.smackx.ping.PingManager;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -37,17 +27,7 @@ import timber.log.Timber;
 
 public class ChatService
 {
-    @IntDef({
-            State.NOT_CONNECTED,
-            State.CONNECTING,
-            State.CONNECTED
-    })
-    @interface State
-    {
-        int NOT_CONNECTED = 0;
-        int CONNECTING = 1;
-        int CONNECTED = 2;
-    }
+    private static final String CHAT_URI_PREFIX = "chat/";
 
     private static ChatService instance;
 
@@ -71,174 +51,70 @@ public class ChatService
     private UserService userService;
     private EventService eventService;
 
-    /* Xmpp connection */
-    private AbstractXMPPConnection connection;
-    private PingManager pingManager;
+    private FirebaseDatabase connection;
 
-    /* Connection State */
-    @State
-    private int state;
-
-    /* Clan chat */
-    private String activeChat;
-    private MultiUserChat chat;
-
-    /* Message Listener */
-    private MessageListener messageListener;
+    private String activeChatId;
+    private DatabaseReference activeChat;
+    private Query activeChatQuery;
+    private ChildEventListener messageListener;
 
     private ChatService(UserService userService, EventService eventService)
     {
         this.userService = userService;
         this.eventService = eventService;
 
-        state = State.NOT_CONNECTED;
-
-        activeChat = null;
-        chat = null;
-
-        initConnection();
+        connection = FirebaseDatabase.getInstance();
     }
 
-    public Observable<Boolean> connect()
+    public Observable<ChatMessage> joinChat(final String planId)
     {
-        if (state == State.CONNECTED)
-        {
-            Timber.v("[XmppConnection already established]");
-            return Observable.just(true);
-        }
-        else if (state == State.CONNECTING)
-        {
-            return Observable
-                    .create(new Observable.OnSubscribe<Boolean>()
-                    {
-                        @Override
-                        public void call(Subscriber<? super Boolean> subscriber)
-                        {
-                            while (state == State.CONNECTING) ;
-                            if (state == State.CONNECTED)
-                            {
-                                subscriber.onNext(true);
-                                subscriber.onCompleted();
-                            }
-                            else
-                            {
-                                subscriber.onNext(false);
-                                subscriber.onCompleted();
-                            }
-                        }
-                    })
-                    .subscribeOn(Schedulers.newThread());
-        }
-        else
-        {
-            state = State.CONNECTING;
+        activeChatId = planId;
+        activeChat = connection.getReference(CHAT_URI_PREFIX + activeChatId);
+        activeChatQuery = activeChat.limitToLast(DEFAULT_HISTORY_SIZE);
 
-            return Observable
-                    .create(new Observable.OnSubscribe<Boolean>()
-                    {
-                        @Override
-                        public void call(Subscriber<? super Boolean> subscriber)
-                        {
-                            try
-                            {
-                                if (!connection.isConnected())
-                                {
-                                    connection.connect();
-                                }
-
-                                if (!connection.isAuthenticated())
-                                {
-                                    connection.login();
-                                }
-
-                                pingManager = PingManager.getInstanceFor(connection);
-                                pingManager.setPingInterval(10);
-                                pingManager.registerPingFailedListener(new PingFailedListener()
-                                {
-                                    @Override
-                                    public void pingFailed()
-                                    {
-                                        state = State.NOT_CONNECTED;
-                                        Timber.v("[Xmpp Ping Failed]");
-                                    }
-                                });
-
-                                Timber.v("[XmppConnection established]");
-                                state = State.CONNECTED;
-
-                                subscriber.onNext(true);
-                                subscriber.onCompleted();
-                            }
-                            catch (Exception e)
-                            {
-
-                                /* Analytics */
-                                AnalyticsHelper
-                                        .sendCaughtExceptions(GoogleAnalyticsConstants
-                                                .METHOD_XMPP_CONNECTION_FAILED, false);
-                                /* Analytics */
-
-                                Timber.v("[XmppConnection Connection Failed] " + e.getMessage());
-                                state = State.NOT_CONNECTED;
-
-                                subscriber.onNext(false);
-                                subscriber.onCompleted();
-                            }
-                        }
-                    })
-                    .subscribeOn(Schedulers.io());
-        }
-    }
-
-    public Observable<ChatMessage> joinChat(final String eventId)
-    {
         return Observable
-                .create(new Observable.OnSubscribe<Message>()
+                .create(new Observable.OnSubscribe<String>()
                 {
                     @Override
-                    public void call(final Subscriber<? super Message> subscriber)
+                    public void call(final Subscriber<? super String> subscriber)
                     {
-                        leaveChat();
-
-                        MultiUserChatManager manager = MultiUserChatManager
-                                .getInstanceFor(connection);
-                        chat = manager
-                                .getMultiUserChat(eventId + AppConstants.CHAT_POSTFIX);
-
-                        DiscussionHistory history = new DiscussionHistory();
-                        history.setMaxStanzas(DEFAULT_HISTORY_SIZE);
-
-                        messageListener = new MessageListener()
+                        messageListener = new ChildEventListener()
                         {
                             @Override
-                            public void processMessage(Message message)
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s)
                             {
-                                subscriber.onNext(message);
+                                subscriber.onNext((String) dataSnapshot.getValue());
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s)
+                            {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot)
+                            {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s)
+                            {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError)
+                            {
+
                             }
                         };
-                        chat.addMessageListener(messageListener);
 
-                        try
-                        {
-                            chat.join(getNickname(), null, history, connection
-                                    .getPacketReplyTimeout());
-                            activeChat = eventId;
-                        }
-                        catch (Exception e)
-                        {
-
-                            /* Analytics */
-                            AnalyticsHelper
-                                    .sendCaughtExceptions(GoogleAnalyticsConstants
-                                            .METHOD_UNABLE_TO_JOIN_CHAT, false);
-                            /* Analytics */
-
-                            subscriber
-                                    .onError(new Exception("[Unable to join clan chat] " + e
-                                            .getMessage()));
-                        }
+                        activeChatQuery.addChildEventListener(messageListener);
                     }
                 })
+                .onBackpressureBuffer()
                 .doOnError(new Action1<Throwable>()
                 {
                     @Override
@@ -251,12 +127,12 @@ public class ChatService
                         throwable.printStackTrace();
                     }
                 })
-                .map(new Func1<Message, ChatMessage>()
+                .map(new Func1<String, ChatMessage>()
                 {
                     @Override
-                    public ChatMessage call(Message message)
+                    public ChatMessage call(String json)
                     {
-                        return map(message);
+                        return map(json);
                     }
                 })
                 .filter(new Func1<ChatMessage, Boolean>()
@@ -273,58 +149,77 @@ public class ChatService
     public Observable<ChatMessage> fetchHistory(final int historySize, final List<ChatMessage>
             availableMessages)
     {
-        if (chat == null)
+        if (activeChat == null)
         {
             return Observable.error(new IllegalStateException("[Chat not joined]"));
         }
         else
         {
+            activeChatQuery = activeChat.limitToLast(DEFAULT_HISTORY_SIZE * (historySize + 1));
+
             return Observable
-                    .create(new Observable.OnSubscribe<Message>()
+                    .create(new Observable.OnSubscribe<String>()
                     {
                         @Override
-                        public void call(final Subscriber<? super Message> subscriber)
+                        public void call(final Subscriber<? super String> subscriber)
                         {
-                            try
+                            messageListener = new ChildEventListener()
                             {
-                                chat.removeMessageListener(messageListener);
-                                messageListener = null;
-                                chat.leave();
-
-                                DiscussionHistory history = new DiscussionHistory();
-                                history.setMaxStanzas(DEFAULT_HISTORY_SIZE * (historySize + 1));
-
-                                messageListener = new MessageListener()
+                                @Override
+                                public void onChildAdded(DataSnapshot dataSnapshot, String s)
                                 {
-                                    @Override
-                                    public void processMessage(Message message)
-                                    {
-                                        subscriber.onNext(message);
-                                    }
-                                };
-                                chat.addMessageListener(messageListener);
+                                    subscriber.onNext((String) dataSnapshot.getValue());
+                                }
 
-                                chat.join(getNickname(), null, history, connection
-                                        .getPacketReplyTimeout());
-                            }
-                            catch (Exception e)
-                            {
-                                /* Analytics */
-                                AnalyticsHelper
-                                        .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_A,
-                                                false);
-                                /* Analytics */
+                                @Override
+                                public void onChildChanged(DataSnapshot dataSnapshot, String s)
+                                {
 
-                                subscriber.onError(e);
-                            }
+                                }
+
+                                @Override
+                                public void onChildRemoved(DataSnapshot dataSnapshot)
+                                {
+
+                                }
+
+                                @Override
+                                public void onChildMoved(DataSnapshot dataSnapshot, String s)
+                                {
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError)
+                                {
+
+                                }
+                            };
+
+                            activeChatQuery.addChildEventListener(messageListener);
                         }
                     })
-                    .map(new Func1<Message, ChatMessage>()
+                    .onBackpressureBuffer()
+                    .doOnError(new Action1<Throwable>()
                     {
                         @Override
-                        public ChatMessage call(Message message)
+                        public void call(Throwable throwable)
                         {
-                            return map(message);
+                        /* Analytics */
+                            AnalyticsHelper
+                                    .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_A,
+                                            false);
+                                /* Analytics */
+
+                            throwable.printStackTrace();
+                        }
+                    })
+                    .map(new Func1<String, ChatMessage>()
+                    {
+                        @Override
+                        public ChatMessage call(String json)
+                        {
+                            return map(json);
                         }
                     })
                     .filter(new Func1<ChatMessage, Boolean>()
@@ -339,43 +234,40 @@ public class ChatService
         }
     }
 
-    public Observable<Object> post(ChatMessage message)
+    public void post(ChatMessage message)
     {
-        if (activeChat == null || chat == null)
-        {
-            Timber.e("[No active chat]");
-            return Observable.error(new Exception("No active chat"));
-        }
-
         try
         {
-            chat.sendMessage(map(message));
-            return Observable.empty();
-        }
-        catch (SmackException.NotConnectedException e)
-        {
+            if (activeChat == null || activeChatId == null)
+            {
+                Timber.e("[No active chat]");
+                throw new IllegalStateException("No active chat");
+            }
 
+            activeChat.push().setValue(map(message));
+        }
+        catch (Exception e)
+        {
             /* Analytics */
             AnalyticsHelper.sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_B, false);
             /* Analytics */
-            return Observable.error(e);
         }
     }
 
     public void leaveChat()
     {
-        if (chat != null)
+        if (activeChat != null)
         {
             try
             {
-                chat.removeMessageListener(messageListener);
-                chat.leave();
+                activeChatQuery.removeEventListener(messageListener);
                 messageListener = null;
+                activeChatQuery = null;
                 activeChat = null;
+                activeChatId = null;
             }
-            catch (SmackException.NotConnectedException e)
+            catch (Exception e)
             {
-
                 /* Analytics */
                 AnalyticsHelper
                         .sendCaughtExceptions(GoogleAnalyticsConstants.METHOD_LEAVE_CHAT_FAILED,
@@ -434,71 +326,11 @@ public class ChatService
     }
 
     /* Helper Methods */
-    private boolean isHealthy()
-    {
-        return (state == State.CONNECTED);
-    }
-
-    private void initConnection()
-    {
-        String userId = userService.getSessionUserId();
-
-        XMPPTCPConnectionConfiguration configuration =
-                XMPPTCPConnectionConfiguration
-                        .builder()
-                        .setUsernameAndPassword(userId, userId)
-                        .setServiceName(AppConstants.CHAT_SERVICE_NAME)
-                        .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
-                        .setHost(AppConstants.CHAT_SERVICE_HOST)
-                        .setPort(AppConstants.CHAT_SERVICE_PORT)
-                        .build();
-
-        connection = new XMPPTCPConnection(configuration);
-
-        connection.addConnectionListener(new AbstractConnectionClosedListener()
-        {
-            @Override
-            public void connectionTerminated()
-            {
-                Timber.v("[XmppConnection Terminated]");
-                state = State.NOT_CONNECTED;
-            }
-        });
-
-        connect()
-                .subscribe(new Subscriber<Boolean>()
-                {
-                    @Override
-                    public void onCompleted()
-                    {
-                    }
-
-                    @Override
-                    public void onError(Throwable e)
-                    {
-                            /* Analytics */
-                        AnalyticsHelper
-                                .sendCaughtExceptions(GoogleAnalyticsConstants
-                                        .METHOD_CHAT_CONNECT_FAILED, false);
-                            /* Analytics */
-                    }
-
-                    @Override
-                    public void onNext(Boolean isCnnected)
-                    {
-                    }
-                });
-    }
-
-    private ChatMessage map(Message message)
+    private ChatMessage map(String json)
     {
         try
         {
-            ChatMessage chatMessage = GsonProvider.getGson()
-                                                  .fromJson(message.getBody(), ChatMessage.class);
-
-            Timber.d("Chat message Recd. before null check" + message.getBody());
-            Timber.d("Chat message Recd. before null check" + chatMessage.toString());
+            ChatMessage chatMessage = GsonProvider.getGson().fromJson(json, ChatMessage.class);
 
             if (chatMessage.getSenderId() == null || chatMessage.getSenderId().isEmpty() ||
                     chatMessage.getSenderName() == null || chatMessage.getSenderName().isEmpty() ||
@@ -510,7 +342,6 @@ public class ChatService
 
             if (chatMessage.isAdmin())
             {
-                Timber.d("Admin Chat message Recd. " + message.getBody());
                 return processAdminMessage(chatMessage);
             }
             else
@@ -529,12 +360,9 @@ public class ChatService
         }
     }
 
-    private Message map(ChatMessage message)
+    private String map(ChatMessage message)
     {
-        Message msg = new Message();
-        msg.setStanzaId(message.getId());
-        msg.setBody(GsonProvider.getGson().toJson(message));
-        return msg;
+        return message.toString();
     }
 
     private String getNickname()
@@ -622,4 +450,5 @@ public class ChatService
             return null;
         }
     }
+
 }
