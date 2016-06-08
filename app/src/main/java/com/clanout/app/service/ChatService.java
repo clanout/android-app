@@ -1,6 +1,5 @@
 package com.clanout.app.service;
 
-import com.clanout.app.api.core.GsonProvider;
 import com.clanout.app.common.analytics.AnalyticsHelper;
 import com.clanout.app.config.GoogleAnalyticsConstants;
 import com.clanout.app.model.ChatMessage;
@@ -16,7 +15,9 @@ import com.google.firebase.database.Query;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -64,6 +65,7 @@ public class ChatService
         this.eventService = eventService;
 
         connection = FirebaseDatabase.getInstance();
+        connection.setPersistenceEnabled(true);
     }
 
     public Observable<ChatMessage> joinChat(final String planId)
@@ -73,17 +75,26 @@ public class ChatService
         activeChatQuery = activeChat.limitToLast(DEFAULT_HISTORY_SIZE);
 
         return Observable
-                .create(new Observable.OnSubscribe<String>()
+                .create(new Observable.OnSubscribe<Map<String, String>>()
                 {
                     @Override
-                    public void call(final Subscriber<? super String> subscriber)
+                    public void call(final Subscriber<? super Map<String, String>> subscriber)
                     {
                         messageListener = new ChildEventListener()
                         {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s)
                             {
-                                subscriber.onNext((String) dataSnapshot.getValue());
+                                try
+                                {
+                                    Map<String, String> message = (Map<String, String>) dataSnapshot
+                                            .getValue();
+                                    subscriber.onNext(message);
+                                }
+                                catch (Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
                             }
 
                             @Override
@@ -127,12 +138,12 @@ public class ChatService
                         throwable.printStackTrace();
                     }
                 })
-                .map(new Func1<String, ChatMessage>()
+                .map(new Func1<Map<String, String>, ChatMessage>()
                 {
                     @Override
-                    public ChatMessage call(String json)
+                    public ChatMessage call(Map<String, String> message)
                     {
-                        return map(json);
+                        return map(message);
                     }
                 })
                 .filter(new Func1<ChatMessage, Boolean>()
@@ -158,17 +169,26 @@ public class ChatService
             activeChatQuery = activeChat.limitToLast(DEFAULT_HISTORY_SIZE * (historySize + 1));
 
             return Observable
-                    .create(new Observable.OnSubscribe<String>()
+                    .create(new Observable.OnSubscribe<Map<String, String>>()
                     {
                         @Override
-                        public void call(final Subscriber<? super String> subscriber)
+                        public void call(final Subscriber<? super Map<String, String>> subscriber)
                         {
                             messageListener = new ChildEventListener()
                             {
                                 @Override
                                 public void onChildAdded(DataSnapshot dataSnapshot, String s)
                                 {
-                                    subscriber.onNext((String) dataSnapshot.getValue());
+                                    try
+                                    {
+                                        Map<String, String> message = (Map<String, String>) dataSnapshot
+                                                .getValue();
+                                        subscriber.onNext(message);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        e.printStackTrace();
+                                    }
                                 }
 
                                 @Override
@@ -214,12 +234,12 @@ public class ChatService
                             throwable.printStackTrace();
                         }
                     })
-                    .map(new Func1<String, ChatMessage>()
+                    .map(new Func1<Map<String, String>, ChatMessage>()
                     {
                         @Override
-                        public ChatMessage call(String json)
+                        public ChatMessage call(Map<String, String> message)
                         {
-                            return map(json);
+                            return map(message);
                         }
                     })
                     .filter(new Func1<ChatMessage, Boolean>()
@@ -326,19 +346,27 @@ public class ChatService
     }
 
     /* Helper Methods */
-    private ChatMessage map(String json)
+    private ChatMessage map(Map<String, String> message)
     {
         try
         {
-            ChatMessage chatMessage = GsonProvider.getGson().fromJson(json, ChatMessage.class);
+            String id = message.get("id");
+            DateTime timestamp = DateTime.parse(message.get("timestamp"))
+                                         .toDateTime(DateTimeZone.getDefault());
+            String planId = message.get("plan_id");
+            String planTitle = message.get("plan_title");
+            String senderId = message.get("sender_id");
+            String senderName = message.get("sender_name");
+            String msg = message.get("message");
 
-            if (chatMessage.getSenderId() == null || chatMessage.getSenderId().isEmpty() ||
-                    chatMessage.getSenderName() == null || chatMessage.getSenderName().isEmpty() ||
-                    chatMessage.getMessage() == null || chatMessage.getMessage().isEmpty() ||
-                    chatMessage.getTimestamp() == null)
-            {
-                return null;
-            }
+            ChatMessage chatMessage = new ChatMessage();
+            chatMessage.setId(id);
+            chatMessage.setTimestamp(timestamp);
+            chatMessage.setPlanId(planId);
+            chatMessage.setPlanTitle(planTitle);
+            chatMessage.setSenderId(senderId);
+            chatMessage.setSenderName(senderName);
+            chatMessage.setMessage(msg);
 
             if (chatMessage.isAdmin())
             {
@@ -360,9 +388,18 @@ public class ChatService
         }
     }
 
-    private String map(ChatMessage message)
+    private Map<String, String> map(ChatMessage chatMessage)
     {
-        return message.toString();
+        Map<String, String> message = new HashMap<>();
+        message.put("id", chatMessage.getId());
+        message.put("timestamp", chatMessage.getTimestamp().toString());
+        message.put("plan_id", chatMessage.getPlanId());
+        message.put("plan_title", chatMessage.getPlanTitle());
+        message.put("sender_id", chatMessage.getSenderId());
+        message.put("sender_name", chatMessage.getSenderName());
+        message.put("message", chatMessage.getMessage());
+
+        return message;
     }
 
     private String getNickname()
@@ -432,6 +469,10 @@ public class ChatService
                     chatMessage
                             .setMessage(user + " updated the description\n'" + description + "'");
                 }
+            }
+            else if (typeToken.equalsIgnoreCase("chat_created"))
+            {
+                return ChatMessage.FIRST_MESSAGE;
             }
             else
             {

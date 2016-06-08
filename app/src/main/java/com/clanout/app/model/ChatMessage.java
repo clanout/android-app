@@ -7,6 +7,14 @@ import org.joda.time.DateTime;
 
 public class ChatMessage implements Model
 {
+    public static final ChatMessage FIRST_MESSAGE = new ChatMessage();
+
+    static
+    {
+        FIRST_MESSAGE.setId("chat_created");
+    }
+
+
     private String id;
     private String message;
     private String senderName;

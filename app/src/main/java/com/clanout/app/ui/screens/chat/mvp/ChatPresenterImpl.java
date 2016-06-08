@@ -11,15 +11,14 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import retrofit.RetrofitError;
-import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+import timber.log.Timber;
 
 public class ChatPresenterImpl implements ChatPresenter
 {
@@ -181,6 +180,7 @@ public class ChatPresenterImpl implements ChatPresenter
             visibleChats.add(chatMessage);
         }
 
+        isChatSent = true;
         chatService.post(chatMessage);
 
 //        chatService
@@ -225,35 +225,35 @@ public class ChatPresenterImpl implements ChatPresenter
             chatSubscription = null;
         }
 
-        Observable.timer(2, TimeUnit.SECONDS)
-                  .first()
-                  .subscribeOn(Schedulers.newThread())
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(new Subscriber<Long>()
-                  {
-                      @Override
-                      public void onCompleted()
-                      {
-                          if (view != null)
-                          {
-                              isLoadHistoryInProgress = false;
-                              view.onHistoryLoaded();
-                              view.displayNoMoreHistory();
-                          }
-                      }
-
-                      @Override
-                      public void onError(Throwable e)
-                      {
-
-                      }
-
-                      @Override
-                      public void onNext(Long aLong)
-                      {
-
-                      }
-                  });
+//        Observable.timer(2, TimeUnit.SECONDS)
+//                  .first()
+//                  .subscribeOn(Schedulers.newThread())
+//                  .observeOn(AndroidSchedulers.mainThread())
+//                  .subscribe(new Subscriber<Long>()
+//                  {
+//                      @Override
+//                      public void onCompleted()
+//                      {
+//                          if (view != null)
+//                          {
+//                              isLoadHistoryInProgress = false;
+//                              view.onHistoryLoaded();
+//                              view.displayNoMoreHistory();
+//                          }
+//                      }
+//
+//                      @Override
+//                      public void onError(Throwable e)
+//                      {
+//
+//                      }
+//
+//                      @Override
+//                      public void onNext(Long aLong)
+//                      {
+//
+//                      }
+//                  });
 
         chatSubscription =
                 chatService
@@ -285,14 +285,24 @@ public class ChatPresenterImpl implements ChatPresenter
                                 {
                                     if (view != null)
                                     {
-                                        visibleChats.add(chatMessage);
-                                        view.displayMessage(chatMessage);
-                                        chatService.updateLastSeen(eventId);
-
-                                        if (isLoadHistoryInProgress)
+                                        if (chatMessage.equals(ChatMessage.FIRST_MESSAGE))
                                         {
+                                            Timber.d(">>>> 1");
                                             isLoadHistoryInProgress = false;
                                             view.onHistoryLoaded();
+                                            view.displayNoMoreHistory();
+                                        }
+                                        else
+                                        {
+                                            visibleChats.add(chatMessage);
+                                            view.displayMessage(chatMessage);
+                                            chatService.updateLastSeen(eventId);
+
+                                            if (isLoadHistoryInProgress)
+                                            {
+                                                isLoadHistoryInProgress = false;
+                                                view.onHistoryLoaded();
+                                            }
                                         }
                                     }
                                 }
@@ -310,23 +320,6 @@ public class ChatPresenterImpl implements ChatPresenter
         }
 
         chatSubscription =
-//                chatService
-//                        .connect()
-//                        .flatMap(new Func1<Boolean, Observable<ChatMessage>>()
-//                        {
-//                            @Override
-//                            public Observable<ChatMessage> call(Boolean isConnected)
-//                            {
-//                                if (isConnected)
-//                                {
-//                                    return chatService.joinChat(eventId);
-//                                }
-//                                else
-//                                {
-//                                    throw new IllegalStateException();
-//                                }
-//                            }
-//                        })
                 chatService.joinChat(eventId)
                            .subscribeOn(Schedulers.newThread())
                            .observeOn(AndroidSchedulers.mainThread())
@@ -355,9 +348,25 @@ public class ChatPresenterImpl implements ChatPresenter
                                    {
                                        if (view != null)
                                        {
-                                           visibleChats.add(chatMessage);
-                                           view.displayMessage(chatMessage);
-                                           chatService.updateLastSeen(eventId);
+                                           if (chatMessage.equals(ChatMessage.FIRST_MESSAGE))
+                                           {
+                                               Timber.d(">>>> 2");
+                                               isLoadHistoryInProgress = false;
+                                               view.onHistoryLoaded();
+                                               view.displayNoMoreHistory();
+                                           }
+                                           else
+                                           {
+                                               visibleChats.add(chatMessage);
+                                               view.displayMessage(chatMessage);
+                                               chatService.updateLastSeen(eventId);
+
+                                               if (isLoadHistoryInProgress)
+                                               {
+                                                   isLoadHistoryInProgress = false;
+                                                   view.onHistoryLoaded();
+                                               }
+                                           }
                                        }
                                    }
                                }

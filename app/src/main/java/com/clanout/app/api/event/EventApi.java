@@ -49,7 +49,7 @@ public interface EventApi
     @POST("/plan/chat-update")
     Observable<Response> sendChatNotification(@Body SendChatNotificationApiRequest request);
 
-    @POST("/event/invitation-response")
+    @POST("/plan/invitation-response")
     Observable<Response> sendInvitationResponse(@Body SendInvitaionResponseApiRequest request);
 
     @POST("/plan/status")
